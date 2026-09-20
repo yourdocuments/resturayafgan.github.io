@@ -413,7 +413,7 @@ function renderSettings() {
     <label>Facebook লিংক</label><input type="text" id="s_facebook" value="${esc(s.facebook)}">
     <label>Instagram লিংক</label><input type="text" id="s_instagram" value="${esc(s.instagram)}">
     ${'is_open' in s ? `
-    <label>ঘোষণা (সাইটের একদম উপরে দেখাবে, খালি রাখলে দেখাবে না)</label><input type="text" id="s_ann" value="${esc(s.announcement)}" placeholder="যেমন: ঈদ অফার, সব খাবারে ১০% ছাড়!">
+    <label>Special Offer / ঘোষণা (সব পেজের একদম উপরে দেখাবে, খালি রাখলে দেখাবে না)</label><input type="text" id="s_ann" value="${esc(s.announcement)}" placeholder="যেমন: ঈদ অফার, সব খাবারে ১০% ছাড়!">
     <label>Google Map এ খোঁজার নাম/ঠিকানা (খালি রাখলে উপরের ঠিকানাই ব্যবহার হবে)</label><input type="text" id="s_map" value="${esc(s.map_query)}" placeholder="যেমন: Afghan Restaurant Moulvibazar Sadar Sylhet">
     <label style="display:flex;gap:6px;align-items:center"><input type="checkbox" id="s_open" ${s.is_open !== false ? 'checked' : ''}> রেস্টুরেন্ট এখন খোলা আছে (বন্ধ করলে সাইটে "Closed" দেখাবে ও অর্ডার বন্ধ হবে)</label>` : '<p class="cur">ঘোষণা, Map ও খোলা/বন্ধ চালু করতে Supabase এ <b>supabase-v2.sql</b> Run করুন।</p>'}
     <button id="sSave">সেভ করুন</button></div>`;

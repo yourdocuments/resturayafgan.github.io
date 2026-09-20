@@ -15,7 +15,7 @@
 <meta property="og:image" content="https://YOUR-DOMAIN.com/og.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json" id="ld">
-{"@context":"https://schema.org","@type":"Restaurant","name":"Afghan Restaurant","servesCuisine":"Afghan","url":"https://YOUR-DOMAIN.com/","telephone":"+880 1712 345 678","address":{"@type":"PostalAddress","streetAddress":"Moulvibazar Sadar, Sylhet, Bangladesh","addressCountry":"BD"}}
+{"@context":"https://schema.org","@type":"Restaurant","name":"Afghan Restaurant","servesCuisine":"Afghan","url":"https://YOUR-DOMAIN.com/","telephone":"+880 1778-015313","address":{"@type":"PostalAddress","streetAddress":"Moulvibazar Sadar, Sylhet, Bangladesh","addressCountry":"BD"}}
 </script>
 <link rel="icon" id="favicon" href="favicon.svg" type="image/svg+xml">
 <link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
@@ -141,13 +141,15 @@
     </div>
     <div><h4>Quick Links</h4><ul><li><a href="#home">Home</a></li><li><a href="#menu">Menu</a></li><li><a href="#about">About Us</a></li><li><a href="#gallery">Gallery</a></li><li><a href="#contact">Contact</a></li></ul></div>
     <div><h4>Contact Us</h4><ul>
-      <li>📞 <a id="phone" href="tel:+8801712345678">+880 1712 345 678</a></li>
+      <li>📞 <a id="phone" href="tel:+8801778015313">+880 1778-015313</a></li>
       <li>📍 <span id="address">Moulvibazar Sadar, Sylhet, Bangladesh</span></li>
       <li>🕙 <span id="hours">10:00 AM - 10:00 PM</span></li></ul></div>
     <div><h4>Follow Us</h4><div class="soc" id="social"></div></div>
   </div>
   <div class="copy" id="copy"></div>
+  <div class="devbar" id="devbar" hidden></div>
 </footer>
+<script src="developer.js"></script>
 
 <a id="waFloat" class="wa-float" href="#" target="_blank" rel="noopener" aria-label="Chat on WhatsApp" hidden>💬</a>
 
@@ -186,7 +188,7 @@ function showSettings(s) {
   const pill = $('openPill');
   pill.hidden = false; pill.className = 'pill' + (OPEN ? '' : ' off');
   pill.textContent = OPEN ? '● Open now' + (s.hours ? ' · ' + s.hours : '') : '● Closed right now';
-  const an = $('announce'); an.textContent = s.announcement || ''; an.hidden = !s.announcement;
+  const an = $('announce'); an.innerHTML = s.announcement ? '<b>Special Offer</b> ' + esc(s.announcement) : ''; an.hidden = !s.announcement;
   const mq = s.map_query || s.address || '';
   $('map').hidden = !mq;
   if (mq) {

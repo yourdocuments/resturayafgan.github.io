@@ -16,8 +16,8 @@ function createDemoClient() {
       tagline: 'Delicious food, warm hospitality and a memorable experience — all in one place.',
       about_title: 'Good Food, Great Moments',
       about_text: 'Afghan Restaurant is a small and cozy place where we serve delicious and healthy food with the best quality ingredients. Our goal is to make every meal a memorable experience for our guests.',
-      phone: '+880 1712 345 678', address: 'Moulvibazar Sadar, Sylhet, Bangladesh', hours: '10:00 AM - 10:00 PM',
-      facebook: '', instagram: '', whatsapp: '8801712345678', hero_image: '', logo: '', favicon: ''
+      phone: '+880 1778-015313', address: 'Moulvibazar Sadar, Sylhet, Bangladesh', hours: '10:00 AM - 10:00 PM',
+      facebook: '', instagram: '', whatsapp: '8801778015313', hero_image: '', logo: '', favicon: ''
     }],
     dishes: [['Afghan Beef Pulao', 250, 'Rice'], ['Chicken Korma', 220, 'Curry'], ['Afghan Chicken Pulao', 200, 'Rice'], ['Beef Karahi', 280, 'Curry'], ['Chicken Roast', 180, 'Grill']]
       .map((d, i) => ({ id: i + 1, name: d[0], price: d[1], category: d[2], image: '', created_at: new Date().toISOString() })),

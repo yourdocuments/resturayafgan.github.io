@@ -14,6 +14,8 @@
 </head>
 <body>
 
+<div class="announce" id="announce" hidden></div>
+
 <header>
   <div class="wrap">
     <a href="index.html" class="logo" id="logoTop">AFGHAN<small>RESTAURANT</small></a>
@@ -29,7 +31,9 @@
 
 <footer>
   <div class="copy" id="copy" style="border:0;margin:0"></div>
+  <div class="devbar" id="devbar" hidden></div>
 </footer>
+<script src="developer.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="config.js"></script>
@@ -45,6 +49,7 @@ let shop = 'Afghan Restaurant';
 
 function applySettings(s) {
   shop = s.name || shop;
+  const an = $('announce'); an.innerHTML = s.announcement ? '<b>Special Offer</b> ' + esc(s.announcement) : ''; an.hidden = !s.announcement;
   $('logoTop').innerHTML = s.logo ? `<img class="logo-img" src="${esc(s.logo)}" alt="${esc(s.name)}">` : `${esc(short(s.name))}<small>RESTAURANT</small>`;
   $('copy').textContent = `© ${new Date().getFullYear()} ${s.name}. All Rights Reserved.`;
   if (s.favicon) {
