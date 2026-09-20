@@ -49,7 +49,7 @@ nav a:hover{color:#fff;border-color:var(--gold)}
 .cards{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;text-align:left}
 .card{background:#fff;border:1px solid #ece5da;border-radius:10px;overflow:hidden}
 .card .ph{aspect-ratio:4/3;background:linear-gradient(135deg,#3a2a1a,#7a4e1d);object-fit:cover;width:100%}
-.card div{padding:12px 14px}
+.card .info{padding:12px 14px}
 .card h3{font-family:'Poppins',sans-serif;font-size:.85rem;font-weight:600}
 .card .price{color:var(--gold);font-weight:700;margin-top:2px}
 .more{margin-top:32px}
@@ -92,3 +92,7 @@ footer a:hover{color:var(--gold2)}
 }
 @media(max-width:520px){.feats{grid-template-columns:1fr}.cards{grid-template-columns:1fr}footer .grid{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+
+.logo-img{height:52px;width:auto;display:block}
+footer .logo-img{height:60px}
+.msg-empty{grid-column:1/-1;color:var(--muted)}
