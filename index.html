@@ -1,452 +1,441 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="robots" content="noindex">
-<title>Admin Panel</title>
-<style>
-*{box-sizing:border-box}
-body{font-family:system-ui,sans-serif;background:#f4f1ec;margin:0;color:#222}
-.top{background:#141110;color:#fff;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
-.top a,.top button.link{color:#e9a544;margin-left:14px;background:none;border:0;padding:0;font:inherit;cursor:pointer;text-decoration:underline;margin-top:0}
-.box{max-width:900px;margin:22px auto;padding:0 16px}
-.tabs{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
-.tabs button{padding:10px 18px;background:#fff;border-radius:8px;color:#222;border:1px solid #ddd;margin:0;font-weight:500}
-.tabs button.on{background:#d18b2f;color:#fff;border-color:#d18b2f}
-.card{background:#fff;border-radius:10px;padding:18px;margin-bottom:14px;border:1px solid #e5ded2}
-label{display:block;font-size:.85rem;font-weight:600;margin:12px 0 4px}
-input[type=text],input[type=number],input[type=password],input[type=email],textarea{width:100%;padding:10px;border:1px solid #ccc;border-radius:6px;font:inherit}
-button{background:#d18b2f;color:#fff;border:0;padding:10px 20px;border-radius:6px;font-weight:600;cursor:pointer;margin-top:12px;font-size:.95rem}
-button:disabled{opacity:.6;cursor:wait}
-button.red{background:#b3332b}
-.msg{position:sticky;top:8px;z-index:9;padding:10px 14px;border-radius:8px;margin-bottom:14px;background:#e7f5e6;border:1px solid #9bd196}
-.msg.err{background:#fde8e6;border-color:#e6a19b}
-.row{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
-.thumb{width:80px;height:60px;object-fit:cover;border-radius:6px;background:#ddd}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
-.grid img{width:100%;height:110px;object-fit:cover;border-radius:8px}
-details summary{cursor:pointer;color:#b8741d;font-weight:600;margin-top:10px}
-.cur{font-size:.8rem;color:#777;margin-top:4px}
-.cur img{height:44px;vertical-align:middle;margin-right:8px;background:#eee;border-radius:4px}
-.hide{display:none}
-.badge{display:inline-block;padding:2px 10px;border-radius:20px;font-size:.75rem;font-weight:700;background:#fdebc8;color:#8a5a00}
-.badge.done{background:#dcf1da;color:#1f6b2a}
-.dot{background:#b3332b;color:#fff;border-radius:20px;padding:0 7px;font-size:.75rem;margin-left:4px}
-.tabs button.on .dot{background:#fff;color:#b3332b}
-</style>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Afghan Restaurant | Afghan Food in Moulvibazar, Sylhet</title>
+<meta name="description" content="Afghan Restaurant in Moulvibazar Sadar, Sylhet. Fresh Afghan pulao, korma, karahi and roast. Order online or visit us.">
+<link rel="canonical" href="https://YOUR-DOMAIN.com/">
+<meta name="theme-color" content="#141110">
+<meta property="og:type" content="restaurant">
+<meta property="og:site_name" content="Afghan Restaurant">
+<meta property="og:title" content="Afghan Restaurant | Afghan Food in Moulvibazar, Sylhet">
+<meta property="og:description" content="Delicious food, warm hospitality and a memorable experience. Order online.">
+<meta property="og:url" content="https://YOUR-DOMAIN.com/">
+<meta property="og:image" content="https://YOUR-DOMAIN.com/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json" id="ld">
+{"@context":"https://schema.org","@type":"Restaurant","name":"Afghan Restaurant","servesCuisine":"Afghan","url":"https://YOUR-DOMAIN.com/","telephone":"+880 1700-000000","address":{"@type":"PostalAddress","streetAddress":"Moulvibazar Sadar, Sylhet, Bangladesh","addressCountry":"BD"}}
+</script>
+<link rel="icon" id="favicon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" id="touch" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,500&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div id="loginView" class="box hide" style="max-width:380px;margin-top:80px">
-  <div class="card">
-    <h2>Admin Login</h2>
-    <div id="loginMsg" class="msg err hide"></div>
-    <div id="demoHint" class="msg hide" style="background:#fff6df;border-color:#e9c777">
-      <b>DEMO MODE</b><br>Email: <code>admin@demo.com</code><br>Password: <code>demo123</code>
-    </div>
-    <label>ইমেইল</label><input type="email" id="email" autocomplete="username">
-    <label>পাসওয়ার্ড</label><input type="password" id="password" autocomplete="current-password">
-    <button id="loginBtn">লগইন</button>
-  </div>
-</div>
+<div class="announce" id="announce" hidden></div>
 
-<div id="appView" class="hide">
-  <div class="top">
-    <span><b id="title">🍽️ Admin</b><small id="mode" style="margin-left:10px;opacity:.85"></small></span>
-    <span><a href="../" target="_blank">সাইট দেখুন</a><button class="link" id="logoutBtn">লগআউট</button></span>
+<header>
+  <div class="wrap">
+    <a href="#home" class="logo" id="logoTop">AFGHAN<small>RESTAURANT</small></a>
+    <nav id="nav">
+      <a href="#home">Home</a><a href="#menu">Menu</a><a href="#about">About Us</a><a href="#gallery">Gallery</a><a href="#blog" id="navBlog" hidden>Blog</a><a href="#contact">Contact</a>
+    </nav>
+    <a class="btn" href="#order">Order Now</a>
+    <button class="menu-btn" aria-label="Menu" onclick="document.getElementById('nav').classList.toggle('open')">☰</button>
   </div>
-  <div class="box">
-    <div class="tabs">
-      <button data-tab="orders" class="on">অর্ডার <span id="ocount"></span></button>
-      <button data-tab="dishes">খাবারের মেনু</button>
-      <button data-tab="gallery">গ্যালারি</button>
-      <button data-tab="blog">ব্লগ</button>
-      <button data-tab="settings">সাইট সেটিংস</button>
+</header>
+
+<section class="hero" id="home">
+  <div class="wrap">
+    <div class="hi">Welcome to</div>
+    <h1 id="heroName">AFGHAN</h1>
+    <div class="sub">RESTAURANT</div>
+    <div class="pill" id="openPill" hidden></div>
+    <p id="tagline">Delicious food, warm hospitality and a memorable experience — all in one place.</p>
+    <div class="btns">
+      <a class="btn" href="#menu">View Menu</a>
+      <a class="btn outline" href="#order">Order Now</a>
     </div>
-    <div id="demoBar" class="msg hide" style="background:#fff6df;border-color:#e9c777">DEMO MODE: এখানে যা করবেন সব শুধু এই browser এ থাকবে। আসল সাইটের জন্য <b>config.js</b> এ Supabase key বসান।</div>
-    <div id="msg" class="msg hide"></div>
-    <div id="content"></div>
   </div>
-</div>
+</section>
+
+<section class="about" id="about">
+  <div class="wrap">
+    <div>
+      <h2 id="aboutTitle">Good Food, Great Moments</h2>
+      <p id="aboutText">Afghan Restaurant is a small and cozy place where we serve delicious and healthy food with the best quality ingredients. Our goal is to make every meal a memorable experience for our guests.</p>
+      <a class="btn" href="#contact">Learn More</a>
+    </div>
+    <div class="feats">
+      <div><div class="ic">👨‍🍳</div><h3>Fresh Ingredients</h3><p>We use the freshest ingredients to serve you the best.</p></div>
+      <div><div class="ic">🍽️</div><h3>Hygienic Food</h3><p>Hygiene and quality are our top priorities.</p></div>
+      <div><div class="ic">🤝</div><h3>Friendly Service</h3><p>Our friendly team is always here to serve you better.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="menu">
+  <div class="wrap">
+    <h2>Our Popular Dishes</h2><div class="line"></div>
+    <div class="menu-tools" id="menuTools" hidden>
+      <div class="chips" id="chips"></div>
+      <input id="msearch" type="search" placeholder="Search dishes..." aria-label="Search dishes">
+    </div>
+    <div class="cards" id="dishes"></div>
+  </div>
+</section>
+
+<section class="sec" id="order">
+  <div class="wrap">
+    <h2>Order Online</h2><div class="line"></div>
+    <form id="orderForm" class="oform" novalidate>
+      <div class="closed-note" id="closedNote" hidden>We are closed right now. Online ordering is paused until we open.</div>
+      <div id="orderItems"></div>
+      <div class="ototal"><span>Total</span><b id="oTotal">৳ 0</b></div>
+      <div class="ofields">
+        <input id="oName" type="text" placeholder="Your name" maxlength="80" autocomplete="name" required>
+        <input id="oPhone" type="tel" placeholder="Phone number" maxlength="20" autocomplete="tel" required>
+        <textarea id="oAddr" rows="2" placeholder="Delivery address" maxlength="300" autocomplete="street-address" required></textarea>
+        <textarea id="oNote" rows="2" placeholder="Note (optional)" maxlength="300"></textarea>
+      </div>
+      <div class="paybox" id="payBox" hidden>
+        <div class="paytitle">Payment</div>
+        <label class="payopt"><input type="radio" name="pay" value="cod" checked><span>Cash on Delivery</span></label>
+        <label class="payopt"><input type="radio" name="pay" value="bkash"><span class="bk">bKash</span><small>Send Money</small></label>
+        <div class="bkinfo" id="bkInfo" hidden>
+          <ol>
+            <li>Open your bKash app and choose <b>Send Money</b>.</li>
+            <li>Send <b id="bkAmt">৳ 0</b> to <b id="bkNum"></b> <button type="button" class="copybtn" id="bkCopy">Copy number</button></li>
+            <li>Copy the <b>Transaction ID (TrxID)</b> from the bKash message and enter it below.</li>
+          </ol>
+          <input id="bkFrom" type="tel" placeholder="Your bKash number (01XXXXXXXXX)" maxlength="16" autocomplete="off">
+          <input id="bkTrx" type="text" placeholder="Transaction ID (TrxID)" maxlength="20" autocomplete="off" autocapitalize="characters">
+        </div>
+      </div>
+      <button class="btn" id="oBtn" type="submit">Place Order</button>
+      <div id="oMsg" class="omsg" role="status"></div>
+    </form>
+  </div>
+</section>
+
+<section class="why">
+  <div class="wrap">
+    <h2>Why Choose Us</h2><div class="line"></div>
+    <div class="grid">
+      <div class="item"><div class="ic">🏅</div><h3>Best Quality</h3><p>We maintain the highest quality in our food.</p></div>
+      <div class="item"><div class="ic">🏷️</div><h3>Affordable Price</h3><p>Delicious food at a price that fits your budget.</p></div>
+      <div class="item"><div class="ic">♥</div><h3>Made with Love</h3><p>Every dish is made with care and love.</p></div>
+      <div class="item"><div class="ic">⏱️</div><h3>Fast Service</h3><p>We value your time and serve you quickly.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="gallery">
+  <div class="wrap">
+    <h2>Our Gallery</h2><div class="line"></div>
+    <div class="gal" id="gal"></div>
+  </div>
+</section>
+
+<section class="sec" id="blog" hidden>
+  <div class="wrap">
+    <h2>Latest News</h2><div class="line"></div>
+    <div class="posts" id="posts"></div>
+    <div class="more"><a class="btn" href="blog/">View All Posts</a></div>
+  </div>
+</section>
+
+<section class="sec" id="map" hidden>
+  <div class="wrap mapbox">
+    <h2>Find Us</h2><div class="line"></div>
+    <iframe id="mapFrame" title="Map" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    <a class="btn" id="dirBtn" href="#" target="_blank" rel="noopener">Get Directions</a>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="wrap grid">
+    <div>
+      <div class="logo" id="logoFoot">AFGHAN<small>RESTAURANT</small></div>
+      <p style="margin-top:12px">Good food, good mood!<br>Thank you for dining with us.</p>
+    </div>
+    <div><h4>Quick Links</h4><ul><li><a href="#home">Home</a></li><li><a href="#menu">Menu</a></li><li><a href="#about">About Us</a></li><li><a href="#gallery">Gallery</a></li><li><a href="#contact">Contact</a></li></ul></div>
+    <div><h4>Contact Us</h4><ul>
+      <li>📞 <a id="phone" href="tel:+8801700000000">+880 1700-000000</a></li>
+      <li>📍 <span id="address">Moulvibazar Sadar, Sylhet, Bangladesh</span></li>
+      <li>🕙 <span id="hours">10:00 AM - 10:00 PM</span></li></ul></div>
+    <div><h4>Follow Us</h4><div class="soc" id="social"></div></div>
+  </div>
+  <div class="copy" id="copy"></div>
+  <div class="devbar" id="devbar" hidden></div>
+</footer>
+<script src="developer.js"></script>
+
+<a id="waFloat" class="wa-float" href="#" target="_blank" rel="noopener" aria-label="Chat on WhatsApp" hidden>💬</a>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="../config.js"></script>
-<script src="../demo-db.js"></script>
+<script src="config.js"></script>
+<script src="demo-db.js"></script>
 <script>
 const $ = id => document.getElementById(id);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const short = n => String(n || '').replace(/\s*restaurant\s*$/i, '').toUpperCase();
 const db = DEMO ? createDemoClient() : supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-let tab = 'orders', orders = [], dishes = [], posts = [], gallery = [], settings = {}, ordersOk = true, postsOk = true;
+let dishList = [], cart = {}, WA = '', SHOP = 'Restaurant', OPEN = true, BK = '', cat = '', qry = '';
 
-/* ---------- ছোট helper ---------- */
-function toast(text, err) {
-  const m = $('msg');
-  m.textContent = text; m.className = 'msg' + (err ? ' err' : '');
-  clearTimeout(toast.t); toast.t = setTimeout(() => m.classList.add('hide'), 4000);
+function brand(s) {
+  return s.logo
+    ? `<img class="logo-img" src="${esc(s.logo)}" alt="${esc(s.name)}">`
+    : `${esc(short(s.name))}<small>RESTAURANT</small>`;
 }
 
-// ছবি ছোট করে (ফোনের বড় ছবি দ্রুত লোড হবে)
-function resize(file, max = 1400) {
-  return new Promise((res, rej) => {
-    const img = new Image(), url = URL.createObjectURL(file);
-    img.onload = () => {
-      const r = Math.min(1, max / Math.max(img.width, img.height));
-      const c = document.createElement('canvas');
-      c.width = Math.round(img.width * r); c.height = Math.round(img.height * r);
-      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
-      c.toBlob(b => { URL.revokeObjectURL(url); b ? res(b) : rej(new Error('resize failed')); }, 'image/jpeg', 0.85);
-    };
-    img.onerror = () => rej(new Error('ছবিটি পড়া যাচ্ছে না'));
-    img.src = url;
-  });
+// Google এর জন্য রেস্টুরেন্টের তথ্য (admin এ বদলালে এটাও বদলায়)
+function updateSchema(s) {
+  const ld = {
+    '@context': 'https://schema.org', '@type': 'Restaurant', name: s.name, servesCuisine: 'Afghan',
+    description: s.tagline, telephone: s.phone, url: location.origin + location.pathname.replace(/index\.html$/, ''),
+    address: { '@type': 'PostalAddress', streetAddress: s.address, addressCountry: 'BD' }
+  };
+  if (s.hero_image && !s.hero_image.startsWith('data:')) ld.image = s.hero_image;
+  const same = [s.facebook, s.instagram].filter(Boolean);
+  if (same.length) ld.sameAs = same;
+  $('ld').textContent = JSON.stringify(ld);
 }
 
-// ছবি আপলোড করে public URL ফেরত দেয়। raw=true হলে (logo/favicon) ছোট করে না
-async function uploadImage(file, raw) {
-  if (!file) return '';
-  if (file.size > 8 * 1024 * 1024) throw new Error('ছবি 8MB এর বেশি বড়');
-  let body = file, ext = (file.name.split('.').pop() || 'png').toLowerCase().replace(/[^a-z0-9]/g, '');
-  if (!raw) { body = await resize(file); ext = 'jpg'; }
-  const path = crypto.randomUUID() + '.' + ext;
-  const { error } = await db.storage.from('images').upload(path, body, { contentType: body.type || file.type, cacheControl: '31536000' });
-  if (error) throw error;
-  return db.storage.from('images').getPublicUrl(path).data.publicUrl;
-}
-
-async function removeImage(url) {
-  if (!url) return;
-  const i = url.indexOf('/images/');
-  if (i > -1) await db.storage.from('images').remove([decodeURIComponent(url.slice(i + 8))]);
-}
-
-// সেভ সত্যিই হয়েছে কিনা নিশ্চিত করে (permission এ আটকালে Supabase চুপচাপ 0 row ফেরত দেয়)
-function ok(res) {
-  if (res.error) throw res.error;
-  if (!res.data || !res.data.length) throw new Error('সেভ হয়নি। লগআউট করে আবার লগইন করুন। তাতেও না হলে Supabase এ supabase-setup.sql ঠিকমতো Run হয়েছে কিনা দেখুন।');
-  return res.data;
-}
-
-async function run(btn, fn) {
-  btn.disabled = true;
-  try { await fn(); } catch (e) {
-    console.error(e);
-    const m = String(e.message || e);
-    toast('সমস্যা হয়েছে: ' + m + (/column|relation|posts|schema cache/i.test(m) ? ' (Supabase এ supabase-blog.sql, supabase-v2.sql ও supabase-v3.sql Run করুন)' : ''), true);
+function showSettings(s) {
+  WA = s.whatsapp || ''; SHOP = s.name || SHOP;
+  OPEN = s.is_open !== false;
+  BK = String(s.bkash_number || '').trim();
+  $('payBox').hidden = !BK; $('bkNum').textContent = BK;
+  if (!BK) { document.querySelector('input[name=pay][value=cod]').checked = true; $('bkInfo').hidden = true; }
+  const pill = $('openPill');
+  pill.hidden = false; pill.className = 'pill' + (OPEN ? '' : ' off');
+  pill.textContent = OPEN ? '● Open now' + (s.hours ? ' · ' + s.hours : '') : '● Closed right now';
+  const an = $('announce'); an.innerHTML = s.announcement ? '<b>Special Offer</b> ' + esc(s.announcement) : ''; an.hidden = !s.announcement;
+  const mq = s.map_query || s.address || '';
+  $('map').hidden = !mq;
+  if (mq) {
+    $('mapFrame').src = 'https://www.google.com/maps?q=' + encodeURIComponent(mq) + '&output=embed';
+    $('dirBtn').href = 'https://www.google.com/maps/dir/?api=1&destination=' + encodeURIComponent(mq);
   }
-  btn.disabled = false;
+  renderOrderItems();
+  updateSchema(s);
+  $('logoTop').innerHTML = brand(s);
+  $('logoFoot').innerHTML = brand(s);
+  $('heroName').textContent = short(s.name);
+  $('tagline').textContent = s.tagline || '';
+  $('aboutTitle').textContent = s.about_title || '';
+  $('aboutText').textContent = s.about_text || '';
+  $('phone').textContent = s.phone || '';
+  $('phone').href = 'tel:' + String(s.phone || '').replace(/\s+/g, '');
+  $('address').textContent = s.address || '';
+  $('hours').textContent = s.hours || '';
+  $('copy').textContent = `© ${new Date().getFullYear()} ${s.name}. All Rights Reserved.`;
+  if (s.hero_image) $('home').style.backgroundImage = `url('${s.hero_image.replace(/'/g, '%27')}')`;
+  if (s.favicon) {
+    document.querySelectorAll('link[rel="icon"]:not(#favicon)').forEach(l => l.remove());
+    $('favicon').removeAttribute('type'); $('favicon').href = s.favicon; $('touch').href = s.favicon;
+  }
+  if (s.whatsapp) { $('waFloat').href = 'https://wa.me/' + s.whatsapp; $('waFloat').hidden = false; }
+  let soc = '';
+  if (s.facebook)  soc += `<a href="${esc(s.facebook)}" target="_blank" rel="noopener" aria-label="Facebook">f</a>`;
+  if (s.instagram) soc += `<a href="${esc(s.instagram)}" target="_blank" rel="noopener" aria-label="Instagram">ig</a>`;
+  if (s.whatsapp)  soc += `<a href="https://wa.me/${esc(s.whatsapp)}" target="_blank" rel="noopener" aria-label="WhatsApp">wa</a>`;
+  $('social').innerHTML = soc;
 }
 
-/* ---------- লগইন ---------- */
-async function start() {
-  if (DEMO) { $('demoHint').classList.remove('hide'); $('demoBar').classList.remove('hide'); }
-  const { data } = await db.auth.getSession();
-  data.session ? showApp() : showLogin();
-}
-function showLogin() { $('appView').classList.add('hide'); $('loginView').classList.remove('hide'); }
-async function showApp() {
-  $('loginView').classList.add('hide'); $('appView').classList.remove('hide');
-  await loadAll(); render();
-}
-$('loginBtn').onclick = async () => {
-  const { error } = await db.auth.signInWithPassword({ email: $('email').value.trim(), password: $('password').value });
-  if (error) { const m = $('loginMsg'); m.textContent = 'ইমেইল বা পাসওয়ার্ড ভুল হয়েছে।'; m.classList.remove('hide'); }
-  else showApp();
-};
-$('password').addEventListener('keydown', e => { if (e.key === 'Enter') $('loginBtn').click(); });
-$('logoutBtn').onclick = async () => { await db.auth.signOut(); showLogin(); };
+// ---------- কোন দিন কোন খাবার ----------
+const WEEK = ['sat', 'sun', 'mon', 'tue', 'wed', 'thu', 'fri'];
+const DAYN = { sat: 'Sat', sun: 'Sun', mon: 'Mon', tue: 'Tue', wed: 'Wed', thu: 'Thu', fri: 'Fri' };
+const todayKey = () => new Intl.DateTimeFormat('en-US', { weekday: 'short', timeZone: 'Asia/Dhaka' }).format(new Date()).toLowerCase().slice(0, 3);
+const dayList = d => String(d.days || '').split(',').filter(Boolean);
+const availToday = d => { const l = dayList(d); return !l.length || l.length >= 7 || l.includes(todayKey()); };
+const daysLabel = d => { const l = dayList(d); return l.length && l.length < 7 ? WEEK.filter(x => l.includes(x)).map(x => DAYN[x]).join(', ') : ''; };
 
-/* ---------- ডাটা লোড ---------- */
-async function loadAll() {
-  const [s, d, g, o, po] = await Promise.all([
-    db.from('settings').select('*').eq('id', 1).single(),
-    db.from('dishes').select('*').order('id'),
-    db.from('gallery').select('*').order('id', { ascending: false }),
-    db.from('orders').select('*').order('id', { ascending: false }).limit(100),
-    db.from('posts').select('*').order('id', { ascending: false })
-  ]);
-  settings = s.data || {}; dishes = d.data || []; gallery = g.data || [];
-  ordersOk = !o.error; orders = o.data || [];
-  postsOk = !po.error; posts = po.data || [];
-  const bad = [s, d, g].filter(x => x.error).map(x => x.error.message);
-  $('mode').textContent = DEMO ? '(DEMO)' : bad.length ? '⚠️ Supabase সমস্যা' : '✅ Supabase connected';
-  if (bad.length) toast('ডাটা লোড হয়নি: ' + bad[0] + ' (supabase-setup.sql Run করা হয়েছে কিনা দেখুন)', true);
-  const n = orders.filter(x => x.status === 'new').length;
-  $('ocount').innerHTML = n ? `<span class="dot">${n}</span>` : '';
-  $('title').textContent = '🍽️ ' + (settings.name || 'Admin') + ' — Admin';
+function showDishes(list) {
+  dishList = list;
+  const cats = [...new Set(list.map(d => d.category).filter(Boolean))];
+  if (cat && !cats.includes(cat)) cat = '';
+  $('menuTools').hidden = !(cats.length || list.length > 6);
+  $('chips').innerHTML = cats.length ? ['', ...cats].map(c => `<button type="button" class="chip${c === cat ? ' on' : ''}" data-cat="${esc(c)}">${c ? esc(c) : 'All'}</button>`).join('') : '';
+  $('msearch').hidden = list.length <= 6;
+  renderCards();
+  renderOrderItems();
 }
 
-document.querySelectorAll('.tabs button').forEach(b => b.onclick = async () => {
-  tab = b.dataset.tab;
-  document.querySelectorAll('.tabs button').forEach(x => x.classList.toggle('on', x === b));
-  render();
-  if (tab === 'orders') { await loadAll(); if (tab === 'orders') render(); }   // নতুন অর্ডার দেখাতে আবার লোড
+function renderCards() {
+  const list = dishList.filter(d => (!cat || d.category === cat) && (!qry || String(d.name).toLowerCase().includes(qry)));
+  $('dishes').innerHTML = list.length ? list.map(d => {
+    const off = !availToday(d), lab = daysLabel(d);
+    return `
+    <article class="card${off ? ' off' : ''}">
+      <div class="imgw">
+        ${d.image ? `<img class="ph" src="${esc(d.image)}" alt="${esc(d.name)}" loading="lazy">` : `<div class="ph"></div>`}
+        ${d.is_new ? '<span class="tag">New</span>' : ''}
+      </div>
+      <div class="info"><h3>${esc(d.name)}</h3><div class="price">৳ ${esc(d.price)}</div>
+        ${lab ? `<div class="days">${off ? '' : 'Available: '}${esc(lab)}</div>` : ''}
+        ${off ? '<div class="off-note">Not available today</div>' : ''}
+      </div>
+    </article>`;
+  }).join('') : `<p class="msg-empty">${dishList.length ? 'No dishes found.' : 'Menu coming soon.'}</p>`;
+}
+
+$('chips').addEventListener('click', e => {
+  const b = e.target.closest('.chip'); if (!b) return;
+  cat = b.dataset.cat;
+  document.querySelectorAll('#chips .chip').forEach(x => x.classList.toggle('on', x === b));
+  renderCards();
+});
+$('msearch').addEventListener('input', e => { qry = e.target.value.trim().toLowerCase(); renderCards(); });
+
+function showPosts(list) {
+  $('blog').hidden = !list.length; $('navBlog').hidden = !list.length;
+  const ex = t => { const s = String(t || '').replace(/\s+/g, ' ').trim(); return s.length > 120 ? s.slice(0, 120) + '...' : s; };
+  $('posts').innerHTML = list.slice(0, 3).map(p => `
+    <a class="post" href="blog/?id=${encodeURIComponent(p.id)}">
+      ${p.image ? `<img src="${esc(p.image)}" alt="" loading="lazy">` : '<div class="ph"></div>'}
+      <div class="info"><time>${new Date(p.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</time>
+        <h3>${esc(p.title)}</h3><p>${esc(ex(p.body))}</p></div>
+    </a>`).join('');
+}
+
+function showGallery(list) {
+  $('gal').innerHTML = list.length
+    ? list.map(g => `<img src="${esc(g.image)}" alt="Gallery photo" loading="lazy">`).join('')
+    : Array(6).fill('<div class="ph"></div>').join('');
+}
+
+/* ---------- অর্ডার ফর্ম ---------- */
+function renderOrderItems() {
+  dishList.forEach(d => { if (!availToday(d)) delete cart[d.id]; });
+  if (!OPEN) cart = {};
+  $('closedNote').hidden = OPEN;
+  $('oBtn').disabled = !OPEN;
+  const hasCats = dishList.some(d => d.category);
+  let lastCat = null;
+  const sorted = hasCats ? [...dishList].sort((a, b) => (a.category || 'zzz').localeCompare(b.category || 'zzz')) : dishList;
+  $('orderItems').innerHTML = sorted.length ? sorted.map(d => {
+    const off = !availToday(d) || !OPEN;
+    let head = '';
+    if (hasCats && (d.category || '') !== lastCat) { lastCat = d.category || ''; head = lastCat ? `<div class="ocat">${esc(lastCat)}</div>` : ''; }
+    return head + `
+    <div class="oitem${off ? ' off' : ''}">
+      <div><div class="nm">${esc(d.name)}</div><div class="pr">৳ ${esc(d.price)}</div>
+        ${!availToday(d) ? `<div class="note">Not available today (${esc(daysLabel(d))} only)</div>` : ''}</div>
+      <div class="qty">
+        <button type="button" data-id="${d.id}" data-op="-" aria-label="Less" ${off ? 'disabled' : ''}>−</button>
+        <span>${cart[d.id] || 0}</span>
+        <button type="button" data-id="${d.id}" data-op="+" aria-label="More" ${off ? 'disabled' : ''}>+</button>
+      </div>
+    </div>`;
+  }).join('') : '<p class="msg-empty">Menu coming soon.</p>';
+  const total = dishList.reduce((t, d) => t + (cart[d.id] || 0) * (+d.price || 0), 0);
+  $('oTotal').textContent = '৳ ' + total;
+  $('bkAmt').textContent = '৳ ' + total;
+}
+
+$('orderItems').addEventListener('click', e => {
+  const b = e.target.closest('button[data-id]');
+  if (!b) return;
+  const id = b.dataset.id, n = (cart[id] || 0) + (b.dataset.op === '+' ? 1 : -1);
+  cart[id] = Math.max(0, Math.min(20, n));
+  renderOrderItems();
 });
 
-function render() {
-  if (tab === 'orders') renderOrders();
-  else if (tab === 'dishes') renderDishes();
-  else if (tab === 'blog') renderBlog();
-  else if (tab === 'gallery') renderGallery();
-  else renderSettings();
+function say(text, ok, extraHtml) {
+  const m = $('oMsg');
+  m.className = 'omsg ' + (ok ? 'ok' : 'err');
+  m.innerHTML = esc(text) + (extraHtml || '');
 }
 
-/* ---------- অর্ডার ---------- */
-function renderOrders() {
-  if (!ordersOk) {
-    $('content').innerHTML = '<div class="card">অর্ডারের টেবিল এখনো বানানো হয়নি। Supabase এর SQL Editor এ <b>supabase-orders.sql</b> ফাইলটা Run করুন।</div>';
-    return;
+const payMethod = () => (document.querySelector('input[name=pay]:checked') || {}).value || 'cod';
+document.querySelectorAll('input[name=pay]').forEach(r => r.addEventListener('change', () => { $('bkInfo').hidden = payMethod() !== 'bkash'; }));
+$('bkCopy').addEventListener('click', async e => {
+  const b = e.currentTarget;
+  try { await navigator.clipboard.writeText(BK); }
+  catch (_) { const t = document.createElement('textarea'); t.value = BK; document.body.appendChild(t); t.select(); try { document.execCommand('copy'); } catch (__) {} t.remove(); }
+  b.textContent = 'Copied ✓'; setTimeout(() => b.textContent = 'Copy number', 2000);
+});
+// বাংলাদেশি নম্বর: 8801712345678 / +8801712345678 / 01712-345678 সবই 01712345678 হয়ে যায়
+const bdNum = v => { let d = String(v).replace(/\D/g, ''); if (d.length > 11) d = d.replace(/^880/, '0'); return d; };
+
+$('orderForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const items = dishList.filter(d => cart[d.id] > 0 && availToday(d)).map(d => ({ name: d.name, price: +d.price || 0, qty: cart[d.id] }));
+  const name = $('oName').value.trim(), phone = $('oPhone').value.trim(), address = $('oAddr').value.trim(), note = $('oNote').value.trim();
+  if (!OPEN) return say('We are closed right now. Please order when we open.', false);
+  if (!items.length) return say('Please choose at least one dish.', false);
+  if (!name) return say('Please enter your name.', false);
+  if (phone.replace(/\D/g, '').length < 8) return say('Please enter a valid phone number.', false);
+  if (!address) return say('Please enter your delivery address.', false);
+  if (!db) return say('Ordering is not set up yet.', false);
+
+  const pay = BK ? payMethod() : 'cod';
+  let from = '', trx = '';
+  if (pay === 'bkash') {
+    from = bdNum($('bkFrom').value); trx = $('bkTrx').value.trim().toUpperCase();
+    if (!/^01[3-9]\d{8}$/.test(from)) return say('Please enter the bKash number you sent money from (like 01712345678).', false);
+    if (!/^[A-Z0-9]{8,14}$/.test(trx)) return say('Please enter a valid Transaction ID (TrxID) from your bKash message.', false);
   }
-  const newCount = orders.filter(o => o.status === 'new').length;
-  const hasOpen = 'is_open' in settings, isOpen = settings.is_open !== false;
-  $('content').innerHTML = `
-    ${hasOpen ? `<div class="card row" style="justify-content:space-between">
-      <b>${isOpen ? '🟢 এখন খোলা আছে' : '🔴 এখন বন্ধ (সাইটে অর্ডার বন্ধ)'}</b>
-      <button id="openToggle" class="${isOpen ? 'red' : ''}" style="margin:0">${isOpen ? 'বন্ধ করুন' : 'খুলুন'}</button></div>` : ''}
-    <div class="card row" style="justify-content:space-between">
-      <b>মোট ${orders.length}টি অর্ডার, নতুন ${newCount}টি</b>
-      <button id="oRefresh" style="margin:0">রিফ্রেশ</button></div>
-    ${orders.map(o => `
-      <div class="card">
-        <div class="row" style="justify-content:space-between">
-          <span><b>#${o.id}</b> · ${new Date(o.created_at).toLocaleString('en-GB')}</span>
-          <span class="badge ${o.status === 'done' ? 'done' : ''}">${o.status === 'done' ? 'সম্পন্ন' : 'নতুন'}</span>
-        </div>
-        <p style="margin:10px 0 4px"><b>${esc(o.name)}</b> · <a href="tel:${esc(o.phone)}">${esc(o.phone)}</a></p>
-        <p style="margin:0 0 8px">📍 ${esc(o.address)}</p>
-        <p style="margin:0 0 8px">${(o.items || []).map(i => `${esc(i.name)} × ${esc(i.qty)}`).join('<br>')}</p>
-        ${o.note ? `<p style="margin:0 0 8px">📝 ${esc(o.note)}</p>` : ''}
-        ${o.payment_method === 'bkash'
-          ? `<p style="margin:0 0 8px;padding:8px 10px;background:#fdeef5;border-radius:6px"><span class="badge" style="background:#e2136e;color:#fff">bKash</span>
-              ${o.paid ? '<b style="color:#1f6b2a">✅ পেমেন্ট নিশ্চিত</b>' : '<b style="color:#b3332b">⏳ পেমেন্ট যাচাই বাকি</b>'}<br>
-              পাঠিয়েছে: <b>${esc(o.payment_number)}</b> · TrxID: <b>${esc(o.trx_id)}</b> · ৳ ${esc(o.total)}</p>`
-          : (o.payment_method ? '<p style="margin:0 0 8px">💵 ক্যাশ অন ডেলিভারি</p>' : '')}
-        <b>মোট: ৳ ${esc(o.total)}</b>
-        <div class="row">
-          <button data-odone="${o.id}" data-to="${o.status === 'done' ? 'new' : 'done'}">${o.status === 'done' ? 'আবার নতুন করুন' : 'সম্পন্ন করুন'}</button>
-          ${o.payment_method === 'bkash' ? `<button data-opaid="${o.id}" data-paid="${o.paid ? 'no' : 'yes'}" style="background:#e2136e">${o.paid ? 'নিশ্চিত বাতিল' : 'bKash এ দেখেছি, পেমেন্ট নিশ্চিত'}</button>` : ''}
-          <button class="red" data-odel="${o.id}">মুছুন</button>
-        </div>
-      </div>`).join('') || '<div class="card">এখনো কোনো অর্ডার আসেনি।</div>'}`;
 
-  $('oRefresh').onclick = e => run(e.target, async () => { await loadAll(); renderOrders(); });
-  if ($('openToggle')) $('openToggle').onclick = e => run(e.target, async () => {
-    ok(await db.from('settings').update({ is_open: !isOpen }).eq('id', 1).select());
-    toast(isOpen ? 'রেস্টুরেন্ট বন্ধ দেখানো হচ্ছে।' : 'রেস্টুরেন্ট খোলা দেখানো হচ্ছে ✅'); await loadAll(); renderOrders();
-  });
-  document.querySelectorAll('[data-odone]').forEach(b => b.onclick = e => run(e.target, async () => {
-    ok(await db.from('orders').update({ status: b.dataset.to }).eq('id', b.dataset.odone).select());
-    await loadAll(); renderOrders();
-  }));
-  document.querySelectorAll('[data-opaid]').forEach(b => b.onclick = e => run(e.target, async () => {
-    ok(await db.from('orders').update({ paid: b.dataset.paid === 'yes' }).eq('id', b.dataset.opaid).select());
-    await loadAll(); renderOrders();
-  }));
-  document.querySelectorAll('[data-odel]').forEach(b => b.onclick = e => run(e.target, async () => {
-    if (!confirm('অর্ডারটি মুছে ফেলবেন?')) return;
-    ok(await db.from('orders').delete().eq('id', b.dataset.odel).select());
-    await loadAll(); renderOrders();
-  }));
-}
-
-// প্রতি ১ মিনিটে নতুন অর্ডার আছে কিনা দেখে
-setInterval(async () => {
-  if (tab === 'orders' && !$('appView').classList.contains('hide')) { await loadAll(); renderOrders(); }
-}, 60000);
-
-/* ---------- খাবার ---------- */
-const WEEK = [['sat', 'শনি'], ['sun', 'রবি'], ['mon', 'সোম'], ['tue', 'মঙ্গল'], ['wed', 'বুধ'], ['thu', 'বৃহঃ'], ['fri', 'শুক্র']];
-function dayBoxes(id, sel) {
-  const s = String(sel || '').split(',').filter(Boolean);
-  return `<div id="${id}" style="display:flex;flex-wrap:wrap;gap:12px">${WEEK.map(([k, n]) =>
-    `<label style="display:flex;gap:4px;align-items:center;margin:0;font-weight:500"><input type="checkbox" value="${k}" ${s.includes(k) ? 'checked' : ''}>${n}</label>`).join('')}</div>`;
-}
-const readDays = id => { const v = [...document.querySelectorAll(`#${id} input:checked`)].map(i => i.value); return v.length === 7 ? '' : v.join(','); };
-const dayNames = str => WEEK.filter(([k]) => String(str || '').split(',').includes(k)).map(x => x[1]).join(', ');
-
-function renderDishes() {
-  const hasCols = !dishes.length || 'days' in dishes[0];
-  const extra = (pre, d) => hasCols ? `
-    <label>কোন কোন দিন পাওয়া যায় (কিছু না বাছলে রোজ)</label>${dayBoxes(pre + 'Days', d.days)}
-    <label style="display:flex;gap:6px;align-items:center"><input type="checkbox" id="${pre}New" ${d.is_new ? 'checked' : ''}> "New" ট্যাগ দেখান</label>` : '';
-  const hasCat = !dishes.length || 'category' in dishes[0];
-  const cats = [...new Set(dishes.map(d => d.category).filter(Boolean))];
-  const catField = (pre, d) => hasCat ? `<label>ক্যাটাগরি (যেমন Rice, Curry, Drinks; ঐচ্ছিক)</label><input type="text" id="${pre}Cat" list="catList" value="${esc(d.category)}">` : '';
-  const vals = pre => ({ ...(hasCols ? { days: readDays(pre + 'Days'), is_new: $(pre + 'New').checked } : {}), ...(hasCat ? { category: $(pre + 'Cat').value.trim() } : {}) });
-
-  $('content').innerHTML = `
-    <datalist id="catList">${cats.map(c => `<option value="${esc(c)}">`).join('')}</datalist>
-    ${hasCols ? '' : '<div class="msg err" style="position:static">দিন ও "New" ট্যাগ চালু করতে Supabase এ <b>supabase-blog.sql</b> Run করুন।</div>'}
-    <div class="card"><h3>নতুন খাবার যোগ করুন</h3>
-      <label>খাবারের নাম</label><input type="text" id="dName">
-      <label>দাম (৳)</label><input type="number" id="dPrice" min="0">
-      <label>ছবি (JPG/PNG/WEBP)</label><input type="file" id="dImg" accept="image/*">
-      ${catField('a', {})}
-      ${extra('a', {})}
-      <button id="dAdd">যোগ করুন</button></div>
-    ${dishes.map(d => `
-      <div class="card"><div class="row">
-        ${d.image ? `<img class="thumb" src="${esc(d.image)}" alt="">` : '<div class="thumb"></div>'}
-        <div style="flex:1"><b>${esc(d.name)}</b> ${d.is_new ? '<span class="badge">New</span>' : ''}<br>৳ ${esc(d.price)}${d.category ? ' · ' + esc(d.category) : ''}${d.days ? ' · ' + esc(dayNames(d.days)) : ''}</div>
-        <button class="red" style="margin:0" data-del="${d.id}">মুছুন</button>
-      </div>
-      <details><summary>এডিট করুন</summary>
-        <label>নাম</label><input type="text" id="n${d.id}" value="${esc(d.name)}">
-        <label>দাম (৳)</label><input type="number" id="p${d.id}" value="${esc(d.price)}" min="0">
-        <label>নতুন ছবি (না দিলে আগেরটাই থাকবে)</label><input type="file" id="i${d.id}" accept="image/*">
-        ${catField('e' + d.id, d)}
-        ${extra('e' + d.id, d)}
-        <button data-save="${d.id}">সেভ করুন</button>
-      </details></div>`).join('')}`;
-
-  $('dAdd').onclick = e => run(e.target, async () => {
-    const name = $('dName').value.trim();
-    if (!name) return toast('খাবারের নাম লিখুন।', true);
-    const image = await uploadImage($('dImg').files[0]);
-    ok(await db.from('dishes').insert({ name, price: +$('dPrice').value || 0, image, ...vals('a') }).select());
-    toast('নতুন খাবার যোগ হয়েছে ✅'); await loadAll(); renderDishes();
-  });
-  document.querySelectorAll('[data-del]').forEach(b => b.onclick = e => run(e.target, async () => {
-    if (!confirm('মুছে ফেলবেন?')) return;
-    const d = dishes.find(x => x.id == b.dataset.del);
-    ok(await db.from('dishes').delete().eq('id', d.id).select());
-    await removeImage(d.image);
-    toast('খাবার মুছে ফেলা হয়েছে।'); await loadAll(); renderDishes();
-  }));
-  document.querySelectorAll('[data-save]').forEach(b => b.onclick = e => run(e.target, async () => {
-    const id = b.dataset.save, d = dishes.find(x => x.id == id);
-    const upd = { name: $('n' + id).value.trim(), price: +$('p' + id).value || 0, ...vals('e' + id) };
-    const f = $('i' + id).files[0];
-    if (f) upd.image = await uploadImage(f);
-    ok(await db.from('dishes').update(upd).eq('id', id).select());
-    if (f) await removeImage(d.image);
-    toast('খাবার আপডেট হয়েছে ✅'); await loadAll(); renderDishes();
-  }));
-}
-
-/* ---------- ব্লগ ---------- */
-function renderBlog() {
-  if (!postsOk) {
-    $('content').innerHTML = '<div class="card">ব্লগের টেবিল এখনো বানানো হয়নি। Supabase এর SQL Editor এ <b>supabase-blog.sql</b> ফাইলটা Run করুন।</div>';
-    return;
+  const total = items.reduce((t, i) => t + i.price * i.qty, 0);
+  const btn = $('oBtn'); btn.disabled = true; btn.textContent = 'Sending...';
+  const row = { name, phone, address, note, items, total };
+  if (pay === 'bkash') Object.assign(row, { payment_method: 'bkash', payment_number: from, trx_id: trx });
+  const { error } = await db.from('orders').insert(row);
+  btn.disabled = false; btn.textContent = 'Place Order';
+  if (error) {
+    console.error(error);
+    if (error.code === '23505' || /orders_trx_unique/.test(error.message || '')) return say('This Transaction ID has already been used. Please check your TrxID.', false);
+    return say('Sorry, the order could not be sent. Please call us to order.', false);
   }
-  $('content').innerHTML = `
-    <div class="card"><h3>নতুন পোস্ট লিখুন</h3>
-      <label>শিরোনাম</label><input type="text" id="bTitle">
-      <label>লেখা (নতুন অনুচ্ছেদের জন্য একটা ফাঁকা লাইন দিন)</label><textarea id="bBody" rows="8"></textarea>
-      <label>ছবি (ঐচ্ছিক)</label><input type="file" id="bImg" accept="image/*">
-      <button id="bAdd">পোস্ট করুন</button></div>
-    ${posts.map(p => `
-      <div class="card"><div class="row">
-        ${p.image ? `<img class="thumb" src="${esc(p.image)}" alt="">` : '<div class="thumb"></div>'}
-        <div style="flex:1"><b>${esc(p.title)}</b><br><small>${new Date(p.created_at).toLocaleDateString('en-GB')}</small></div>
-        <button class="red" style="margin:0" data-pdel="${p.id}">মুছুন</button>
-      </div>
-      <details><summary>এডিট করুন</summary>
-        <label>শিরোনাম</label><input type="text" id="pt${p.id}" value="${esc(p.title)}">
-        <label>লেখা</label><textarea id="pb${p.id}" rows="8">${esc(p.body)}</textarea>
-        <label>নতুন ছবি (না দিলে আগেরটাই থাকবে)</label><input type="file" id="pi${p.id}" accept="image/*">
-        <button data-psave="${p.id}">সেভ করুন</button>
-      </details></div>`).join('') || '<div class="card">এখনো কোনো পোস্ট নেই।</div>'}`;
 
-  $('bAdd').onclick = e => run(e.target, async () => {
-    const title = $('bTitle').value.trim(), body = $('bBody').value.trim();
-    if (!title || !body) return toast('শিরোনাম ও লেখা দুটোই দিন।', true);
-    const image = await uploadImage($('bImg').files[0]);
-    ok(await db.from('posts').insert({ title, body, image }).select());
-    toast('পোস্ট প্রকাশ হয়েছে ✅'); await loadAll(); renderBlog();
-  });
-  document.querySelectorAll('[data-pdel]').forEach(b => b.onclick = e => run(e.target, async () => {
-    if (!confirm('পোস্টটি মুছে ফেলবেন?')) return;
-    const p = posts.find(x => x.id == b.dataset.pdel);
-    ok(await db.from('posts').delete().eq('id', p.id).select());
-    await removeImage(p.image);
-    toast('পোস্ট মুছে ফেলা হয়েছে।'); await loadAll(); renderBlog();
-  }));
-  document.querySelectorAll('[data-psave]').forEach(b => b.onclick = e => run(e.target, async () => {
-    const id = b.dataset.psave, p = posts.find(x => x.id == id);
-    const upd = { title: $('pt' + id).value.trim(), body: $('pb' + id).value.trim() };
-    if (!upd.title || !upd.body) return toast('শিরোনাম ও লেখা দুটোই দিন।', true);
-    const f = $('pi' + id).files[0];
-    if (f) upd.image = await uploadImage(f);
-    ok(await db.from('posts').update(upd).eq('id', id).select());
-    if (f) await removeImage(p.image);
-    toast('পোস্ট আপডেট হয়েছে ✅'); await loadAll(); renderBlog();
-  }));
+  let wa = '';
+  if (WA) {
+    const lines = [`New order - ${SHOP}`, ...items.map(i => `${i.name} x ${i.qty} = ${i.price * i.qty}`),
+      `Total: ${total} BDT`, pay === 'bkash' ? `Paid by bKash from ${from}, TrxID: ${trx}` : 'Payment: Cash on delivery', `Name: ${name}`, `Phone: ${phone}`, `Address: ${address}`, note ? `Note: ${note}` : ''].filter(Boolean);
+    wa = `<br><a class="btn wa-btn" target="_blank" rel="noopener" href="https://wa.me/${esc(WA)}?text=${encodeURIComponent(lines.join('\n'))}">Confirm on WhatsApp</a>`;
+  }
+  say(pay === 'bkash' ? 'Thank you! Your order has been received. We will verify your bKash payment and call you soon.' : 'Thank you! Your order has been received. We will call you soon.', true, wa);
+  $('oMsg').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'center' });
+  cart = {}; renderOrderItems();
+  $('oNote').value = ''; $('bkFrom').value = ''; $('bkTrx').value = '';
+});
+
+function note(text, top) {
+  const n = document.createElement('div');
+  n.style.cssText = 'position:fixed;' + (top ? 'top:0;' : 'bottom:10px;left:10px;border-radius:6px;') + 'left:' + (top ? '0;right:0;' : '10px;') + 'z-index:99;background:#fff6df;color:#5a4000;border:1px solid #e9c777;padding:8px 12px;font:13px system-ui,sans-serif';
+  n.textContent = text; document.body.appendChild(n);
 }
 
-/* ---------- গ্যালারি ---------- */
-function renderGallery() {
-  $('content').innerHTML = `
-    <div class="card"><h3>গ্যালারিতে ছবি যোগ করুন</h3>
-      <input type="file" id="gImg" accept="image/*" multiple>
-      <button id="gAdd">আপলোড</button></div>
-    <div class="card"><div class="grid">
-      ${gallery.map(g => `<div><img src="${esc(g.image)}" alt="">
-        <button class="red" style="width:100%;padding:6px" data-gdel="${g.id}">মুছুন</button></div>`).join('') || '<p>এখনো কোনো ছবি নেই।</p>'}
-    </div></div>`;
+document.querySelectorAll('#nav a').forEach(a => a.addEventListener('click', () => $('nav').classList.remove('open')));
 
-  $('gAdd').onclick = e => run(e.target, async () => {
-    const files = [...$('gImg').files];
-    if (!files.length) return toast('আগে ছবি বেছে নিন।', true);
-    for (const f of files) {
-      const image = await uploadImage(f);
-      ok(await db.from('gallery').insert({ image }).select());
-    }
-    toast('ছবি যোগ হয়েছে ✅'); await loadAll(); renderGallery();
-  });
-  document.querySelectorAll('[data-gdel]').forEach(b => b.onclick = e => run(e.target, async () => {
-    if (!confirm('মুছে ফেলবেন?')) return;
-    const g = gallery.find(x => x.id == b.dataset.gdel);
-    ok(await db.from('gallery').delete().eq('id', g.id).select());
-    await removeImage(g.image);
-    toast('ছবি মুছে ফেলা হয়েছে।'); await loadAll(); renderGallery();
-  }));
+// গ্যালারির ছবিতে ক্লিক করলে বড় করে দেখায়
+function closeLightbox() { const l = document.querySelector('.lb'); if (l) l.remove(); }
+$('gal').addEventListener('click', e => {
+  if (e.target.tagName !== 'IMG') return;
+  const lb = document.createElement('div');
+  lb.className = 'lb'; lb.setAttribute('role', 'dialog'); lb.setAttribute('aria-label', 'Photo');
+  lb.innerHTML = `<img src="${esc(e.target.src)}" alt="">`;
+  lb.onclick = closeLightbox;
+  document.body.appendChild(lb);
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+async function load() {
+  showGallery([]); showDishes([]);
+  if (DEMO) note('DEMO MODE: config.js এ Supabase key বসানো হয়নি, তাই admin এর পরিবর্তন শুধু ওই browser এ দেখা যাবে।');
+  try {
+    const [s, d, g, ps] = await Promise.all([
+      db.from('settings').select('*').eq('id', 1).single(),
+      db.from('dishes').select('*').order('id'),
+      db.from('gallery').select('*').order('id', { ascending: false }),
+      db.from('posts').select('*').order('id', { ascending: false }).limit(3)
+    ]);
+    if (location.search.includes('debug'))
+      note(`Mode: ${DEMO ? 'DEMO' : 'LIVE'} | settings: ${s.error ? s.error.message : 'ok'} | dishes: ${d.error ? d.error.message : d.data.length} | gallery: ${g.error ? g.error.message : g.data.length}`, true);
+    if (s.data) showSettings(s.data);
+    if (d.data) showDishes(d.data);
+    if (g.data) showGallery(g.data);
+    showPosts(ps.data || []);
+  } catch (e) { console.error(e); }
 }
-
-/* ---------- সাইট সেটিংস ---------- */
-function renderSettings() {
-  const s = settings;
-  const cur = (url, label) => url ? `<div class="cur"><img src="${esc(url)}" alt="">${label} বর্তমানে আছে</div>` : '';
-  $('content').innerHTML = `<div class="card">
-    <label>রেস্টুরেন্টের নাম</label><input type="text" id="s_name" value="${esc(s.name)}">
-    <label>লোগো (PNG বা JPG, না দিলে নাম লেখা দেখাবে)</label><input type="file" id="s_logo" accept="image/*">${cur(s.logo, 'লোগো')}
-    <label>Favicon (browser tab এর ছোট আইকন, বর্গাকার ছবি ভালো)</label><input type="file" id="s_favicon" accept="image/*">${cur(s.favicon, 'Favicon')}
-    <label>ট্যাগলাইন (প্রথম পাতার লেখা)</label><textarea id="s_tagline" rows="2">${esc(s.tagline)}</textarea>
-    <label>প্রথম পাতার বড় ছবি (Hero)</label><input type="file" id="s_hero" accept="image/*">${cur(s.hero_image, 'ছবি')}
-    <label>About শিরোনাম</label><input type="text" id="s_about_title" value="${esc(s.about_title)}">
-    <label>About লেখা</label><textarea id="s_about_text" rows="4">${esc(s.about_text)}</textarea>
-    <label>ফোন নম্বর</label><input type="text" id="s_phone" value="${esc(s.phone)}">
-    <label>WhatsApp নম্বর (দেশের কোড সহ, যেমন 8801712345678)</label><input type="text" id="s_whatsapp" value="${esc(s.whatsapp)}">
-    <label>ঠিকানা</label><input type="text" id="s_address" value="${esc(s.address)}">
-    <label>খোলা থাকার সময়</label><input type="text" id="s_hours" value="${esc(s.hours)}">
-    <label>Facebook লিংক</label><input type="text" id="s_facebook" value="${esc(s.facebook)}">
-    <label>Instagram লিংক</label><input type="text" id="s_instagram" value="${esc(s.instagram)}">
-    ${'is_open' in s ? `
-    <label>Special Offer / ঘোষণা (সব পেজের একদম উপরে দেখাবে, খালি রাখলে দেখাবে না)</label><input type="text" id="s_ann" value="${esc(s.announcement)}" placeholder="যেমন: ঈদ অফার, সব খাবারে ১০% ছাড়!">
-    <label>Google Map এ খোঁজার নাম/ঠিকানা (খালি রাখলে উপরের ঠিকানাই ব্যবহার হবে)</label><input type="text" id="s_map" value="${esc(s.map_query)}" placeholder="যেমন: Afghan Restaurant Moulvibazar Sadar Sylhet">
-    <label style="display:flex;gap:6px;align-items:center"><input type="checkbox" id="s_open" ${s.is_open !== false ? 'checked' : ''}> রেস্টুরেন্ট এখন খোলা আছে (বন্ধ করলে সাইটে "Closed" দেখাবে ও অর্ডার বন্ধ হবে)</label>` : '<p class="cur">ঘোষণা, Map ও খোলা/বন্ধ চালু করতে Supabase এ <b>supabase-v2.sql</b> Run করুন।</p>'}
-    ${'bkash_number' in s ? `<label>bKash নম্বর (গ্রাহক এই নম্বরে Send Money করবে; খালি রাখলে bKash অপশন দেখাবে না)</label><input type="text" id="s_bk" value="${esc(s.bkash_number)}" placeholder="01XXXXXXXXX">` : '<p class="cur">bKash পেমেন্ট চালু করতে Supabase এ <b>supabase-v3.sql</b> Run করুন।</p>'}
-    <button id="sSave">সেভ করুন</button></div>`;
-
-  $('sSave').onclick = e => run(e.target, async () => {
-    const upd = {};
-    ['name', 'tagline', 'about_title', 'about_text', 'phone', 'whatsapp', 'address', 'hours', 'facebook', 'instagram']
-      .forEach(k => upd[k] = $('s_' + k).value.trim());
-    if ($('s_bk')) upd.bkash_number = $('s_bk').value.trim();
-    if ($('s_open')) { upd.is_open = $('s_open').checked; upd.announcement = $('s_ann').value.trim(); upd.map_query = $('s_map').value.trim(); }
-    const old = [];
-    for (const [field, id, raw] of [['logo', 's_logo', true], ['favicon', 's_favicon', true], ['hero_image', 's_hero', false]]) {
-      const f = $(id).files[0];
-      if (f) { upd[field] = await uploadImage(f, raw); old.push(settings[field]); }
-    }
-    ok(await db.from('settings').update(upd).eq('id', 1).select());
-    for (const u of old) await removeImage(u);
-    toast('সেটিংস সেভ হয়েছে ✅'); await loadAll(); renderSettings();
-  });
-}
-
-start();
+load();
 </script>
 </body>
 </html>
