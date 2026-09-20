@@ -121,7 +121,7 @@
   <div class="wrap">
     <h2>Latest News</h2><div class="line"></div>
     <div class="posts" id="posts"></div>
-    <div class="more"><a class="btn" href="blog.html">View All Posts</a></div>
+    <div class="more"><a class="btn" href="blog/">View All Posts</a></div>
   </div>
 </section>
 
@@ -270,7 +270,7 @@ function showPosts(list) {
   $('blog').hidden = !list.length; $('navBlog').hidden = !list.length;
   const ex = t => { const s = String(t || '').replace(/\s+/g, ' ').trim(); return s.length > 120 ? s.slice(0, 120) + '...' : s; };
   $('posts').innerHTML = list.slice(0, 3).map(p => `
-    <a class="post" href="blog.html?id=${encodeURIComponent(p.id)}">
+    <a class="post" href="blog/?id=${encodeURIComponent(p.id)}">
       ${p.image ? `<img src="${esc(p.image)}" alt="" loading="lazy">` : '<div class="ph"></div>'}
       <div class="info"><time>${new Date(p.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</time>
         <h3>${esc(p.title)}</h3><p>${esc(ex(p.body))}</p></div>
