@@ -132,7 +132,7 @@ async function run(btn, fn) {
   try { await fn(); } catch (e) {
     console.error(e);
     const m = String(e.message || e);
-    toast('সমস্যা হয়েছে: ' + m + (/column|relation|posts|schema cache/i.test(m) ? ' (Supabase এ supabase-blog.sql Run করুন)' : ''), true);
+    toast('সমস্যা হয়েছে: ' + m + (/column|relation|posts|schema cache/i.test(m) ? ' (Supabase এ supabase-blog.sql ও supabase-v2.sql Run করুন)' : ''), true);
   }
   btn.disabled = false;
 }
@@ -198,7 +198,11 @@ function renderOrders() {
     return;
   }
   const newCount = orders.filter(o => o.status === 'new').length;
+  const hasOpen = 'is_open' in settings, isOpen = settings.is_open !== false;
   $('content').innerHTML = `
+    ${hasOpen ? `<div class="card row" style="justify-content:space-between">
+      <b>${isOpen ? '🟢 এখন খোলা আছে' : '🔴 এখন বন্ধ (সাইটে অর্ডার বন্ধ)'}</b>
+      <button id="openToggle" class="${isOpen ? 'red' : ''}" style="margin:0">${isOpen ? 'বন্ধ করুন' : 'খুলুন'}</button></div>` : ''}
     <div class="card row" style="justify-content:space-between">
       <b>মোট ${orders.length}টি অর্ডার, নতুন ${newCount}টি</b>
       <button id="oRefresh" style="margin:0">রিফ্রেশ</button></div>
@@ -220,6 +224,10 @@ function renderOrders() {
       </div>`).join('') || '<div class="card">এখনো কোনো অর্ডার আসেনি।</div>'}`;
 
   $('oRefresh').onclick = e => run(e.target, async () => { await loadAll(); renderOrders(); });
+  if ($('openToggle')) $('openToggle').onclick = e => run(e.target, async () => {
+    ok(await db.from('settings').update({ is_open: !isOpen }).eq('id', 1).select());
+    toast(isOpen ? 'রেস্টুরেন্ট বন্ধ দেখানো হচ্ছে।' : 'রেস্টুরেন্ট খোলা দেখানো হচ্ছে ✅'); await loadAll(); renderOrders();
+  });
   document.querySelectorAll('[data-odone]').forEach(b => b.onclick = e => run(e.target, async () => {
     ok(await db.from('orders').update({ status: b.dataset.to }).eq('id', b.dataset.odone).select());
     await loadAll(); renderOrders();
@@ -251,26 +259,32 @@ function renderDishes() {
   const extra = (pre, d) => hasCols ? `
     <label>কোন কোন দিন পাওয়া যায় (কিছু না বাছলে রোজ)</label>${dayBoxes(pre + 'Days', d.days)}
     <label style="display:flex;gap:6px;align-items:center"><input type="checkbox" id="${pre}New" ${d.is_new ? 'checked' : ''}> "New" ট্যাগ দেখান</label>` : '';
-  const vals = pre => hasCols ? { days: readDays(pre + 'Days'), is_new: $(pre + 'New').checked } : {};
+  const hasCat = !dishes.length || 'category' in dishes[0];
+  const cats = [...new Set(dishes.map(d => d.category).filter(Boolean))];
+  const catField = (pre, d) => hasCat ? `<label>ক্যাটাগরি (যেমন Rice, Curry, Drinks; ঐচ্ছিক)</label><input type="text" id="${pre}Cat" list="catList" value="${esc(d.category)}">` : '';
+  const vals = pre => ({ ...(hasCols ? { days: readDays(pre + 'Days'), is_new: $(pre + 'New').checked } : {}), ...(hasCat ? { category: $(pre + 'Cat').value.trim() } : {}) });
 
   $('content').innerHTML = `
+    <datalist id="catList">${cats.map(c => `<option value="${esc(c)}">`).join('')}</datalist>
     ${hasCols ? '' : '<div class="msg err" style="position:static">দিন ও "New" ট্যাগ চালু করতে Supabase এ <b>supabase-blog.sql</b> Run করুন।</div>'}
     <div class="card"><h3>নতুন খাবার যোগ করুন</h3>
       <label>খাবারের নাম</label><input type="text" id="dName">
       <label>দাম (৳)</label><input type="number" id="dPrice" min="0">
       <label>ছবি (JPG/PNG/WEBP)</label><input type="file" id="dImg" accept="image/*">
+      ${catField('a', {})}
       ${extra('a', {})}
       <button id="dAdd">যোগ করুন</button></div>
     ${dishes.map(d => `
       <div class="card"><div class="row">
         ${d.image ? `<img class="thumb" src="${esc(d.image)}" alt="">` : '<div class="thumb"></div>'}
-        <div style="flex:1"><b>${esc(d.name)}</b> ${d.is_new ? '<span class="badge">New</span>' : ''}<br>৳ ${esc(d.price)}${d.days ? ' · ' + esc(dayNames(d.days)) : ''}</div>
+        <div style="flex:1"><b>${esc(d.name)}</b> ${d.is_new ? '<span class="badge">New</span>' : ''}<br>৳ ${esc(d.price)}${d.category ? ' · ' + esc(d.category) : ''}${d.days ? ' · ' + esc(dayNames(d.days)) : ''}</div>
         <button class="red" style="margin:0" data-del="${d.id}">মুছুন</button>
       </div>
       <details><summary>এডিট করুন</summary>
         <label>নাম</label><input type="text" id="n${d.id}" value="${esc(d.name)}">
         <label>দাম (৳)</label><input type="number" id="p${d.id}" value="${esc(d.price)}" min="0">
         <label>নতুন ছবি (না দিলে আগেরটাই থাকবে)</label><input type="file" id="i${d.id}" accept="image/*">
+        ${catField('e' + d.id, d)}
         ${extra('e' + d.id, d)}
         <button data-save="${d.id}">সেভ করুন</button>
       </details></div>`).join('')}`;
@@ -398,12 +412,17 @@ function renderSettings() {
     <label>খোলা থাকার সময়</label><input type="text" id="s_hours" value="${esc(s.hours)}">
     <label>Facebook লিংক</label><input type="text" id="s_facebook" value="${esc(s.facebook)}">
     <label>Instagram লিংক</label><input type="text" id="s_instagram" value="${esc(s.instagram)}">
+    ${'is_open' in s ? `
+    <label>ঘোষণা (সাইটের একদম উপরে দেখাবে, খালি রাখলে দেখাবে না)</label><input type="text" id="s_ann" value="${esc(s.announcement)}" placeholder="যেমন: ঈদ অফার, সব খাবারে ১০% ছাড়!">
+    <label>Google Map এ খোঁজার নাম/ঠিকানা (খালি রাখলে উপরের ঠিকানাই ব্যবহার হবে)</label><input type="text" id="s_map" value="${esc(s.map_query)}" placeholder="যেমন: Afghan Restaurant Moulvibazar Sadar Sylhet">
+    <label style="display:flex;gap:6px;align-items:center"><input type="checkbox" id="s_open" ${s.is_open !== false ? 'checked' : ''}> রেস্টুরেন্ট এখন খোলা আছে (বন্ধ করলে সাইটে "Closed" দেখাবে ও অর্ডার বন্ধ হবে)</label>` : '<p class="cur">ঘোষণা, Map ও খোলা/বন্ধ চালু করতে Supabase এ <b>supabase-v2.sql</b> Run করুন।</p>'}
     <button id="sSave">সেভ করুন</button></div>`;
 
   $('sSave').onclick = e => run(e.target, async () => {
     const upd = {};
     ['name', 'tagline', 'about_title', 'about_text', 'phone', 'whatsapp', 'address', 'hours', 'facebook', 'instagram']
       .forEach(k => upd[k] = $('s_' + k).value.trim());
+    if ($('s_open')) { upd.is_open = $('s_open').checked; upd.announcement = $('s_ann').value.trim(); upd.map_query = $('s_map').value.trim(); }
     const old = [];
     for (const [field, id, raw] of [['logo', 's_logo', true], ['favicon', 's_favicon', true], ['hero_image', 's_hero', false]]) {
       const f = $(id).files[0];

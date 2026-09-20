@@ -19,8 +19,8 @@ function createDemoClient() {
       phone: '+880 1712 345 678', address: 'Moulvibazar Sadar, Sylhet, Bangladesh', hours: '10:00 AM - 10:00 PM',
       facebook: '', instagram: '', whatsapp: '8801712345678', hero_image: '', logo: '', favicon: ''
     }],
-    dishes: [['Afghan Beef Pulao', 250], ['Chicken Korma', 220], ['Afghan Chicken Pulao', 200], ['Beef Karahi', 280], ['Chicken Roast', 180]]
-      .map((d, i) => ({ id: i + 1, name: d[0], price: d[1], image: '', created_at: new Date().toISOString() })),
+    dishes: [['Afghan Beef Pulao', 250, 'Rice'], ['Chicken Korma', 220, 'Curry'], ['Afghan Chicken Pulao', 200, 'Rice'], ['Beef Karahi', 280, 'Curry'], ['Chicken Roast', 180, 'Grill']]
+      .map((d, i) => ({ id: i + 1, name: d[0], price: d[1], category: d[2], image: '', created_at: new Date().toISOString() })),
     gallery: [], orders: [],
     posts: [{ id: 1, title: 'Welcome to our new website', image: '', created_at: new Date().toISOString(),
       body: 'We are happy to share our new website with you.\n\nNow you can see our menu, follow our news and order online, all in one place.' }]
@@ -29,6 +29,8 @@ function createDemoClient() {
     let d; try { d = JSON.parse(localStorage.getItem(KEY)) || seed(); } catch (e) { d = seed(); }
     if (!d.posts) d.posts = seed().posts;
     (d.dishes || []).forEach(x => { if (!('days' in x)) x.days = ''; if (!('is_new' in x)) x.is_new = false; });
+    (d.dishes || []).forEach(x => { if (!('category' in x)) x.category = ''; });
+    (d.settings || []).forEach(x => { if (!('is_open' in x)) x.is_open = true; if (!('announcement' in x)) x.announcement = ''; if (!('map_query' in x)) x.map_query = ''; });
     return d;
   };
   const write = d => localStorage.setItem(KEY, JSON.stringify(d));

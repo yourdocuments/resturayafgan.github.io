@@ -26,6 +26,8 @@
 </head>
 <body>
 
+<div class="announce" id="announce" hidden></div>
+
 <header>
   <div class="wrap">
     <a href="#home" class="logo" id="logoTop">AFGHAN<small>RESTAURANT</small></a>
@@ -42,6 +44,7 @@
     <div class="hi">Welcome to</div>
     <h1 id="heroName">AFGHAN</h1>
     <div class="sub">RESTAURANT</div>
+    <div class="pill" id="openPill" hidden></div>
     <p id="tagline">Delicious food, warm hospitality and a memorable experience — all in one place.</p>
     <div class="btns">
       <a class="btn" href="#menu">View Menu</a>
@@ -68,6 +71,10 @@
 <section class="sec" id="menu">
   <div class="wrap">
     <h2>Our Popular Dishes</h2><div class="line"></div>
+    <div class="menu-tools" id="menuTools" hidden>
+      <div class="chips" id="chips"></div>
+      <input id="msearch" type="search" placeholder="Search dishes..." aria-label="Search dishes">
+    </div>
     <div class="cards" id="dishes"></div>
   </div>
 </section>
@@ -76,6 +83,7 @@
   <div class="wrap">
     <h2>Order Online</h2><div class="line"></div>
     <form id="orderForm" class="oform" novalidate>
+      <div class="closed-note" id="closedNote" hidden>We are closed right now. Online ordering is paused until we open.</div>
       <div id="orderItems"></div>
       <div class="ototal"><span>Total</span><b id="oTotal">৳ 0</b></div>
       <div class="ofields">
@@ -117,6 +125,14 @@
   </div>
 </section>
 
+<section class="sec" id="map" hidden>
+  <div class="wrap mapbox">
+    <h2>Find Us</h2><div class="line"></div>
+    <iframe id="mapFrame" title="Map" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    <a class="btn" id="dirBtn" href="#" target="_blank" rel="noopener">Get Directions</a>
+  </div>
+</section>
+
 <footer id="contact">
   <div class="wrap grid">
     <div>
@@ -143,7 +159,7 @@ const $ = id => document.getElementById(id);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const short = n => String(n || '').replace(/\s*restaurant\s*$/i, '').toUpperCase();
 const db = DEMO ? createDemoClient() : supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-let dishList = [], cart = {}, WA = '', SHOP = 'Restaurant';
+let dishList = [], cart = {}, WA = '', SHOP = 'Restaurant', OPEN = true, cat = '', qry = '';
 
 function brand(s) {
   return s.logo
@@ -166,6 +182,18 @@ function updateSchema(s) {
 
 function showSettings(s) {
   WA = s.whatsapp || ''; SHOP = s.name || SHOP;
+  OPEN = s.is_open !== false;
+  const pill = $('openPill');
+  pill.hidden = false; pill.className = 'pill' + (OPEN ? '' : ' off');
+  pill.textContent = OPEN ? '● Open now' + (s.hours ? ' · ' + s.hours : '') : '● Closed right now';
+  const an = $('announce'); an.textContent = s.announcement || ''; an.hidden = !s.announcement;
+  const mq = s.map_query || s.address || '';
+  $('map').hidden = !mq;
+  if (mq) {
+    $('mapFrame').src = 'https://www.google.com/maps?q=' + encodeURIComponent(mq) + '&output=embed';
+    $('dirBtn').href = 'https://www.google.com/maps/dir/?api=1&destination=' + encodeURIComponent(mq);
+  }
+  renderOrderItems();
   updateSchema(s);
   $('logoTop').innerHTML = brand(s);
   $('logoFoot').innerHTML = brand(s);
@@ -201,6 +229,17 @@ const daysLabel = d => { const l = dayList(d); return l.length && l.length < 7 ?
 
 function showDishes(list) {
   dishList = list;
+  const cats = [...new Set(list.map(d => d.category).filter(Boolean))];
+  if (cat && !cats.includes(cat)) cat = '';
+  $('menuTools').hidden = !(cats.length || list.length > 6);
+  $('chips').innerHTML = cats.length ? ['', ...cats].map(c => `<button type="button" class="chip${c === cat ? ' on' : ''}" data-cat="${esc(c)}">${c ? esc(c) : 'All'}</button>`).join('') : '';
+  $('msearch').hidden = list.length <= 6;
+  renderCards();
+  renderOrderItems();
+}
+
+function renderCards() {
+  const list = dishList.filter(d => (!cat || d.category === cat) && (!qry || String(d.name).toLowerCase().includes(qry)));
   $('dishes').innerHTML = list.length ? list.map(d => {
     const off = !availToday(d), lab = daysLabel(d);
     return `
@@ -214,9 +253,16 @@ function showDishes(list) {
         ${off ? '<div class="off-note">Not available today</div>' : ''}
       </div>
     </article>`;
-  }).join('') : '<p class="msg-empty">Menu coming soon.</p>';
-  renderOrderItems();
+  }).join('') : `<p class="msg-empty">${dishList.length ? 'No dishes found.' : 'Menu coming soon.'}</p>`;
 }
+
+$('chips').addEventListener('click', e => {
+  const b = e.target.closest('.chip'); if (!b) return;
+  cat = b.dataset.cat;
+  document.querySelectorAll('#chips .chip').forEach(x => x.classList.toggle('on', x === b));
+  renderCards();
+});
+$('msearch').addEventListener('input', e => { qry = e.target.value.trim().toLowerCase(); renderCards(); });
 
 function showPosts(list) {
   $('blog').hidden = !list.length; $('navBlog').hidden = !list.length;
@@ -238,12 +284,20 @@ function showGallery(list) {
 /* ---------- অর্ডার ফর্ম ---------- */
 function renderOrderItems() {
   dishList.forEach(d => { if (!availToday(d)) delete cart[d.id]; });
-  $('orderItems').innerHTML = dishList.length ? dishList.map(d => {
-    const off = !availToday(d);
-    return `
+  if (!OPEN) cart = {};
+  $('closedNote').hidden = OPEN;
+  $('oBtn').disabled = !OPEN;
+  const hasCats = dishList.some(d => d.category);
+  let lastCat = null;
+  const sorted = hasCats ? [...dishList].sort((a, b) => (a.category || 'zzz').localeCompare(b.category || 'zzz')) : dishList;
+  $('orderItems').innerHTML = sorted.length ? sorted.map(d => {
+    const off = !availToday(d) || !OPEN;
+    let head = '';
+    if (hasCats && (d.category || '') !== lastCat) { lastCat = d.category || ''; head = lastCat ? `<div class="ocat">${esc(lastCat)}</div>` : ''; }
+    return head + `
     <div class="oitem${off ? ' off' : ''}">
       <div><div class="nm">${esc(d.name)}</div><div class="pr">৳ ${esc(d.price)}</div>
-        ${off ? `<div class="note">Not available today (${esc(daysLabel(d))} only)</div>` : ''}</div>
+        ${!availToday(d) ? `<div class="note">Not available today (${esc(daysLabel(d))} only)</div>` : ''}</div>
       <div class="qty">
         <button type="button" data-id="${d.id}" data-op="-" aria-label="Less" ${off ? 'disabled' : ''}>−</button>
         <span>${cart[d.id] || 0}</span>
@@ -273,6 +327,7 @@ $('orderForm').addEventListener('submit', async e => {
   e.preventDefault();
   const items = dishList.filter(d => cart[d.id] > 0 && availToday(d)).map(d => ({ name: d.name, price: +d.price || 0, qty: cart[d.id] }));
   const name = $('oName').value.trim(), phone = $('oPhone').value.trim(), address = $('oAddr').value.trim(), note = $('oNote').value.trim();
+  if (!OPEN) return say('We are closed right now. Please order when we open.', false);
   if (!items.length) return say('Please choose at least one dish.', false);
   if (!name) return say('Please enter your name.', false);
   if (phone.replace(/\D/g, '').length < 8) return say('Please enter a valid phone number.', false);
