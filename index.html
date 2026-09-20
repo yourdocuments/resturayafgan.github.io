@@ -15,7 +15,7 @@
 <meta property="og:image" content="https://YOUR-DOMAIN.com/og.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json" id="ld">
-{"@context":"https://schema.org","@type":"Restaurant","name":"Afghan Restaurant","servesCuisine":"Afghan","url":"https://YOUR-DOMAIN.com/","telephone":"+880 1700-000000","address":{"@type":"PostalAddress","streetAddress":"Moulvibazar Sadar, Sylhet, Bangladesh","addressCountry":"BD"}}
+{"@context":"https://schema.org","@type":"Restaurant","name":"Afghan Restaurant","servesCuisine":"Afghan","url":"https://YOUR-DOMAIN.com/","telephone":"+880 1778-015313","address":{"@type":"PostalAddress","streetAddress":"Moulvibazar Sadar, Sylhet, Bangladesh","addressCountry":"BD"}}
 </script>
 <link rel="icon" id="favicon" href="favicon.svg" type="image/svg+xml">
 <link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
@@ -92,6 +92,20 @@
         <textarea id="oAddr" rows="2" placeholder="Delivery address" maxlength="300" autocomplete="street-address" required></textarea>
         <textarea id="oNote" rows="2" placeholder="Note (optional)" maxlength="300"></textarea>
       </div>
+      <div class="paybox" id="payBox" hidden>
+        <div class="paytitle">Payment</div>
+        <label class="payopt"><input type="radio" name="pay" value="cod" checked><span>Cash on Delivery</span></label>
+        <label class="payopt"><input type="radio" name="pay" value="bkash"><span class="bk">bKash</span><small>Send Money</small></label>
+        <div class="bkinfo" id="bkInfo" hidden>
+          <ol>
+            <li>Open your bKash app and choose <b>Send Money</b>.</li>
+            <li>Send <b id="bkAmt">৳ 0</b> to <b id="bkNum"></b> <button type="button" class="copybtn" id="bkCopy">Copy number</button></li>
+            <li>Copy the <b>Transaction ID (TrxID)</b> from the bKash message and enter it below.</li>
+          </ol>
+          <input id="bkFrom" type="tel" placeholder="Your bKash number (01XXXXXXXXX)" maxlength="16" autocomplete="off">
+          <input id="bkTrx" type="text" placeholder="Transaction ID (TrxID)" maxlength="20" autocomplete="off" autocapitalize="characters">
+        </div>
+      </div>
       <button class="btn" id="oBtn" type="submit">Place Order</button>
       <div id="oMsg" class="omsg" role="status"></div>
     </form>
@@ -141,7 +155,7 @@
     </div>
     <div><h4>Quick Links</h4><ul><li><a href="#home">Home</a></li><li><a href="#menu">Menu</a></li><li><a href="#about">About Us</a></li><li><a href="#gallery">Gallery</a></li><li><a href="#contact">Contact</a></li></ul></div>
     <div><h4>Contact Us</h4><ul>
-      <li>📞 <a id="phone" href="tel:+8801700000000">+880 1700-000000</a></li>
+      <li>📞 <a id="phone" href="tel:+8801778015313">+880 1778-015313</a></li>
       <li>📍 <span id="address">Moulvibazar Sadar, Sylhet, Bangladesh</span></li>
       <li>🕙 <span id="hours">10:00 AM - 10:00 PM</span></li></ul></div>
     <div><h4>Follow Us</h4><div class="soc" id="social"></div></div>
@@ -161,7 +175,7 @@ const $ = id => document.getElementById(id);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const short = n => String(n || '').replace(/\s*restaurant\s*$/i, '').toUpperCase();
 const db = DEMO ? createDemoClient() : supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-let dishList = [], cart = {}, WA = '', SHOP = 'Restaurant', OPEN = true, cat = '', qry = '';
+let dishList = [], cart = {}, WA = '', SHOP = 'Restaurant', OPEN = true, BK = '', cat = '', qry = '';
 
 function brand(s) {
   return s.logo
@@ -185,6 +199,9 @@ function updateSchema(s) {
 function showSettings(s) {
   WA = s.whatsapp || ''; SHOP = s.name || SHOP;
   OPEN = s.is_open !== false;
+  BK = String(s.bkash_number || '').trim();
+  $('payBox').hidden = !BK; $('bkNum').textContent = BK;
+  if (!BK) { document.querySelector('input[name=pay][value=cod]').checked = true; $('bkInfo').hidden = true; }
   const pill = $('openPill');
   pill.hidden = false; pill.className = 'pill' + (OPEN ? '' : ' off');
   pill.textContent = OPEN ? '● Open now' + (s.hours ? ' · ' + s.hours : '') : '● Closed right now';
@@ -309,6 +326,7 @@ function renderOrderItems() {
   }).join('') : '<p class="msg-empty">Menu coming soon.</p>';
   const total = dishList.reduce((t, d) => t + (cart[d.id] || 0) * (+d.price || 0), 0);
   $('oTotal').textContent = '৳ ' + total;
+  $('bkAmt').textContent = '৳ ' + total;
 }
 
 $('orderItems').addEventListener('click', e => {
@@ -325,6 +343,17 @@ function say(text, ok, extraHtml) {
   m.innerHTML = esc(text) + (extraHtml || '');
 }
 
+const payMethod = () => (document.querySelector('input[name=pay]:checked') || {}).value || 'cod';
+document.querySelectorAll('input[name=pay]').forEach(r => r.addEventListener('change', () => { $('bkInfo').hidden = payMethod() !== 'bkash'; }));
+$('bkCopy').addEventListener('click', async e => {
+  const b = e.currentTarget;
+  try { await navigator.clipboard.writeText(BK); }
+  catch (_) { const t = document.createElement('textarea'); t.value = BK; document.body.appendChild(t); t.select(); try { document.execCommand('copy'); } catch (__) {} t.remove(); }
+  b.textContent = 'Copied ✓'; setTimeout(() => b.textContent = 'Copy number', 2000);
+});
+// বাংলাদেশি নম্বর: 8801712345678 / +8801712345678 / 01712-345678 সবই 01712345678 হয়ে যায়
+const bdNum = v => { let d = String(v).replace(/\D/g, ''); if (d.length > 11) d = d.replace(/^880/, '0'); return d; };
+
 $('orderForm').addEventListener('submit', async e => {
   e.preventDefault();
   const items = dishList.filter(d => cart[d.id] > 0 && availToday(d)).map(d => ({ name: d.name, price: +d.price || 0, qty: cart[d.id] }));
@@ -336,22 +365,36 @@ $('orderForm').addEventListener('submit', async e => {
   if (!address) return say('Please enter your delivery address.', false);
   if (!db) return say('Ordering is not set up yet.', false);
 
+  const pay = BK ? payMethod() : 'cod';
+  let from = '', trx = '';
+  if (pay === 'bkash') {
+    from = bdNum($('bkFrom').value); trx = $('bkTrx').value.trim().toUpperCase();
+    if (!/^01[3-9]\d{8}$/.test(from)) return say('Please enter the bKash number you sent money from (like 01712345678).', false);
+    if (!/^[A-Z0-9]{8,14}$/.test(trx)) return say('Please enter a valid Transaction ID (TrxID) from your bKash message.', false);
+  }
+
   const total = items.reduce((t, i) => t + i.price * i.qty, 0);
   const btn = $('oBtn'); btn.disabled = true; btn.textContent = 'Sending...';
-  const { error } = await db.from('orders').insert({ name, phone, address, note, items, total });
+  const row = { name, phone, address, note, items, total };
+  if (pay === 'bkash') Object.assign(row, { payment_method: 'bkash', payment_number: from, trx_id: trx });
+  const { error } = await db.from('orders').insert(row);
   btn.disabled = false; btn.textContent = 'Place Order';
-  if (error) { console.error(error); return say('Sorry, the order could not be sent. Please call us to order.', false); }
+  if (error) {
+    console.error(error);
+    if (error.code === '23505' || /orders_trx_unique/.test(error.message || '')) return say('This Transaction ID has already been used. Please check your TrxID.', false);
+    return say('Sorry, the order could not be sent. Please call us to order.', false);
+  }
 
   let wa = '';
   if (WA) {
     const lines = [`New order - ${SHOP}`, ...items.map(i => `${i.name} x ${i.qty} = ${i.price * i.qty}`),
-      `Total: ${total} BDT`, `Name: ${name}`, `Phone: ${phone}`, `Address: ${address}`, note ? `Note: ${note}` : ''].filter(Boolean);
+      `Total: ${total} BDT`, pay === 'bkash' ? `Paid by bKash from ${from}, TrxID: ${trx}` : 'Payment: Cash on delivery', `Name: ${name}`, `Phone: ${phone}`, `Address: ${address}`, note ? `Note: ${note}` : ''].filter(Boolean);
     wa = `<br><a class="btn wa-btn" target="_blank" rel="noopener" href="https://wa.me/${esc(WA)}?text=${encodeURIComponent(lines.join('\n'))}">Confirm on WhatsApp</a>`;
   }
-  say('Thank you! Your order has been received. We will call you soon.', true, wa);
+  say(pay === 'bkash' ? 'Thank you! Your order has been received. We will verify your bKash payment and call you soon.' : 'Thank you! Your order has been received. We will call you soon.', true, wa);
   $('oMsg').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'center' });
   cart = {}; renderOrderItems();
-  $('oNote').value = '';
+  $('oNote').value = ''; $('bkFrom').value = ''; $('bkTrx').value = '';
 });
 
 function note(text, top) {

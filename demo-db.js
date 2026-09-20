@@ -16,8 +16,8 @@ function createDemoClient() {
       tagline: 'Delicious food, warm hospitality and a memorable experience — all in one place.',
       about_title: 'Good Food, Great Moments',
       about_text: 'Afghan Restaurant is a small and cozy place where we serve delicious and healthy food with the best quality ingredients. Our goal is to make every meal a memorable experience for our guests.',
-      phone: '+880 1700-000000', address: 'Moulvibazar Sadar, Sylhet, Bangladesh', hours: '10:00 AM - 10:00 PM',
-      facebook: '', instagram: '', whatsapp: '8801700000000', hero_image: '', logo: '', favicon: ''
+      phone: '+880 1778-015313', address: 'Moulvibazar Sadar, Sylhet, Bangladesh', hours: '10:00 AM - 10:00 PM',
+      facebook: '', instagram: '', whatsapp: '8801778015313', hero_image: '', logo: '', favicon: '', bkash_number: '01700000000'
     }],
     dishes: [['Afghan Beef Pulao', 250, 'Rice'], ['Chicken Korma', 220, 'Curry'], ['Afghan Chicken Pulao', 200, 'Rice'], ['Beef Karahi', 280, 'Curry'], ['Chicken Roast', 180, 'Grill']]
       .map((d, i) => ({ id: i + 1, name: d[0], price: d[1], category: d[2], image: '', created_at: new Date().toISOString() })),
@@ -30,7 +30,7 @@ function createDemoClient() {
     if (!d.posts) d.posts = seed().posts;
     (d.dishes || []).forEach(x => { if (!('days' in x)) x.days = ''; if (!('is_new' in x)) x.is_new = false; });
     (d.dishes || []).forEach(x => { if (!('category' in x)) x.category = ''; });
-    (d.settings || []).forEach(x => { if (!('is_open' in x)) x.is_open = true; if (!('announcement' in x)) x.announcement = ''; if (!('map_query' in x)) x.map_query = ''; });
+    (d.settings || []).forEach(x => { if (!('is_open' in x)) x.is_open = true; if (!('announcement' in x)) x.announcement = ''; if (!('map_query' in x)) x.map_query = ''; if (!('bkash_number' in x)) x.bkash_number = ''; });
     return d;
   };
   const write = d => localStorage.setItem(KEY, JSON.stringify(d));
@@ -62,9 +62,11 @@ function createDemoClient() {
         }
         let touched = [];
         if (q.op === 'insert') {
+          const dup = table === 'orders' && [].concat(q.payload).some(p => p.trx_id && rows.some(r => String(r.trx_id || '').toUpperCase() === String(p.trx_id).toUpperCase()));
+          if (dup) return { data: null, error: { code: '23505', message: 'duplicate key value violates unique constraint "orders_trx_unique"' } };
           [].concat(q.payload).forEach(p => {
             const id = rows.reduce((m, r) => Math.max(m, r.id || 0), 0) + 1;
-            const row = Object.assign({ id, created_at: new Date().toISOString() }, table === 'orders' ? { status: 'new' } : {}, p);
+            const row = Object.assign({ id, created_at: new Date().toISOString() }, table === 'orders' ? { status: 'new', payment_method: 'cod', paid: false } : {}, p);
             rows.push(row); touched.push(row);
           });
         } else if (q.op === 'update') {

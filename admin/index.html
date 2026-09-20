@@ -132,7 +132,7 @@ async function run(btn, fn) {
   try { await fn(); } catch (e) {
     console.error(e);
     const m = String(e.message || e);
-    toast('সমস্যা হয়েছে: ' + m + (/column|relation|posts|schema cache/i.test(m) ? ' (Supabase এ supabase-blog.sql ও supabase-v2.sql Run করুন)' : ''), true);
+    toast('সমস্যা হয়েছে: ' + m + (/column|relation|posts|schema cache/i.test(m) ? ' (Supabase এ supabase-blog.sql, supabase-v2.sql ও supabase-v3.sql Run করুন)' : ''), true);
   }
   btn.disabled = false;
 }
@@ -216,9 +216,15 @@ function renderOrders() {
         <p style="margin:0 0 8px">📍 ${esc(o.address)}</p>
         <p style="margin:0 0 8px">${(o.items || []).map(i => `${esc(i.name)} × ${esc(i.qty)}`).join('<br>')}</p>
         ${o.note ? `<p style="margin:0 0 8px">📝 ${esc(o.note)}</p>` : ''}
+        ${o.payment_method === 'bkash'
+          ? `<p style="margin:0 0 8px;padding:8px 10px;background:#fdeef5;border-radius:6px"><span class="badge" style="background:#e2136e;color:#fff">bKash</span>
+              ${o.paid ? '<b style="color:#1f6b2a">✅ পেমেন্ট নিশ্চিত</b>' : '<b style="color:#b3332b">⏳ পেমেন্ট যাচাই বাকি</b>'}<br>
+              পাঠিয়েছে: <b>${esc(o.payment_number)}</b> · TrxID: <b>${esc(o.trx_id)}</b> · ৳ ${esc(o.total)}</p>`
+          : (o.payment_method ? '<p style="margin:0 0 8px">💵 ক্যাশ অন ডেলিভারি</p>' : '')}
         <b>মোট: ৳ ${esc(o.total)}</b>
         <div class="row">
           <button data-odone="${o.id}" data-to="${o.status === 'done' ? 'new' : 'done'}">${o.status === 'done' ? 'আবার নতুন করুন' : 'সম্পন্ন করুন'}</button>
+          ${o.payment_method === 'bkash' ? `<button data-opaid="${o.id}" data-paid="${o.paid ? 'no' : 'yes'}" style="background:#e2136e">${o.paid ? 'নিশ্চিত বাতিল' : 'bKash এ দেখেছি, পেমেন্ট নিশ্চিত'}</button>` : ''}
           <button class="red" data-odel="${o.id}">মুছুন</button>
         </div>
       </div>`).join('') || '<div class="card">এখনো কোনো অর্ডার আসেনি।</div>'}`;
@@ -230,6 +236,10 @@ function renderOrders() {
   });
   document.querySelectorAll('[data-odone]').forEach(b => b.onclick = e => run(e.target, async () => {
     ok(await db.from('orders').update({ status: b.dataset.to }).eq('id', b.dataset.odone).select());
+    await loadAll(); renderOrders();
+  }));
+  document.querySelectorAll('[data-opaid]').forEach(b => b.onclick = e => run(e.target, async () => {
+    ok(await db.from('orders').update({ paid: b.dataset.paid === 'yes' }).eq('id', b.dataset.opaid).select());
     await loadAll(); renderOrders();
   }));
   document.querySelectorAll('[data-odel]').forEach(b => b.onclick = e => run(e.target, async () => {
@@ -416,12 +426,14 @@ function renderSettings() {
     <label>Special Offer / ঘোষণা (সব পেজের একদম উপরে দেখাবে, খালি রাখলে দেখাবে না)</label><input type="text" id="s_ann" value="${esc(s.announcement)}" placeholder="যেমন: ঈদ অফার, সব খাবারে ১০% ছাড়!">
     <label>Google Map এ খোঁজার নাম/ঠিকানা (খালি রাখলে উপরের ঠিকানাই ব্যবহার হবে)</label><input type="text" id="s_map" value="${esc(s.map_query)}" placeholder="যেমন: Afghan Restaurant Moulvibazar Sadar Sylhet">
     <label style="display:flex;gap:6px;align-items:center"><input type="checkbox" id="s_open" ${s.is_open !== false ? 'checked' : ''}> রেস্টুরেন্ট এখন খোলা আছে (বন্ধ করলে সাইটে "Closed" দেখাবে ও অর্ডার বন্ধ হবে)</label>` : '<p class="cur">ঘোষণা, Map ও খোলা/বন্ধ চালু করতে Supabase এ <b>supabase-v2.sql</b> Run করুন।</p>'}
+    ${'bkash_number' in s ? `<label>bKash নম্বর (গ্রাহক এই নম্বরে Send Money করবে; খালি রাখলে bKash অপশন দেখাবে না)</label><input type="text" id="s_bk" value="${esc(s.bkash_number)}" placeholder="01XXXXXXXXX">` : '<p class="cur">bKash পেমেন্ট চালু করতে Supabase এ <b>supabase-v3.sql</b> Run করুন।</p>'}
     <button id="sSave">সেভ করুন</button></div>`;
 
   $('sSave').onclick = e => run(e.target, async () => {
     const upd = {};
     ['name', 'tagline', 'about_title', 'about_text', 'phone', 'whatsapp', 'address', 'hours', 'facebook', 'instagram']
       .forEach(k => upd[k] = $('s_' + k).value.trim());
+    if ($('s_bk')) upd.bkash_number = $('s_bk').value.trim();
     if ($('s_open')) { upd.is_open = $('s_open').checked; upd.announcement = $('s_ann').value.trim(); upd.map_query = $('s_map').value.trim(); }
     const old = [];
     for (const [field, id, raw] of [['logo', 's_logo', true], ['favicon', 's_favicon', true], ['hero_image', 's_hero', false]]) {
