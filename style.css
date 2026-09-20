@@ -96,22 +96,3 @@ footer a:hover{color:var(--gold2)}
 .logo-img{height:52px;width:auto;display:block}
 footer .logo-img{height:60px}
 .msg-empty{grid-column:1/-1;color:var(--muted)}
-
-/* order form */
-.oform{max-width:680px;margin:0 auto;text-align:left;background:#fff;border:1px solid #ece5da;border-radius:12px;padding:22px}
-.oitem{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid #f0e9de}
-.oitem .nm{font-weight:600;font-size:.92rem}
-.oitem .pr{color:var(--gold);font-size:.85rem;font-weight:600}
-.qty{display:flex;align-items:center;gap:10px}
-.qty button{width:34px;height:34px;border-radius:50%;border:1px solid #d9cdb9;background:#fff;font-size:1.1rem;cursor:pointer;color:var(--ink)}
-.qty button:hover{background:var(--gold);color:#fff;border-color:var(--gold)}
-.qty span{min-width:22px;text-align:center;font-weight:600}
-.ototal{display:flex;justify-content:space-between;padding:14px 0;font-size:1.05rem}
-.ofields{display:grid;gap:12px;margin-bottom:16px}
-.ofields input,.ofields textarea{width:100%;padding:12px;border:1px solid #d9cdb9;border-radius:6px;font:inherit;background:#fff}
-.omsg{margin-top:14px;font-size:.92rem}
-.omsg.ok{color:#1f6b2a}
-.omsg.err{color:#b3332b}
-.wa-btn{display:inline-block;margin-top:10px;background:#25a244;border-color:#25a244}
-.wa-btn:hover{background:#1e8a39;border-color:#1e8a39}
-.btn:disabled{opacity:.6;cursor:wait}
