@@ -60,6 +60,8 @@ Niche "Connect with Developer" button-er link. Ekhon https://snkbp.com dewa ache
 ### Step 7: Client-ke dewar age
 - Admin > Site Settings: naam, tagline, phone, WhatsApp, ठिकाना, logo, favicon, hero chobi.
 - Menu-te asol khabar-chobi-dam-category. Gallery-te chobi.
+- bKash: Site Settings-e "bKash nomber" din (customer ei number-e Send Money korbe). Khali rakhle bKash option dekhay na.
+  Customer TrxID dey, admin-er "orders" tab-e bKash app-e mile dekhe "payment nishchit" button chapte hoy.
 - Client-ke dekhan: khabar add, offer dewa, khola/bondho, order dekha, blog post.
 
 ### Step 8 (optional): client-er nijer domain
@@ -80,7 +82,8 @@ Niche "Connect with Developer" button-er link. Ekhon https://snkbp.com dewa ache
 - config.js      : Supabase URL + publishable key (client bodle bodle eta alada)
 - developer.js   : "Connect with Developer" button
 - demo-db.js     : DEMO MODE (Supabase chhara test)
-- supabase-all.sql : database setup (ekbar Run korle hoy)
+- supabase-all.sql : database setup (ekbar Run korle hoy, bKash payment shoho)
+- supabase-v3.sql  : shudhu bKash part (ager project-e pore bKash add korte hole)
 - style.css, favicon*, og.jpg, robots.txt, sitemap.xml
 
 ## SHOMOSHYA HOLE

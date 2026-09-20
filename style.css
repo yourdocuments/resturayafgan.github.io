@@ -180,3 +180,19 @@ footer .logo-img{height:60px}
 .devbar[hidden]{display:none}
 .devbar a{display:inline-block;padding:7px 18px;border:1px solid var(--gold);border-radius:4px;color:var(--gold2);font-weight:600}
 .devbar a:hover{background:var(--gold);color:#fff}
+
+/* payment */
+.paybox{margin:4px 0 16px;padding:14px;border:1px solid #e6d8c4;border-radius:10px;background:#fbf7f0}
+.paybox[hidden],.bkinfo[hidden]{display:none}
+.paytitle{font-weight:600;margin-bottom:8px}
+.payopt{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid #d9cdb9;border-radius:8px;background:#fff;margin-bottom:8px;cursor:pointer}
+.payopt:has(input:checked){border-color:var(--gold);box-shadow:0 0 0 2px rgba(209,139,47,.25)}
+.payopt input{accent-color:var(--gold);width:18px;height:18px}
+.payopt small{color:var(--muted)}
+.bk{background:#e2136e;color:#fff;font-weight:700;font-size:.8rem;padding:2px 10px;border-radius:5px}
+.bkinfo{margin-top:12px;font-size:.9rem}
+.bkinfo ol{margin:0 0 12px 18px;padding:0}
+.bkinfo li{margin-bottom:6px}
+.bkinfo input{width:100%;padding:12px;border:1px solid #d9cdb9;border-radius:6px;font:inherit;margin-bottom:10px;background:#fff}
+.copybtn{margin-left:6px;padding:3px 12px;border:1px solid #e2136e;border-radius:5px;background:#fff;color:#e2136e;font:inherit;font-size:.78rem;font-weight:600;cursor:pointer}
+.copybtn:hover{background:#e2136e;color:#fff}
