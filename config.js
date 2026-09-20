@@ -1,3 +1,3 @@
 // Supabase এর দুইটা তথ্য এখানে বসান (Project Settings > API থেকে)
-const SUPABASE_URL = "YOUR_SUPABASE_URL";
-const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
+const SUPABASE_URL = "https://qfahxdpbwcqelmzqpxli.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_DokglzkOHskukAI71QJ9wQ_d4esduLN";
