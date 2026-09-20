@@ -21,9 +21,16 @@ function createDemoClient() {
     }],
     dishes: [['Afghan Beef Pulao', 250], ['Chicken Korma', 220], ['Afghan Chicken Pulao', 200], ['Beef Karahi', 280], ['Chicken Roast', 180]]
       .map((d, i) => ({ id: i + 1, name: d[0], price: d[1], image: '', created_at: new Date().toISOString() })),
-    gallery: [], orders: []
+    gallery: [], orders: [],
+    posts: [{ id: 1, title: 'Welcome to our new website', image: '', created_at: new Date().toISOString(),
+      body: 'We are happy to share our new website with you.\n\nNow you can see our menu, follow our news and order online, all in one place.' }]
   });
-  const read = () => { try { return JSON.parse(localStorage.getItem(KEY)) || seed(); } catch (e) { return seed(); } };
+  const read = () => {
+    let d; try { d = JSON.parse(localStorage.getItem(KEY)) || seed(); } catch (e) { d = seed(); }
+    if (!d.posts) d.posts = seed().posts;
+    (d.dishes || []).forEach(x => { if (!('days' in x)) x.days = ''; if (!('is_new' in x)) x.is_new = false; });
+    return d;
+  };
   const write = d => localStorage.setItem(KEY, JSON.stringify(d));
   const copy = x => JSON.parse(JSON.stringify(x));
 

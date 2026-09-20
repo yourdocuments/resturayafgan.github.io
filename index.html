@@ -17,7 +17,9 @@
 <script type="application/ld+json" id="ld">
 {"@context":"https://schema.org","@type":"Restaurant","name":"Afghan Restaurant","servesCuisine":"Afghan","url":"https://YOUR-DOMAIN.com/","telephone":"+880 1712 345 678","address":{"@type":"PostalAddress","streetAddress":"Moulvibazar Sadar, Sylhet, Bangladesh","addressCountry":"BD"}}
 </script>
-<link rel="icon" id="favicon" href="data:,">
+<link rel="icon" id="favicon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" id="touch" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,500&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
@@ -28,7 +30,7 @@
   <div class="wrap">
     <a href="#home" class="logo" id="logoTop">AFGHAN<small>RESTAURANT</small></a>
     <nav id="nav">
-      <a href="#home">Home</a><a href="#menu">Menu</a><a href="#about">About Us</a><a href="#gallery">Gallery</a><a href="#contact">Contact</a>
+      <a href="#home">Home</a><a href="#menu">Menu</a><a href="#about">About Us</a><a href="#gallery">Gallery</a><a href="#blog" id="navBlog" hidden>Blog</a><a href="#contact">Contact</a>
     </nav>
     <a class="btn" href="#order">Order Now</a>
     <button class="menu-btn" aria-label="Menu" onclick="document.getElementById('nav').classList.toggle('open')">☰</button>
@@ -107,6 +109,14 @@
   </div>
 </section>
 
+<section class="sec" id="blog" hidden>
+  <div class="wrap">
+    <h2>Latest News</h2><div class="line"></div>
+    <div class="posts" id="posts"></div>
+    <div class="more"><a class="btn" href="blog.html">View All Posts</a></div>
+  </div>
+</section>
+
 <footer id="contact">
   <div class="wrap grid">
     <div>
@@ -122,6 +132,8 @@
   </div>
   <div class="copy" id="copy"></div>
 </footer>
+
+<a id="waFloat" class="wa-float" href="#" target="_blank" rel="noopener" aria-label="Chat on WhatsApp" hidden>💬</a>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="config.js"></script>
@@ -167,7 +179,11 @@ function showSettings(s) {
   $('hours').textContent = s.hours || '';
   $('copy').textContent = `© ${new Date().getFullYear()} ${s.name}. All Rights Reserved.`;
   if (s.hero_image) $('home').style.backgroundImage = `url('${s.hero_image.replace(/'/g, '%27')}')`;
-  if (s.favicon) $('favicon').href = s.favicon;
+  if (s.favicon) {
+    document.querySelectorAll('link[rel="icon"]:not(#favicon)').forEach(l => l.remove());
+    $('favicon').removeAttribute('type'); $('favicon').href = s.favicon; $('touch').href = s.favicon;
+  }
+  if (s.whatsapp) { $('waFloat').href = 'https://wa.me/' + s.whatsapp; $('waFloat').hidden = false; }
   let soc = '';
   if (s.facebook)  soc += `<a href="${esc(s.facebook)}" target="_blank" rel="noopener" aria-label="Facebook">f</a>`;
   if (s.instagram) soc += `<a href="${esc(s.instagram)}" target="_blank" rel="noopener" aria-label="Instagram">ig</a>`;
@@ -175,14 +191,42 @@ function showSettings(s) {
   $('social').innerHTML = soc;
 }
 
+// ---------- কোন দিন কোন খাবার ----------
+const WEEK = ['sat', 'sun', 'mon', 'tue', 'wed', 'thu', 'fri'];
+const DAYN = { sat: 'Sat', sun: 'Sun', mon: 'Mon', tue: 'Tue', wed: 'Wed', thu: 'Thu', fri: 'Fri' };
+const todayKey = () => new Intl.DateTimeFormat('en-US', { weekday: 'short', timeZone: 'Asia/Dhaka' }).format(new Date()).toLowerCase().slice(0, 3);
+const dayList = d => String(d.days || '').split(',').filter(Boolean);
+const availToday = d => { const l = dayList(d); return !l.length || l.length >= 7 || l.includes(todayKey()); };
+const daysLabel = d => { const l = dayList(d); return l.length && l.length < 7 ? WEEK.filter(x => l.includes(x)).map(x => DAYN[x]).join(', ') : ''; };
+
 function showDishes(list) {
   dishList = list;
-  $('dishes').innerHTML = list.length ? list.map(d => `
-    <article class="card">
-      ${d.image ? `<img class="ph" src="${esc(d.image)}" alt="${esc(d.name)}" loading="lazy">` : `<div class="ph"></div>`}
-      <div class="info"><h3>${esc(d.name)}</h3><div class="price">৳ ${esc(d.price)}</div></div>
-    </article>`).join('') : '<p class="msg-empty">Menu coming soon.</p>';
+  $('dishes').innerHTML = list.length ? list.map(d => {
+    const off = !availToday(d), lab = daysLabel(d);
+    return `
+    <article class="card${off ? ' off' : ''}">
+      <div class="imgw">
+        ${d.image ? `<img class="ph" src="${esc(d.image)}" alt="${esc(d.name)}" loading="lazy">` : `<div class="ph"></div>`}
+        ${d.is_new ? '<span class="tag">New</span>' : ''}
+      </div>
+      <div class="info"><h3>${esc(d.name)}</h3><div class="price">৳ ${esc(d.price)}</div>
+        ${lab ? `<div class="days">${off ? '' : 'Available: '}${esc(lab)}</div>` : ''}
+        ${off ? '<div class="off-note">Not available today</div>' : ''}
+      </div>
+    </article>`;
+  }).join('') : '<p class="msg-empty">Menu coming soon.</p>';
   renderOrderItems();
+}
+
+function showPosts(list) {
+  $('blog').hidden = !list.length; $('navBlog').hidden = !list.length;
+  const ex = t => { const s = String(t || '').replace(/\s+/g, ' ').trim(); return s.length > 120 ? s.slice(0, 120) + '...' : s; };
+  $('posts').innerHTML = list.slice(0, 3).map(p => `
+    <a class="post" href="blog.html?id=${encodeURIComponent(p.id)}">
+      ${p.image ? `<img src="${esc(p.image)}" alt="" loading="lazy">` : '<div class="ph"></div>'}
+      <div class="info"><time>${new Date(p.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</time>
+        <h3>${esc(p.title)}</h3><p>${esc(ex(p.body))}</p></div>
+    </a>`).join('');
 }
 
 function showGallery(list) {
@@ -193,15 +237,20 @@ function showGallery(list) {
 
 /* ---------- অর্ডার ফর্ম ---------- */
 function renderOrderItems() {
-  $('orderItems').innerHTML = dishList.length ? dishList.map(d => `
-    <div class="oitem">
-      <div><div class="nm">${esc(d.name)}</div><div class="pr">৳ ${esc(d.price)}</div></div>
+  dishList.forEach(d => { if (!availToday(d)) delete cart[d.id]; });
+  $('orderItems').innerHTML = dishList.length ? dishList.map(d => {
+    const off = !availToday(d);
+    return `
+    <div class="oitem${off ? ' off' : ''}">
+      <div><div class="nm">${esc(d.name)}</div><div class="pr">৳ ${esc(d.price)}</div>
+        ${off ? `<div class="note">Not available today (${esc(daysLabel(d))} only)</div>` : ''}</div>
       <div class="qty">
-        <button type="button" data-id="${d.id}" data-op="-" aria-label="Less">−</button>
+        <button type="button" data-id="${d.id}" data-op="-" aria-label="Less" ${off ? 'disabled' : ''}>−</button>
         <span>${cart[d.id] || 0}</span>
-        <button type="button" data-id="${d.id}" data-op="+" aria-label="More">+</button>
+        <button type="button" data-id="${d.id}" data-op="+" aria-label="More" ${off ? 'disabled' : ''}>+</button>
       </div>
-    </div>`).join('') : '<p class="msg-empty">Menu coming soon.</p>';
+    </div>`;
+  }).join('') : '<p class="msg-empty">Menu coming soon.</p>';
   const total = dishList.reduce((t, d) => t + (cart[d.id] || 0) * (+d.price || 0), 0);
   $('oTotal').textContent = '৳ ' + total;
 }
@@ -222,7 +271,7 @@ function say(text, ok, extraHtml) {
 
 $('orderForm').addEventListener('submit', async e => {
   e.preventDefault();
-  const items = dishList.filter(d => cart[d.id] > 0).map(d => ({ name: d.name, price: +d.price || 0, qty: cart[d.id] }));
+  const items = dishList.filter(d => cart[d.id] > 0 && availToday(d)).map(d => ({ name: d.name, price: +d.price || 0, qty: cart[d.id] }));
   const name = $('oName').value.trim(), phone = $('oPhone').value.trim(), address = $('oAddr').value.trim(), note = $('oNote').value.trim();
   if (!items.length) return say('Please choose at least one dish.', false);
   if (!name) return say('Please enter your name.', false);
@@ -243,6 +292,7 @@ $('orderForm').addEventListener('submit', async e => {
     wa = `<br><a class="btn wa-btn" target="_blank" rel="noopener" href="https://wa.me/${esc(WA)}?text=${encodeURIComponent(lines.join('\n'))}">Confirm on WhatsApp</a>`;
   }
   say('Thank you! Your order has been received. We will call you soon.', true, wa);
+  $('oMsg').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'center' });
   cart = {}; renderOrderItems();
   $('oNote').value = '';
 });
@@ -253,20 +303,36 @@ function note(text, top) {
   n.textContent = text; document.body.appendChild(n);
 }
 
+document.querySelectorAll('#nav a').forEach(a => a.addEventListener('click', () => $('nav').classList.remove('open')));
+
+// গ্যালারির ছবিতে ক্লিক করলে বড় করে দেখায়
+function closeLightbox() { const l = document.querySelector('.lb'); if (l) l.remove(); }
+$('gal').addEventListener('click', e => {
+  if (e.target.tagName !== 'IMG') return;
+  const lb = document.createElement('div');
+  lb.className = 'lb'; lb.setAttribute('role', 'dialog'); lb.setAttribute('aria-label', 'Photo');
+  lb.innerHTML = `<img src="${esc(e.target.src)}" alt="">`;
+  lb.onclick = closeLightbox;
+  document.body.appendChild(lb);
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
 async function load() {
   showGallery([]); showDishes([]);
   if (DEMO) note('DEMO MODE: config.js এ Supabase key বসানো হয়নি, তাই admin এর পরিবর্তন শুধু ওই browser এ দেখা যাবে।');
   try {
-    const [s, d, g] = await Promise.all([
+    const [s, d, g, ps] = await Promise.all([
       db.from('settings').select('*').eq('id', 1).single(),
       db.from('dishes').select('*').order('id'),
-      db.from('gallery').select('*').order('id', { ascending: false })
+      db.from('gallery').select('*').order('id', { ascending: false }),
+      db.from('posts').select('*').order('id', { ascending: false }).limit(3)
     ]);
     if (location.search.includes('debug'))
       note(`Mode: ${DEMO ? 'DEMO' : 'LIVE'} | settings: ${s.error ? s.error.message : 'ok'} | dishes: ${d.error ? d.error.message : d.data.length} | gallery: ${g.error ? g.error.message : g.data.length}`, true);
     if (s.data) showSettings(s.data);
     if (d.data) showDishes(d.data);
     if (g.data) showGallery(g.data);
+    showPosts(ps.data || []);
   } catch (e) { console.error(e); }
 }
 load();

@@ -61,6 +61,7 @@ details summary{cursor:pointer;color:#b8741d;font-weight:600;margin-top:10px}
       <button data-tab="orders" class="on">অর্ডার <span id="ocount"></span></button>
       <button data-tab="dishes">খাবারের মেনু</button>
       <button data-tab="gallery">গ্যালারি</button>
+      <button data-tab="blog">ব্লগ</button>
       <button data-tab="settings">সাইট সেটিংস</button>
     </div>
     <div id="demoBar" class="msg hide" style="background:#fff6df;border-color:#e9c777">DEMO MODE: এখানে যা করবেন সব শুধু এই browser এ থাকবে। আসল সাইটের জন্য <b>config.js</b> এ Supabase key বসান।</div>
@@ -76,7 +77,7 @@ details summary{cursor:pointer;color:#b8741d;font-weight:600;margin-top:10px}
 const $ = id => document.getElementById(id);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const db = DEMO ? createDemoClient() : supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-let tab = 'orders', orders = [], dishes = [], gallery = [], settings = {}, ordersOk = true;
+let tab = 'orders', orders = [], dishes = [], posts = [], gallery = [], settings = {}, ordersOk = true, postsOk = true;
 
 /* ---------- ছোট helper ---------- */
 function toast(text, err) {
@@ -128,7 +129,11 @@ function ok(res) {
 
 async function run(btn, fn) {
   btn.disabled = true;
-  try { await fn(); } catch (e) { console.error(e); toast('সমস্যা হয়েছে: ' + (e.message || e), true); }
+  try { await fn(); } catch (e) {
+    console.error(e);
+    const m = String(e.message || e);
+    toast('সমস্যা হয়েছে: ' + m + (/column|relation|posts|schema cache/i.test(m) ? ' (Supabase এ supabase-blog.sql Run করুন)' : ''), true);
+  }
   btn.disabled = false;
 }
 
@@ -153,14 +158,16 @@ $('logoutBtn').onclick = async () => { await db.auth.signOut(); showLogin(); };
 
 /* ---------- ডাটা লোড ---------- */
 async function loadAll() {
-  const [s, d, g, o] = await Promise.all([
+  const [s, d, g, o, po] = await Promise.all([
     db.from('settings').select('*').eq('id', 1).single(),
     db.from('dishes').select('*').order('id'),
     db.from('gallery').select('*').order('id', { ascending: false }),
-    db.from('orders').select('*').order('id', { ascending: false }).limit(100)
+    db.from('orders').select('*').order('id', { ascending: false }).limit(100),
+    db.from('posts').select('*').order('id', { ascending: false })
   ]);
   settings = s.data || {}; dishes = d.data || []; gallery = g.data || [];
   ordersOk = !o.error; orders = o.data || [];
+  postsOk = !po.error; posts = po.data || [];
   const bad = [s, d, g].filter(x => x.error).map(x => x.error.message);
   $('mode').textContent = DEMO ? '(DEMO)' : bad.length ? '⚠️ Supabase সমস্যা' : '✅ Supabase connected';
   if (bad.length) toast('ডাটা লোড হয়নি: ' + bad[0] + ' (supabase-setup.sql Run করা হয়েছে কিনা দেখুন)', true);
@@ -179,6 +186,7 @@ document.querySelectorAll('.tabs button').forEach(b => b.onclick = async () => {
 function render() {
   if (tab === 'orders') renderOrders();
   else if (tab === 'dishes') renderDishes();
+  else if (tab === 'blog') renderBlog();
   else if (tab === 'gallery') renderGallery();
   else renderSettings();
 }
@@ -229,23 +237,41 @@ setInterval(async () => {
 }, 60000);
 
 /* ---------- খাবার ---------- */
+const WEEK = [['sat', 'শনি'], ['sun', 'রবি'], ['mon', 'সোম'], ['tue', 'মঙ্গল'], ['wed', 'বুধ'], ['thu', 'বৃহঃ'], ['fri', 'শুক্র']];
+function dayBoxes(id, sel) {
+  const s = String(sel || '').split(',').filter(Boolean);
+  return `<div id="${id}" style="display:flex;flex-wrap:wrap;gap:12px">${WEEK.map(([k, n]) =>
+    `<label style="display:flex;gap:4px;align-items:center;margin:0;font-weight:500"><input type="checkbox" value="${k}" ${s.includes(k) ? 'checked' : ''}>${n}</label>`).join('')}</div>`;
+}
+const readDays = id => { const v = [...document.querySelectorAll(`#${id} input:checked`)].map(i => i.value); return v.length === 7 ? '' : v.join(','); };
+const dayNames = str => WEEK.filter(([k]) => String(str || '').split(',').includes(k)).map(x => x[1]).join(', ');
+
 function renderDishes() {
+  const hasCols = !dishes.length || 'days' in dishes[0];
+  const extra = (pre, d) => hasCols ? `
+    <label>কোন কোন দিন পাওয়া যায় (কিছু না বাছলে রোজ)</label>${dayBoxes(pre + 'Days', d.days)}
+    <label style="display:flex;gap:6px;align-items:center"><input type="checkbox" id="${pre}New" ${d.is_new ? 'checked' : ''}> "New" ট্যাগ দেখান</label>` : '';
+  const vals = pre => hasCols ? { days: readDays(pre + 'Days'), is_new: $(pre + 'New').checked } : {};
+
   $('content').innerHTML = `
+    ${hasCols ? '' : '<div class="msg err" style="position:static">দিন ও "New" ট্যাগ চালু করতে Supabase এ <b>supabase-blog.sql</b> Run করুন।</div>'}
     <div class="card"><h3>নতুন খাবার যোগ করুন</h3>
       <label>খাবারের নাম</label><input type="text" id="dName">
       <label>দাম (৳)</label><input type="number" id="dPrice" min="0">
       <label>ছবি (JPG/PNG/WEBP)</label><input type="file" id="dImg" accept="image/*">
+      ${extra('a', {})}
       <button id="dAdd">যোগ করুন</button></div>
     ${dishes.map(d => `
       <div class="card"><div class="row">
         ${d.image ? `<img class="thumb" src="${esc(d.image)}" alt="">` : '<div class="thumb"></div>'}
-        <div style="flex:1"><b>${esc(d.name)}</b><br>৳ ${esc(d.price)}</div>
+        <div style="flex:1"><b>${esc(d.name)}</b> ${d.is_new ? '<span class="badge">New</span>' : ''}<br>৳ ${esc(d.price)}${d.days ? ' · ' + esc(dayNames(d.days)) : ''}</div>
         <button class="red" style="margin:0" data-del="${d.id}">মুছুন</button>
       </div>
       <details><summary>এডিট করুন</summary>
         <label>নাম</label><input type="text" id="n${d.id}" value="${esc(d.name)}">
         <label>দাম (৳)</label><input type="number" id="p${d.id}" value="${esc(d.price)}" min="0">
         <label>নতুন ছবি (না দিলে আগেরটাই থাকবে)</label><input type="file" id="i${d.id}" accept="image/*">
+        ${extra('e' + d.id, d)}
         <button data-save="${d.id}">সেভ করুন</button>
       </details></div>`).join('')}`;
 
@@ -253,7 +279,7 @@ function renderDishes() {
     const name = $('dName').value.trim();
     if (!name) return toast('খাবারের নাম লিখুন।', true);
     const image = await uploadImage($('dImg').files[0]);
-    ok(await db.from('dishes').insert({ name, price: +$('dPrice').value || 0, image }).select());
+    ok(await db.from('dishes').insert({ name, price: +$('dPrice').value || 0, image, ...vals('a') }).select());
     toast('নতুন খাবার যোগ হয়েছে ✅'); await loadAll(); renderDishes();
   });
   document.querySelectorAll('[data-del]').forEach(b => b.onclick = e => run(e.target, async () => {
@@ -265,12 +291,63 @@ function renderDishes() {
   }));
   document.querySelectorAll('[data-save]').forEach(b => b.onclick = e => run(e.target, async () => {
     const id = b.dataset.save, d = dishes.find(x => x.id == id);
-    const upd = { name: $('n' + id).value.trim(), price: +$('p' + id).value || 0 };
+    const upd = { name: $('n' + id).value.trim(), price: +$('p' + id).value || 0, ...vals('e' + id) };
     const f = $('i' + id).files[0];
     if (f) upd.image = await uploadImage(f);
     ok(await db.from('dishes').update(upd).eq('id', id).select());
     if (f) await removeImage(d.image);
     toast('খাবার আপডেট হয়েছে ✅'); await loadAll(); renderDishes();
+  }));
+}
+
+/* ---------- ব্লগ ---------- */
+function renderBlog() {
+  if (!postsOk) {
+    $('content').innerHTML = '<div class="card">ব্লগের টেবিল এখনো বানানো হয়নি। Supabase এর SQL Editor এ <b>supabase-blog.sql</b> ফাইলটা Run করুন।</div>';
+    return;
+  }
+  $('content').innerHTML = `
+    <div class="card"><h3>নতুন পোস্ট লিখুন</h3>
+      <label>শিরোনাম</label><input type="text" id="bTitle">
+      <label>লেখা (নতুন অনুচ্ছেদের জন্য একটা ফাঁকা লাইন দিন)</label><textarea id="bBody" rows="8"></textarea>
+      <label>ছবি (ঐচ্ছিক)</label><input type="file" id="bImg" accept="image/*">
+      <button id="bAdd">পোস্ট করুন</button></div>
+    ${posts.map(p => `
+      <div class="card"><div class="row">
+        ${p.image ? `<img class="thumb" src="${esc(p.image)}" alt="">` : '<div class="thumb"></div>'}
+        <div style="flex:1"><b>${esc(p.title)}</b><br><small>${new Date(p.created_at).toLocaleDateString('en-GB')}</small></div>
+        <button class="red" style="margin:0" data-pdel="${p.id}">মুছুন</button>
+      </div>
+      <details><summary>এডিট করুন</summary>
+        <label>শিরোনাম</label><input type="text" id="pt${p.id}" value="${esc(p.title)}">
+        <label>লেখা</label><textarea id="pb${p.id}" rows="8">${esc(p.body)}</textarea>
+        <label>নতুন ছবি (না দিলে আগেরটাই থাকবে)</label><input type="file" id="pi${p.id}" accept="image/*">
+        <button data-psave="${p.id}">সেভ করুন</button>
+      </details></div>`).join('') || '<div class="card">এখনো কোনো পোস্ট নেই।</div>'}`;
+
+  $('bAdd').onclick = e => run(e.target, async () => {
+    const title = $('bTitle').value.trim(), body = $('bBody').value.trim();
+    if (!title || !body) return toast('শিরোনাম ও লেখা দুটোই দিন।', true);
+    const image = await uploadImage($('bImg').files[0]);
+    ok(await db.from('posts').insert({ title, body, image }).select());
+    toast('পোস্ট প্রকাশ হয়েছে ✅'); await loadAll(); renderBlog();
+  });
+  document.querySelectorAll('[data-pdel]').forEach(b => b.onclick = e => run(e.target, async () => {
+    if (!confirm('পোস্টটি মুছে ফেলবেন?')) return;
+    const p = posts.find(x => x.id == b.dataset.pdel);
+    ok(await db.from('posts').delete().eq('id', p.id).select());
+    await removeImage(p.image);
+    toast('পোস্ট মুছে ফেলা হয়েছে।'); await loadAll(); renderBlog();
+  }));
+  document.querySelectorAll('[data-psave]').forEach(b => b.onclick = e => run(e.target, async () => {
+    const id = b.dataset.psave, p = posts.find(x => x.id == id);
+    const upd = { title: $('pt' + id).value.trim(), body: $('pb' + id).value.trim() };
+    if (!upd.title || !upd.body) return toast('শিরোনাম ও লেখা দুটোই দিন।', true);
+    const f = $('pi' + id).files[0];
+    if (f) upd.image = await uploadImage(f);
+    ok(await db.from('posts').update(upd).eq('id', id).select());
+    if (f) await removeImage(p.image);
+    toast('পোস্ট আপডেট হয়েছে ✅'); await loadAll(); renderBlog();
   }));
 }
 

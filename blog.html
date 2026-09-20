@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Blog | Afghan Restaurant</title>
+<meta name="description" content="News, offers and stories from Afghan Restaurant.">
+<link rel="icon" id="favicon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" id="touch" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,500&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <a href="index.html" class="logo" id="logoTop">AFGHAN<small>RESTAURANT</small></a>
+    <nav id="nav">
+      <a href="index.html#home">Home</a><a href="index.html#menu">Menu</a><a href="index.html#about">About Us</a><a href="index.html#gallery">Gallery</a><a href="blog.html">Blog</a><a href="index.html#contact">Contact</a>
+    </nav>
+    <a class="btn" href="index.html#order">Order Now</a>
+    <button class="menu-btn" aria-label="Menu" onclick="document.getElementById('nav').classList.toggle('open')">☰</button>
+  </div>
+</header>
+
+<main class="wrap blogpage" id="main"><p>Loading...</p></main>
+
+<footer>
+  <div class="copy" id="copy" style="border:0;margin:0"></div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+<script src="demo-db.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const short = n => String(n || '').replace(/\s*restaurant\s*$/i, '').toUpperCase();
+const db = DEMO ? createDemoClient() : supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const fmt = d => new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+const paras = t => String(t || '').split(/\n\s*\n/).map(p => '<p>' + esc(p.trim()).replace(/\n/g, '<br>') + '</p>').join('');
+let shop = 'Afghan Restaurant';
+
+function applySettings(s) {
+  shop = s.name || shop;
+  $('logoTop').innerHTML = s.logo ? `<img class="logo-img" src="${esc(s.logo)}" alt="${esc(s.name)}">` : `${esc(short(s.name))}<small>RESTAURANT</small>`;
+  $('copy').textContent = `© ${new Date().getFullYear()} ${s.name}. All Rights Reserved.`;
+  if (s.favicon) {
+    document.querySelectorAll('link[rel="icon"]:not(#favicon)').forEach(l => l.remove());
+    $('favicon').removeAttribute('type'); $('favicon').href = s.favicon; $('touch').href = s.favicon;
+  }
+}
+
+async function init() {
+  const id = new URLSearchParams(location.search).get('id');
+  try {
+    const s = await db.from('settings').select('*').eq('id', 1).single();
+    if (s.data) applySettings(s.data);
+
+    if (id && /^\d+$/.test(id)) {
+      const r = await db.from('posts').select('*').eq('id', id).single();
+      if (r.data) {
+        const p = r.data;
+        document.title = p.title + ' | ' + shop;
+        const md = document.querySelector('meta[name=description]');
+        if (md) md.content = String(p.body).replace(/\s+/g, ' ').slice(0, 150);
+        $('main').innerHTML = `<a class="backlink" href="blog.html">← All posts</a>
+          <article><h1>${esc(p.title)}</h1><div class="meta">${fmt(p.created_at)}</div>
+          ${p.image ? `<img class="hero-img" src="${esc(p.image)}" alt="">` : ''}${paras(p.body)}</article>`;
+        return;
+      }
+      $('main').innerHTML = '<a class="backlink" href="blog.html">← All posts</a><p>Post not found.</p>';
+      return;
+    }
+
+    const r = await db.from('posts').select('*').order('id', { ascending: false });
+    $('main').classList.add('listpage');
+    const list = r.data || [];
+    const ex = t => { const x = String(t || '').replace(/\s+/g, ' ').trim(); return x.length > 140 ? x.slice(0, 140) + '...' : x; };
+    $('main').innerHTML = '<h1 style="text-align:center">Latest News</h1><div class="line" style="margin-top:8px"></div>' + (list.length
+      ? '<div class="posts">' + list.map(p => `
+        <a class="post" href="blog.html?id=${encodeURIComponent(p.id)}">
+          ${p.image ? `<img src="${esc(p.image)}" alt="" loading="lazy">` : '<div class="ph"></div>'}
+          <div class="info"><time>${fmt(p.created_at)}</time><h3>${esc(p.title)}</h3><p>${esc(ex(p.body))}</p></div>
+        </a>`).join('') + '</div>'
+      : '<p style="text-align:center">No posts yet.</p>');
+  } catch (e) { console.error(e); $('main').innerHTML = '<p>Sorry, the blog could not be loaded.</p>'; }
+}
+init();
+</script>
+</body>
+</html>
