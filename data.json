@@ -1,0 +1,23 @@
+{
+  "settings": {
+    "name": "Afghan Restaurant",
+    "tagline": "Delicious food, warm hospitality and a memorable experience — all in one place.",
+    "about_title": "Good Food, Great Moments",
+    "about_text": "Afghan Restaurant is a small and cozy place where we serve delicious and healthy food with the best quality ingredients. Our goal is to make every meal a memorable experience for our guests.",
+    "phone": "+880 1712 345 678",
+    "address": "Moulvibazar Sadar, Sylhet, Bangladesh",
+    "hours": "10:00 AM - 10:00 PM",
+    "facebook": "",
+    "instagram": "",
+    "whatsapp": "8801712345678",
+    "hero_image": ""
+  },
+  "dishes": [
+    {"id": 1, "name": "Afghan Beef Pulao", "price": 250, "image": ""},
+    {"id": 2, "name": "Chicken Korma", "price": 220, "image": ""},
+    {"id": 3, "name": "Afghan Chicken Pulao", "price": 200, "image": ""},
+    {"id": 4, "name": "Beef Karahi", "price": 280, "image": ""},
+    {"id": 5, "name": "Chicken Roast", "price": 180, "image": ""}
+  ],
+  "gallery": []
+}
