@@ -3,8 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Afghan Restaurant</title>
-<meta name="description" content="Afghan Restaurant, Sylhet">
+<title>Afghan Restaurant | Afghan Food in Moulvibazar, Sylhet</title>
+<meta name="description" content="Afghan Restaurant in Moulvibazar Sadar, Sylhet. Fresh Afghan pulao, korma, karahi and roast. Order online or visit us.">
+<link rel="canonical" href="https://YOUR-DOMAIN.com/">
+<meta name="theme-color" content="#141110">
+<meta property="og:type" content="restaurant">
+<meta property="og:site_name" content="Afghan Restaurant">
+<meta property="og:title" content="Afghan Restaurant | Afghan Food in Moulvibazar, Sylhet">
+<meta property="og:description" content="Delicious food, warm hospitality and a memorable experience. Order online.">
+<meta property="og:url" content="https://YOUR-DOMAIN.com/">
+<meta property="og:image" content="https://YOUR-DOMAIN.com/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json" id="ld">
+{"@context":"https://schema.org","@type":"Restaurant","name":"Afghan Restaurant","servesCuisine":"Afghan","url":"https://YOUR-DOMAIN.com/","telephone":"+880 1712 345 678","address":{"@type":"PostalAddress","streetAddress":"Moulvibazar Sadar, Sylhet, Bangladesh","addressCountry":"BD"}}
+</script>
 <link rel="icon" id="favicon" href="data:,">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,500&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
@@ -18,7 +30,7 @@
     <nav id="nav">
       <a href="#home">Home</a><a href="#menu">Menu</a><a href="#about">About Us</a><a href="#gallery">Gallery</a><a href="#contact">Contact</a>
     </nav>
-    <a class="btn order" href="#" target="_blank" rel="noopener">Order Now</a>
+    <a class="btn" href="#order">Order Now</a>
     <button class="menu-btn" aria-label="Menu" onclick="document.getElementById('nav').classList.toggle('open')">☰</button>
   </div>
 </header>
@@ -31,7 +43,7 @@
     <p id="tagline">Delicious food, warm hospitality and a memorable experience — all in one place.</p>
     <div class="btns">
       <a class="btn" href="#menu">View Menu</a>
-      <a class="btn outline order" href="#" target="_blank" rel="noopener">Order Now</a>
+      <a class="btn outline" href="#order">Order Now</a>
     </div>
   </div>
 </section>
@@ -40,7 +52,7 @@
   <div class="wrap">
     <div>
       <h2 id="aboutTitle">Good Food, Great Moments</h2>
-      <p id="aboutText"></p>
+      <p id="aboutText">Afghan Restaurant is a small and cozy place where we serve delicious and healthy food with the best quality ingredients. Our goal is to make every meal a memorable experience for our guests.</p>
       <a class="btn" href="#contact">Learn More</a>
     </div>
     <div class="feats">
@@ -55,6 +67,24 @@
   <div class="wrap">
     <h2>Our Popular Dishes</h2><div class="line"></div>
     <div class="cards" id="dishes"></div>
+  </div>
+</section>
+
+<section class="sec" id="order">
+  <div class="wrap">
+    <h2>Order Online</h2><div class="line"></div>
+    <form id="orderForm" class="oform" novalidate>
+      <div id="orderItems"></div>
+      <div class="ototal"><span>Total</span><b id="oTotal">৳ 0</b></div>
+      <div class="ofields">
+        <input id="oName" type="text" placeholder="Your name" maxlength="80" autocomplete="name" required>
+        <input id="oPhone" type="tel" placeholder="Phone number" maxlength="20" autocomplete="tel" required>
+        <textarea id="oAddr" rows="2" placeholder="Delivery address" maxlength="300" autocomplete="street-address" required></textarea>
+        <textarea id="oNote" rows="2" placeholder="Note (optional)" maxlength="300"></textarea>
+      </div>
+      <button class="btn" id="oBtn" type="submit">Place Order</button>
+      <div id="oMsg" class="omsg" role="status"></div>
+    </form>
   </div>
 </section>
 
@@ -85,9 +115,9 @@
     </div>
     <div><h4>Quick Links</h4><ul><li><a href="#home">Home</a></li><li><a href="#menu">Menu</a></li><li><a href="#about">About Us</a></li><li><a href="#gallery">Gallery</a></li><li><a href="#contact">Contact</a></li></ul></div>
     <div><h4>Contact Us</h4><ul>
-      <li>📞 <a id="phone" href="#"></a></li>
-      <li>📍 <span id="address"></span></li>
-      <li>🕙 <span id="hours"></span></li></ul></div>
+      <li>📞 <a id="phone" href="tel:+8801712345678">+880 1712 345 678</a></li>
+      <li>📍 <span id="address">Moulvibazar Sadar, Sylhet, Bangladesh</span></li>
+      <li>🕙 <span id="hours">10:00 AM - 10:00 PM</span></li></ul></div>
     <div><h4>Follow Us</h4><div class="soc" id="social"></div></div>
   </div>
   <div class="copy" id="copy"></div>
@@ -95,10 +125,13 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="config.js"></script>
+<script src="demo-db.js"></script>
 <script>
 const $ = id => document.getElementById(id);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const short = n => String(n || '').replace(/\s*restaurant\s*$/i, '').toUpperCase();
+const db = DEMO ? createDemoClient() : supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+let dishList = [], cart = {}, WA = '', SHOP = 'Restaurant';
 
 function brand(s) {
   return s.logo
@@ -106,8 +139,22 @@ function brand(s) {
     : `${esc(short(s.name))}<small>RESTAURANT</small>`;
 }
 
+// Google এর জন্য রেস্টুরেন্টের তথ্য (admin এ বদলালে এটাও বদলায়)
+function updateSchema(s) {
+  const ld = {
+    '@context': 'https://schema.org', '@type': 'Restaurant', name: s.name, servesCuisine: 'Afghan',
+    description: s.tagline, telephone: s.phone, url: location.origin + location.pathname.replace(/index\.html$/, ''),
+    address: { '@type': 'PostalAddress', streetAddress: s.address, addressCountry: 'BD' }
+  };
+  if (s.hero_image && !s.hero_image.startsWith('data:')) ld.image = s.hero_image;
+  const same = [s.facebook, s.instagram].filter(Boolean);
+  if (same.length) ld.sameAs = same;
+  $('ld').textContent = JSON.stringify(ld);
+}
+
 function showSettings(s) {
-  document.title = s.name;
+  WA = s.whatsapp || ''; SHOP = s.name || SHOP;
+  updateSchema(s);
   $('logoTop').innerHTML = brand(s);
   $('logoFoot').innerHTML = brand(s);
   $('heroName').textContent = short(s.name);
@@ -119,7 +166,6 @@ function showSettings(s) {
   $('address').textContent = s.address || '';
   $('hours').textContent = s.hours || '';
   $('copy').textContent = `© ${new Date().getFullYear()} ${s.name}. All Rights Reserved.`;
-  document.querySelectorAll('.order').forEach(a => a.href = 'https://wa.me/' + (s.whatsapp || ''));
   if (s.hero_image) $('home').style.backgroundImage = `url('${s.hero_image.replace(/'/g, '%27')}')`;
   if (s.favicon) $('favicon').href = s.favicon;
   let soc = '';
@@ -130,11 +176,13 @@ function showSettings(s) {
 }
 
 function showDishes(list) {
+  dishList = list;
   $('dishes').innerHTML = list.length ? list.map(d => `
     <article class="card">
       ${d.image ? `<img class="ph" src="${esc(d.image)}" alt="${esc(d.name)}" loading="lazy">` : `<div class="ph"></div>`}
       <div class="info"><h3>${esc(d.name)}</h3><div class="price">৳ ${esc(d.price)}</div></div>
     </article>`).join('') : '<p class="msg-empty">Menu coming soon.</p>';
+  renderOrderItems();
 }
 
 function showGallery(list) {
@@ -143,16 +191,79 @@ function showGallery(list) {
     : Array(6).fill('<div class="ph"></div>').join('');
 }
 
+/* ---------- অর্ডার ফর্ম ---------- */
+function renderOrderItems() {
+  $('orderItems').innerHTML = dishList.length ? dishList.map(d => `
+    <div class="oitem">
+      <div><div class="nm">${esc(d.name)}</div><div class="pr">৳ ${esc(d.price)}</div></div>
+      <div class="qty">
+        <button type="button" data-id="${d.id}" data-op="-" aria-label="Less">−</button>
+        <span>${cart[d.id] || 0}</span>
+        <button type="button" data-id="${d.id}" data-op="+" aria-label="More">+</button>
+      </div>
+    </div>`).join('') : '<p class="msg-empty">Menu coming soon.</p>';
+  const total = dishList.reduce((t, d) => t + (cart[d.id] || 0) * (+d.price || 0), 0);
+  $('oTotal').textContent = '৳ ' + total;
+}
+
+$('orderItems').addEventListener('click', e => {
+  const b = e.target.closest('button[data-id]');
+  if (!b) return;
+  const id = b.dataset.id, n = (cart[id] || 0) + (b.dataset.op === '+' ? 1 : -1);
+  cart[id] = Math.max(0, Math.min(20, n));
+  renderOrderItems();
+});
+
+function say(text, ok, extraHtml) {
+  const m = $('oMsg');
+  m.className = 'omsg ' + (ok ? 'ok' : 'err');
+  m.innerHTML = esc(text) + (extraHtml || '');
+}
+
+$('orderForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const items = dishList.filter(d => cart[d.id] > 0).map(d => ({ name: d.name, price: +d.price || 0, qty: cart[d.id] }));
+  const name = $('oName').value.trim(), phone = $('oPhone').value.trim(), address = $('oAddr').value.trim(), note = $('oNote').value.trim();
+  if (!items.length) return say('Please choose at least one dish.', false);
+  if (!name) return say('Please enter your name.', false);
+  if (phone.replace(/\D/g, '').length < 8) return say('Please enter a valid phone number.', false);
+  if (!address) return say('Please enter your delivery address.', false);
+  if (!db) return say('Ordering is not set up yet.', false);
+
+  const total = items.reduce((t, i) => t + i.price * i.qty, 0);
+  const btn = $('oBtn'); btn.disabled = true; btn.textContent = 'Sending...';
+  const { error } = await db.from('orders').insert({ name, phone, address, note, items, total });
+  btn.disabled = false; btn.textContent = 'Place Order';
+  if (error) { console.error(error); return say('Sorry, the order could not be sent. Please call us to order.', false); }
+
+  let wa = '';
+  if (WA) {
+    const lines = [`New order - ${SHOP}`, ...items.map(i => `${i.name} x ${i.qty} = ${i.price * i.qty}`),
+      `Total: ${total} BDT`, `Name: ${name}`, `Phone: ${phone}`, `Address: ${address}`, note ? `Note: ${note}` : ''].filter(Boolean);
+    wa = `<br><a class="btn wa-btn" target="_blank" rel="noopener" href="https://wa.me/${esc(WA)}?text=${encodeURIComponent(lines.join('\n'))}">Confirm on WhatsApp</a>`;
+  }
+  say('Thank you! Your order has been received. We will call you soon.', true, wa);
+  cart = {}; renderOrderItems();
+  $('oNote').value = '';
+});
+
+function note(text, top) {
+  const n = document.createElement('div');
+  n.style.cssText = 'position:fixed;' + (top ? 'top:0;' : 'bottom:10px;left:10px;border-radius:6px;') + 'left:' + (top ? '0;right:0;' : '10px;') + 'z-index:99;background:#fff6df;color:#5a4000;border:1px solid #e9c777;padding:8px 12px;font:13px system-ui,sans-serif';
+  n.textContent = text; document.body.appendChild(n);
+}
+
 async function load() {
   showGallery([]); showDishes([]);
-  if (SUPABASE_URL.startsWith('YOUR')) return;   // config এখনো বসানো হয়নি
+  if (DEMO) note('DEMO MODE: config.js এ Supabase key বসানো হয়নি, তাই admin এর পরিবর্তন শুধু ওই browser এ দেখা যাবে।');
   try {
-    const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     const [s, d, g] = await Promise.all([
       db.from('settings').select('*').eq('id', 1).single(),
       db.from('dishes').select('*').order('id'),
       db.from('gallery').select('*').order('id', { ascending: false })
     ]);
+    if (location.search.includes('debug'))
+      note(`Mode: ${DEMO ? 'DEMO' : 'LIVE'} | settings: ${s.error ? s.error.message : 'ok'} | dishes: ${d.error ? d.error.message : d.data.length} | gallery: ${g.error ? g.error.message : g.data.length}`, true);
     if (s.data) showSettings(s.data);
     if (d.data) showDishes(d.data);
     if (g.data) showGallery(g.data);

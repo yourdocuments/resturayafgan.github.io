@@ -51,18 +51,21 @@ function createDemoClient() {
           if (q.single) return out.length ? { data: copy(out[0]), error: null } : { data: null, error: { message: 'not found' } };
           return { data: copy(out), error: null };
         }
+        let touched = [];
         if (q.op === 'insert') {
           [].concat(q.payload).forEach(p => {
             const id = rows.reduce((m, r) => Math.max(m, r.id || 0), 0) + 1;
-            rows.push(Object.assign({ id, created_at: new Date().toISOString() }, table === 'orders' ? { status: 'new' } : {}, p));
+            const row = Object.assign({ id, created_at: new Date().toISOString() }, table === 'orders' ? { status: 'new' } : {}, p);
+            rows.push(row); touched.push(row);
           });
         } else if (q.op === 'update') {
-          rows.forEach(r => { if (match(r)) Object.assign(r, q.payload); });
+          rows.forEach(r => { if (match(r)) { Object.assign(r, q.payload); touched.push(r); } });
         } else if (q.op === 'delete') {
+          touched = rows.filter(match);
           d[table] = rows.filter(r => !match(r));
         }
         write(d);
-        return { data: null, error: null };
+        return { data: copy(touched), error: null };
       } catch (e) {
         return { data: null, error: { message: 'Demo এ জায়গা শেষ — কম বা ছোট ছবি ব্যবহার করুন' } };
       }
