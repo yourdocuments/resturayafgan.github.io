@@ -1,0 +1,756 @@
+<!-- =========================
+     POPULAR DISHES SECTION
+========================= -->
+<section class="popular-dishes" id="menu">
+
+  <div class="section-heading">
+    <h2>Our Popular Dishes</h2>
+    <span></span>
+    <p>Enjoy our most popular Afghan dishes</p>
+  </div>
+
+  <!-- Category Filter -->
+  <div class="dish-filter">
+    <button class="filter-btn active" onclick="filterDishes('all', this)">
+      All
+    </button>
+
+    <button class="filter-btn" onclick="filterDishes('popular', this)">
+      Popular
+    </button>
+
+    <button class="filter-btn" onclick="filterDishes('new', this)">
+      New
+    </button>
+  </div>
+
+
+  <!-- Dish Cards -->
+  <div class="dish-grid">
+
+    <!-- 1 -->
+    <div class="dish-card" data-category="new popular">
+
+      <div class="dish-image">
+        <img
+          src="https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=800&q=80"
+          alt="Afghan Beef Pulgo"
+        >
+
+        <span class="dish-badge">New</span>
+      </div>
+
+      <div class="dish-content">
+
+        <h3>Afghan Beef Pulgo</h3>
+
+        <div class="dish-price">
+          ৳250
+        </div>
+
+        <p class="availability">
+          Available: Sat, Sun, Mon
+        </p>
+
+        <button
+          class="order-dish-btn"
+          onclick="orderDish('Afghan Beef Pulgo', 250)"
+        >
+          Order Now
+          <span>→</span>
+        </button>
+
+      </div>
+    </div>
+
+
+    <!-- 2 -->
+    <div class="dish-card" data-category="popular">
+
+      <div class="dish-image">
+        <img
+          src="https://images.unsplash.com/photo-1585937421612-70a008356fbe?auto=format&fit=crop&w=800&q=80"
+          alt="Chicken Korma"
+        >
+      </div>
+
+      <div class="dish-content">
+
+        <h3>Chicken Korma</h3>
+
+        <div class="dish-price">
+          ৳220
+        </div>
+
+        <p class="availability">
+          Available: Every Day
+        </p>
+
+        <button
+          class="order-dish-btn"
+          onclick="orderDish('Chicken Korma', 220)"
+        >
+          Order Now
+          <span>→</span>
+        </button>
+
+      </div>
+    </div>
+
+
+    <!-- 3 -->
+    <div class="dish-card" data-category="popular">
+
+      <div class="dish-image">
+        <img
+          src="https://images.unsplash.com/photo-1601050690117-94f5f6fa8bd7?auto=format&fit=crop&w=800&q=80"
+          alt="Afghan Chicken Pulgo"
+        >
+      </div>
+
+      <div class="dish-content">
+
+        <h3>Afghan Chicken Pulgo</h3>
+
+        <div class="dish-price">
+          ৳200
+        </div>
+
+        <p class="availability">
+          Available: Every Day
+        </p>
+
+        <button
+          class="order-dish-btn"
+          onclick="orderDish('Afghan Chicken Pulgo', 200)"
+        >
+          Order Now
+          <span>→</span>
+        </button>
+
+      </div>
+    </div>
+
+
+    <!-- 4 -->
+    <div class="dish-card" data-category="popular">
+
+      <div class="dish-image">
+        <img
+          src="https://images.unsplash.com/photo-1532550907401-a500c9a57435?auto=format&fit=crop&w=800&q=80"
+          alt="Beef Karahi"
+        >
+      </div>
+
+      <div class="dish-content">
+
+        <h3>Beef Karahi</h3>
+
+        <div class="dish-price">
+          ৳280
+        </div>
+
+        <p class="availability">
+          Available: Every Day
+        </p>
+
+        <button
+          class="order-dish-btn"
+          onclick="orderDish('Beef Karahi', 280)"
+        >
+          Order Now
+          <span>→</span>
+        </button>
+
+      </div>
+    </div>
+
+
+    <!-- 5 -->
+    <div class="dish-card" data-category="popular">
+
+      <div class="dish-image">
+        <img
+          src="https://images.unsplash.com/photo-1598103442097-8b74394b95c6?auto=format&fit=crop&w=800&q=80"
+          alt="Chicken Roast"
+        >
+      </div>
+
+      <div class="dish-content">
+
+        <h3>Chicken Roast</h3>
+
+        <div class="dish-price">
+          ৳180
+        </div>
+
+        <p class="availability">
+          Available: Every Day
+        </p>
+
+        <button
+          class="order-dish-btn"
+          onclick="orderDish('Chicken Roast', 180)"
+        >
+          Order Now
+          <span>→</span>
+        </button>
+
+      </div>
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================
+     ORDER MODAL
+========================= -->
+
+<div class="dish-order-overlay" id="dishOrderOverlay">
+
+  <div class="dish-order-modal">
+
+    <button
+      class="close-order-modal"
+      onclick="closeDishOrder()"
+    >
+      ×
+    </button>
+
+    <div class="order-icon">
+      🍽️
+    </div>
+
+    <h2>Order Your Food</h2>
+
+    <p class="selected-food">
+      <span id="selectedDishName">Food Name</span>
+    </p>
+
+    <div class="selected-price">
+      ৳<span id="selectedDishPrice">0</span>
+    </div>
+
+    <div class="quantity-box">
+
+      <button onclick="changeDishQuantity(-1)">
+        −
+      </button>
+
+      <strong id="dishQuantity">
+        1
+      </strong>
+
+      <button onclick="changeDishQuantity(1)">
+        +
+      </button>
+
+    </div>
+
+    <button
+      class="continue-order-btn"
+      onclick="continueToOrder()"
+    >
+      Continue Order →
+    </button>
+
+  </div>
+
+</div>
+
+
+<style>
+
+/* =========================
+   POPULAR DISHES
+========================= */
+
+.popular-dishes {
+  padding: 85px 20px 100px;
+  background: #faf8f3;
+}
+
+.section-heading {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.section-heading h2 {
+  margin: 0;
+  font-family: Georgia, serif;
+  font-size: 38px;
+  color: #171312;
+}
+
+.section-heading span {
+  display: block;
+  width: 64px;
+  height: 2px;
+  background: #c98b2e;
+  margin: 14px auto;
+}
+
+.section-heading p {
+  margin: 0;
+  color: #777;
+  font-size: 15px;
+}
+
+
+/* FILTER */
+
+.dish-filter {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 25px 0 35px;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  border: 1px solid #d8d2c8;
+  background: white;
+  color: #333;
+  padding: 10px 23px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: .25s;
+}
+
+.filter-btn:hover,
+.filter-btn.active {
+  background: #cf8d28;
+  border-color: #cf8d28;
+  color: white;
+}
+
+
+/* GRID */
+
+.dish-grid {
+  max-width: 1050px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+}
+
+
+/* CARD */
+
+.dish-card {
+  background: white;
+  border: 1px solid #e5e0d8;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 3px 10px rgba(0,0,0,.04);
+  transition: .3s ease;
+}
+
+.dish-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 28px rgba(0,0,0,.12);
+}
+
+
+/* IMAGE */
+
+.dish-image {
+  height: 140px;
+  position: relative;
+  overflow: hidden;
+}
+
+.dish-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: .4s;
+}
+
+.dish-card:hover .dish-image img {
+  transform: scale(1.07);
+}
+
+
+/* BADGE */
+
+.dish-badge {
+  position: absolute;
+  top: 9px;
+  left: 9px;
+  background: #cf8d28;
+  color: white;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 6px 10px;
+  border-radius: 20px;
+}
+
+
+/* CONTENT */
+
+.dish-content {
+  padding: 13px;
+}
+
+.dish-content h3 {
+  margin: 0 0 7px;
+  font-size: 15px;
+  color: #201b18;
+  min-height: 36px;
+}
+
+.dish-price {
+  color: #c98928;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.availability {
+  color: #777;
+  font-size: 11px;
+  margin: 7px 0 12px;
+  min-height: 30px;
+}
+
+
+/* ORDER BUTTON */
+
+.order-dish-btn {
+  width: 100%;
+  border: none;
+  background: #cf8d28;
+  color: white;
+  padding: 11px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  transition: .25s;
+}
+
+.order-dish-btn:hover {
+  background: #ad701c;
+  transform: translateY(-1px);
+}
+
+.order-dish-btn span {
+  font-size: 17px;
+}
+
+
+/* =========================
+   ORDER MODAL
+========================= */
+
+.dish-order-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.62);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 99999;
+}
+
+.dish-order-overlay.show {
+  display: flex;
+}
+
+.dish-order-modal {
+  width: 100%;
+  max-width: 410px;
+  background: white;
+  border-radius: 18px;
+  padding: 30px;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 20px 70px rgba(0,0,0,.25);
+  animation: orderPopup .25s ease;
+}
+
+@keyframes orderPopup {
+  from {
+    opacity: 0;
+    transform: translateY(25px) scale(.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.close-order-modal {
+  position: absolute;
+  right: 15px;
+  top: 12px;
+  width: 35px;
+  height: 35px;
+  border: none;
+  background: #f3f1ed;
+  border-radius: 50%;
+  font-size: 25px;
+  cursor: pointer;
+  color: #333;
+}
+
+.order-icon {
+  font-size: 45px;
+  margin-bottom: 5px;
+}
+
+.dish-order-modal h2 {
+  font-family: Georgia, serif;
+  margin: 5px 0 12px;
+}
+
+.selected-food {
+  margin: 0;
+  color: #555;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.selected-price {
+  margin-top: 8px;
+  color: #c98928;
+  font-size: 25px;
+  font-weight: 800;
+}
+
+
+/* QUANTITY */
+
+.quantity-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 22px;
+  margin: 25px 0;
+}
+
+.quantity-box button {
+  width: 40px;
+  height: 40px;
+  border: 1px solid #ddd;
+  background: #f8f6f2;
+  border-radius: 50%;
+  font-size: 23px;
+  cursor: pointer;
+}
+
+.quantity-box strong {
+  font-size: 20px;
+  min-width: 25px;
+}
+
+
+/* CONTINUE */
+
+.continue-order-btn {
+  width: 100%;
+  border: none;
+  background: #cf8d28;
+  color: white;
+  padding: 14px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: .25s;
+}
+
+.continue-order-btn:hover {
+  background: #ad701c;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 1050px) {
+
+  .dish-grid {
+    grid-template-columns: repeat(3, 1fr);
+    max-width: 760px;
+  }
+
+}
+
+@media (max-width: 700px) {
+
+  .popular-dishes {
+    padding: 60px 14px 70px;
+  }
+
+  .section-heading h2 {
+    font-size: 30px;
+  }
+
+  .dish-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .dish-image {
+    height: 125px;
+  }
+
+}
+
+@media (max-width: 450px) {
+
+  .dish-grid {
+    grid-template-columns: 1fr;
+    max-width: 340px;
+  }
+
+  .dish-image {
+    height: 190px;
+  }
+
+  .dish-content h3 {
+    min-height: auto;
+  }
+
+}
+
+</style>
+
+
+<script>
+
+/* =========================
+   DISH FILTER
+========================= */
+
+function filterDishes(category, button) {
+
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.classList.remove('active');
+  });
+
+  button.classList.add('active');
+
+  document.querySelectorAll('.dish-card').forEach(card => {
+
+    const categories = card
+      .getAttribute('data-category')
+      .split(' ');
+
+    if (category === 'all' || categories.includes(category)) {
+      card.style.display = '';
+    } else {
+      card.style.display = 'none';
+    }
+
+  });
+
+}
+
+
+/* =========================
+   ORDER DATA
+========================= */
+
+let selectedDish = '';
+let selectedPrice = 0;
+let dishQty = 1;
+
+
+/* OPEN ORDER */
+
+function orderDish(name, price) {
+
+  selectedDish = name;
+  selectedPrice = price;
+  dishQty = 1;
+
+  document.getElementById('selectedDishName').textContent = name;
+  document.getElementById('selectedDishPrice').textContent = price;
+  document.getElementById('dishQuantity').textContent = dishQty;
+
+  document
+    .getElementById('dishOrderOverlay')
+    .classList.add('show');
+
+}
+
+
+/* QUANTITY */
+
+function changeDishQuantity(value) {
+
+  dishQty += value;
+
+  if (dishQty < 1) {
+    dishQty = 1;
+  }
+
+  document.getElementById('dishQuantity').textContent = dishQty;
+
+  document.getElementById('selectedDishPrice').textContent =
+    selectedPrice * dishQty;
+
+}
+
+
+/* CLOSE */
+
+function closeDishOrder() {
+
+  document
+    .getElementById('dishOrderOverlay')
+    .classList.remove('show');
+
+}
+
+
+/* CONTINUE */
+
+function continueToOrder() {
+
+  const total = selectedPrice * dishQty;
+
+  /*
+    If your website already has an order page,
+    change the URL below to your actual order page.
+  */
+
+  const orderUrl =
+    'order.html' +
+    '?food=' + encodeURIComponent(selectedDish) +
+    '&price=' + encodeURIComponent(selectedPrice) +
+    '&qty=' + encodeURIComponent(dishQty) +
+    '&total=' + encodeURIComponent(total);
+
+  window.location.href = orderUrl;
+
+}
+
+
+/* CLICK OUTSIDE */
+
+document
+  .getElementById('dishOrderOverlay')
+  .addEventListener('click', function(e) {
+
+    if (e.target === this) {
+      closeDishOrder();
+    }
+
+  });
+
+</script>
