@@ -1,320 +1,756 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Afghan Restaurant | Afghan Food in Moulvibazar, Sylhet</title>
-<meta name="description" content="Afghan Restaurant in Moulvibazar Sadar, Sylhet. Fresh Afghan pulao, korma, karahi and roast. Order online or visit us.">
-<link rel="canonical" href="https://admission.snkitinstitute.com/resturayafgan.github.io/">
-<meta name="theme-color" content="#141110">
-<meta property="og:type" content="restaurant">
-<meta property="og:site_name" content="Afghan Restaurant">
-<meta property="og:title" content="Afghan Restaurant | Afghan Food in Moulvibazar, Sylhet">
-<meta property="og:description" content="Delicious food, warm hospitality and a memorable experience. Order online.">
-<meta property="og:url" content="https://admission.snkitinstitute.com/resturayafgan.github.io/">
-<meta property="og:image" content="https://admission.snkitinstitute.com/resturayafgan.github.io/og.jpg">
-<meta name="twitter:card" content="summary_large_image">
-<script type="application/ld+json" id="ld">
-{"@context":"https://schema.org","@type":"Restaurant","name":"Afghan Restaurant","servesCuisine":"Afghan","url":"https://admission.snkitinstitute.com/resturayafgan.github.io/","telephone":"+880 1778-015313","address":{"@type":"PostalAddress","streetAddress":"Moulvibazar Sadar, Sylhet, Bangladesh","addressCountry":"BD"}}
-</script>
-<link rel="icon" id="favicon" href="favicon.svg" type="image/svg+xml">
-<link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
-<link rel="apple-touch-icon" id="touch" href="apple-touch-icon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,500&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
-</head>
-<body>
+<!-- =========================
+     POPULAR DISHES SECTION
+========================= -->
+<section class="popular-dishes" id="menu">
 
-<div class="announce" id="announce" hidden></div>
-
-<header>
-  <div class="wrap">
-    <a href="#home" class="logo" id="logoTop">AFGHAN<small>RESTAURANT</small></a>
-    <nav id="nav">
-      <a href="#home">Home</a><a href="#menu">Menu</a><a href="#about">About Us</a><a href="#gallery">Gallery</a><a href="#blog" id="navBlog" hidden>Blog</a><a href="#contact">Contact</a><a href="track/">Track Order</a>
-    </nav>
-    <a class="btn" href="order/">Order Now</a>
-    <button class="menu-btn" aria-label="Menu" onclick="document.getElementById('nav').classList.toggle('open')">☰</button>
+  <div class="section-heading">
+    <h2>Our Popular Dishes</h2>
+    <span></span>
+    <p>Enjoy our most popular Afghan dishes</p>
   </div>
-</header>
 
-<section class="hero" id="home">
-  <div class="wrap">
-    <div class="hi">Welcome to</div>
-    <h1 id="heroName">AFGHAN</h1>
-    <div class="sub">RESTAURANT</div>
-    <div class="pill" id="openPill" hidden></div>
-    <p id="tagline">Delicious food, warm hospitality and a memorable experience — all in one place.</p>
-    <div class="btns">
-      <a class="btn" href="#menu">View Menu</a>
-      <a class="btn outline" href="order/">Order Now</a>
+  <!-- Category Filter -->
+  <div class="dish-filter">
+    <button class="filter-btn active" onclick="filterDishes('all', this)">
+      All
+    </button>
+
+    <button class="filter-btn" onclick="filterDishes('popular', this)">
+      Popular
+    </button>
+
+    <button class="filter-btn" onclick="filterDishes('new', this)">
+      New
+    </button>
+  </div>
+
+
+  <!-- Dish Cards -->
+  <div class="dish-grid">
+
+    <!-- 1 -->
+    <div class="dish-card" data-category="new popular">
+
+      <div class="dish-image">
+        <img
+          src="https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=800&q=80"
+          alt="Afghan Beef Pulgo"
+        >
+
+        <span class="dish-badge">New</span>
+      </div>
+
+      <div class="dish-content">
+
+        <h3>Afghan Beef Pulgo</h3>
+
+        <div class="dish-price">
+          ৳250
+        </div>
+
+        <p class="availability">
+          Available: Sat, Sun, Mon
+        </p>
+
+        <button
+          class="order-dish-btn"
+          onclick="orderDish('Afghan Beef Pulgo', 250)"
+        >
+          Order Now
+          <span>→</span>
+        </button>
+
+      </div>
     </div>
-  </div>
-</section>
 
-<section class="about" id="about">
-  <div class="wrap">
-    <div>
-      <h2 id="aboutTitle">Good Food, Great Moments</h2>
-      <p id="aboutText">Afghan Restaurant is a small and cozy place where we serve delicious and healthy food with the best quality ingredients. Our goal is to make every meal a memorable experience for our guests.</p>
-      <a class="btn" href="#contact">Learn More</a>
+
+    <!-- 2 -->
+    <div class="dish-card" data-category="popular">
+
+      <div class="dish-image">
+        <img
+          src="https://images.unsplash.com/photo-1585937421612-70a008356fbe?auto=format&fit=crop&w=800&q=80"
+          alt="Chicken Korma"
+        >
+      </div>
+
+      <div class="dish-content">
+
+        <h3>Chicken Korma</h3>
+
+        <div class="dish-price">
+          ৳220
+        </div>
+
+        <p class="availability">
+          Available: Every Day
+        </p>
+
+        <button
+          class="order-dish-btn"
+          onclick="orderDish('Chicken Korma', 220)"
+        >
+          Order Now
+          <span>→</span>
+        </button>
+
+      </div>
     </div>
-    <div class="feats">
-      <div><div class="ic">👨‍🍳</div><h3>Fresh Ingredients</h3><p>We use the freshest ingredients to serve you the best.</p></div>
-      <div><div class="ic">🍽️</div><h3>Hygienic Food</h3><p>Hygiene and quality are our top priorities.</p></div>
-      <div><div class="ic">🤝</div><h3>Friendly Service</h3><p>Our friendly team is always here to serve you better.</p></div>
+
+
+    <!-- 3 -->
+    <div class="dish-card" data-category="popular">
+
+      <div class="dish-image">
+        <img
+          src="https://images.unsplash.com/photo-1601050690117-94f5f6fa8bd7?auto=format&fit=crop&w=800&q=80"
+          alt="Afghan Chicken Pulgo"
+        >
+      </div>
+
+      <div class="dish-content">
+
+        <h3>Afghan Chicken Pulgo</h3>
+
+        <div class="dish-price">
+          ৳200
+        </div>
+
+        <p class="availability">
+          Available: Every Day
+        </p>
+
+        <button
+          class="order-dish-btn"
+          onclick="orderDish('Afghan Chicken Pulgo', 200)"
+        >
+          Order Now
+          <span>→</span>
+        </button>
+
+      </div>
     </div>
-  </div>
-</section>
 
-<section class="sec" id="menu">
-  <div class="wrap">
-    <h2>Our Popular Dishes</h2><div class="line"></div>
-    <div class="menu-tools" id="menuTools" hidden>
-      <div class="chips" id="chips"></div>
-      <input id="msearch" type="search" placeholder="Search dishes..." aria-label="Search dishes">
+
+    <!-- 4 -->
+    <div class="dish-card" data-category="popular">
+
+      <div class="dish-image">
+        <img
+          src="https://images.unsplash.com/photo-1532550907401-a500c9a57435?auto=format&fit=crop&w=800&q=80"
+          alt="Beef Karahi"
+        >
+      </div>
+
+      <div class="dish-content">
+
+        <h3>Beef Karahi</h3>
+
+        <div class="dish-price">
+          ৳280
+        </div>
+
+        <p class="availability">
+          Available: Every Day
+        </p>
+
+        <button
+          class="order-dish-btn"
+          onclick="orderDish('Beef Karahi', 280)"
+        >
+          Order Now
+          <span>→</span>
+        </button>
+
+      </div>
     </div>
-    <div class="cards" id="dishes"></div>
-  </div>
-</section>
 
-<section class="sec" id="order">
-  <div class="wrap">
-    <h2>Order Online</h2><div class="line"></div>
-    <p class="cta-text">Choose your food, pay by cash or bKash, and track your order any time.</p>
-    <div class="ctabtns">
-      <a class="btn" href="order/">Order Now</a>
-      <a class="btn outline-dark" href="track/">Track Your Order</a>
+
+    <!-- 5 -->
+    <div class="dish-card" data-category="popular">
+
+      <div class="dish-image">
+        <img
+          src="https://images.unsplash.com/photo-1598103442097-8b74394b95c6?auto=format&fit=crop&w=800&q=80"
+          alt="Chicken Roast"
+        >
+      </div>
+
+      <div class="dish-content">
+
+        <h3>Chicken Roast</h3>
+
+        <div class="dish-price">
+          ৳180
+        </div>
+
+        <p class="availability">
+          Available: Every Day
+        </p>
+
+        <button
+          class="order-dish-btn"
+          onclick="orderDish('Chicken Roast', 180)"
+        >
+          Order Now
+          <span>→</span>
+        </button>
+
+      </div>
     </div>
+
   </div>
+
 </section>
 
-<section class="why">
-  <div class="wrap">
-    <h2>Why Choose Us</h2><div class="line"></div>
-    <div class="grid">
-      <div class="item"><div class="ic">🏅</div><h3>Best Quality</h3><p>We maintain the highest quality in our food.</p></div>
-      <div class="item"><div class="ic">🏷️</div><h3>Affordable Price</h3><p>Delicious food at a price that fits your budget.</p></div>
-      <div class="item"><div class="ic">♥</div><h3>Made with Love</h3><p>Every dish is made with care and love.</p></div>
-      <div class="item"><div class="ic">⏱️</div><h3>Fast Service</h3><p>We value your time and serve you quickly.</p></div>
+
+<!-- =========================
+     ORDER MODAL
+========================= -->
+
+<div class="dish-order-overlay" id="dishOrderOverlay">
+
+  <div class="dish-order-modal">
+
+    <button
+      class="close-order-modal"
+      onclick="closeDishOrder()"
+    >
+      ×
+    </button>
+
+    <div class="order-icon">
+      🍽️
     </div>
-  </div>
-</section>
 
-<section class="sec" id="gallery">
-  <div class="wrap">
-    <h2>Our Gallery</h2><div class="line"></div>
-    <div class="gal" id="gal"></div>
-  </div>
-</section>
+    <h2>Order Your Food</h2>
 
-<section class="sec" id="blog" hidden>
-  <div class="wrap">
-    <h2>Latest News</h2><div class="line"></div>
-    <div class="posts" id="posts"></div>
-    <div class="more"><a class="btn" href="blog/">View All Posts</a></div>
-  </div>
-</section>
+    <p class="selected-food">
+      <span id="selectedDishName">Food Name</span>
+    </p>
 
-<section class="sec" id="map" hidden>
-  <div class="wrap mapbox">
-    <h2>Find Us</h2><div class="line"></div>
-    <iframe id="mapFrame" title="Map" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-    <a class="btn" id="dirBtn" href="#" target="_blank" rel="noopener">Get Directions</a>
-  </div>
-</section>
-
-<footer id="contact">
-  <div class="wrap grid">
-    <div>
-      <div class="logo" id="logoFoot">AFGHAN<small>RESTAURANT</small></div>
-      <p style="margin-top:12px">Good food, good mood!<br>Thank you for dining with us.</p>
+    <div class="selected-price">
+      ৳<span id="selectedDishPrice">0</span>
     </div>
-    <div><h4>Quick Links</h4><ul><li><a href="#home">Home</a></li><li><a href="#menu">Menu</a></li><li><a href="#about">About Us</a></li><li><a href="#gallery">Gallery</a></li><li><a href="#contact">Contact</a></li><li><a href="order/">Order Online</a></li><li><a href="track/">Track Order</a></li></ul></div>
-    <div><h4>Contact Us</h4><ul>
-      <li>📞 <a id="phone" href="tel:+8801778015313">+880 1778-015313</a></li>
-      <li>📍 <span id="address">Moulvibazar Sadar, Sylhet, Bangladesh</span></li>
-      <li>🕙 <span id="hours">10:00 AM - 10:00 PM</span></li></ul></div>
-    <div><h4>Follow Us</h4><div class="soc" id="social"></div></div>
+
+    <div class="quantity-box">
+
+      <button onclick="changeDishQuantity(-1)">
+        −
+      </button>
+
+      <strong id="dishQuantity">
+        1
+      </strong>
+
+      <button onclick="changeDishQuantity(1)">
+        +
+      </button>
+
+    </div>
+
+    <button
+      class="continue-order-btn"
+      onclick="continueToOrder()"
+    >
+      Continue Order →
+    </button>
+
   </div>
-  <div class="copy" id="copy"></div>
-  <div class="devbar" id="devbar" hidden></div>
-</footer>
-<script src="developer.js"></script>
 
-<a id="waFloat" class="wa-float" href="#" target="_blank" rel="noopener" aria-label="Chat on WhatsApp" hidden>💬</a>
+</div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>window.supabase||document.write('<script src="https://unpkg.com/@supabase/supabase-js@2"><\/script>')</script>
-<script src="config.js"></script>
-<script src="demo-db.js"></script>
+
+<style>
+
+/* =========================
+   POPULAR DISHES
+========================= */
+
+.popular-dishes {
+  padding: 85px 20px 100px;
+  background: #faf8f3;
+}
+
+.section-heading {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.section-heading h2 {
+  margin: 0;
+  font-family: Georgia, serif;
+  font-size: 38px;
+  color: #171312;
+}
+
+.section-heading span {
+  display: block;
+  width: 64px;
+  height: 2px;
+  background: #c98b2e;
+  margin: 14px auto;
+}
+
+.section-heading p {
+  margin: 0;
+  color: #777;
+  font-size: 15px;
+}
+
+
+/* FILTER */
+
+.dish-filter {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 25px 0 35px;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  border: 1px solid #d8d2c8;
+  background: white;
+  color: #333;
+  padding: 10px 23px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: .25s;
+}
+
+.filter-btn:hover,
+.filter-btn.active {
+  background: #cf8d28;
+  border-color: #cf8d28;
+  color: white;
+}
+
+
+/* GRID */
+
+.dish-grid {
+  max-width: 1050px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+}
+
+
+/* CARD */
+
+.dish-card {
+  background: white;
+  border: 1px solid #e5e0d8;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 3px 10px rgba(0,0,0,.04);
+  transition: .3s ease;
+}
+
+.dish-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 28px rgba(0,0,0,.12);
+}
+
+
+/* IMAGE */
+
+.dish-image {
+  height: 140px;
+  position: relative;
+  overflow: hidden;
+}
+
+.dish-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: .4s;
+}
+
+.dish-card:hover .dish-image img {
+  transform: scale(1.07);
+}
+
+
+/* BADGE */
+
+.dish-badge {
+  position: absolute;
+  top: 9px;
+  left: 9px;
+  background: #cf8d28;
+  color: white;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 6px 10px;
+  border-radius: 20px;
+}
+
+
+/* CONTENT */
+
+.dish-content {
+  padding: 13px;
+}
+
+.dish-content h3 {
+  margin: 0 0 7px;
+  font-size: 15px;
+  color: #201b18;
+  min-height: 36px;
+}
+
+.dish-price {
+  color: #c98928;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.availability {
+  color: #777;
+  font-size: 11px;
+  margin: 7px 0 12px;
+  min-height: 30px;
+}
+
+
+/* ORDER BUTTON */
+
+.order-dish-btn {
+  width: 100%;
+  border: none;
+  background: #cf8d28;
+  color: white;
+  padding: 11px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  transition: .25s;
+}
+
+.order-dish-btn:hover {
+  background: #ad701c;
+  transform: translateY(-1px);
+}
+
+.order-dish-btn span {
+  font-size: 17px;
+}
+
+
+/* =========================
+   ORDER MODAL
+========================= */
+
+.dish-order-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.62);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 99999;
+}
+
+.dish-order-overlay.show {
+  display: flex;
+}
+
+.dish-order-modal {
+  width: 100%;
+  max-width: 410px;
+  background: white;
+  border-radius: 18px;
+  padding: 30px;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 20px 70px rgba(0,0,0,.25);
+  animation: orderPopup .25s ease;
+}
+
+@keyframes orderPopup {
+  from {
+    opacity: 0;
+    transform: translateY(25px) scale(.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.close-order-modal {
+  position: absolute;
+  right: 15px;
+  top: 12px;
+  width: 35px;
+  height: 35px;
+  border: none;
+  background: #f3f1ed;
+  border-radius: 50%;
+  font-size: 25px;
+  cursor: pointer;
+  color: #333;
+}
+
+.order-icon {
+  font-size: 45px;
+  margin-bottom: 5px;
+}
+
+.dish-order-modal h2 {
+  font-family: Georgia, serif;
+  margin: 5px 0 12px;
+}
+
+.selected-food {
+  margin: 0;
+  color: #555;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.selected-price {
+  margin-top: 8px;
+  color: #c98928;
+  font-size: 25px;
+  font-weight: 800;
+}
+
+
+/* QUANTITY */
+
+.quantity-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 22px;
+  margin: 25px 0;
+}
+
+.quantity-box button {
+  width: 40px;
+  height: 40px;
+  border: 1px solid #ddd;
+  background: #f8f6f2;
+  border-radius: 50%;
+  font-size: 23px;
+  cursor: pointer;
+}
+
+.quantity-box strong {
+  font-size: 20px;
+  min-width: 25px;
+}
+
+
+/* CONTINUE */
+
+.continue-order-btn {
+  width: 100%;
+  border: none;
+  background: #cf8d28;
+  color: white;
+  padding: 14px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: .25s;
+}
+
+.continue-order-btn:hover {
+  background: #ad701c;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 1050px) {
+
+  .dish-grid {
+    grid-template-columns: repeat(3, 1fr);
+    max-width: 760px;
+  }
+
+}
+
+@media (max-width: 700px) {
+
+  .popular-dishes {
+    padding: 60px 14px 70px;
+  }
+
+  .section-heading h2 {
+    font-size: 30px;
+  }
+
+  .dish-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .dish-image {
+    height: 125px;
+  }
+
+}
+
+@media (max-width: 450px) {
+
+  .dish-grid {
+    grid-template-columns: 1fr;
+    max-width: 340px;
+  }
+
+  .dish-image {
+    height: 190px;
+  }
+
+  .dish-content h3 {
+    min-height: auto;
+  }
+
+}
+
+</style>
+
+
 <script>
-const $ = id => document.getElementById(id);
-const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const short = n => String(n || '').replace(/\s*restaurant\s*$/i, '').toUpperCase();
-const db = DEMO ? createDemoClient() : (window.supabase ? supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null);
-let dishList = [], WA = '', SHOP = 'Restaurant', OPEN = true, cat = '', qry = '';
 
-function brand(s) {
-  return s.logo
-    ? `<img class="logo-img" src="${esc(s.logo)}" alt="${esc(s.name)}">`
-    : `${esc(short(s.name))}<small>RESTAURANT</small>`;
+/* =========================
+   DISH FILTER
+========================= */
+
+function filterDishes(category, button) {
+
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.classList.remove('active');
+  });
+
+  button.classList.add('active');
+
+  document.querySelectorAll('.dish-card').forEach(card => {
+
+    const categories = card
+      .getAttribute('data-category')
+      .split(' ');
+
+    if (category === 'all' || categories.includes(category)) {
+      card.style.display = '';
+    } else {
+      card.style.display = 'none';
+    }
+
+  });
+
 }
 
-// Google এর জন্য রেস্টুরেন্টের তথ্য (admin এ বদলালে এটাও বদলায়)
-function updateSchema(s) {
-  const ld = {
-    '@context': 'https://schema.org', '@type': 'Restaurant', name: s.name, servesCuisine: 'Afghan',
-    description: s.tagline, telephone: s.phone, url: location.origin + location.pathname.replace(/index\.html$/, ''),
-    address: { '@type': 'PostalAddress', streetAddress: s.address, addressCountry: 'BD' }
-  };
-  if (s.hero_image && !s.hero_image.startsWith('data:')) ld.image = s.hero_image;
-  const same = [s.facebook, s.instagram].filter(Boolean);
-  if (same.length) ld.sameAs = same;
-  $('ld').textContent = JSON.stringify(ld);
+
+/* =========================
+   ORDER DATA
+========================= */
+
+let selectedDish = '';
+let selectedPrice = 0;
+let dishQty = 1;
+
+
+/* OPEN ORDER */
+
+function orderDish(name, price) {
+
+  selectedDish = name;
+  selectedPrice = price;
+  dishQty = 1;
+
+  document.getElementById('selectedDishName').textContent = name;
+  document.getElementById('selectedDishPrice').textContent = price;
+  document.getElementById('dishQuantity').textContent = dishQty;
+
+  document
+    .getElementById('dishOrderOverlay')
+    .classList.add('show');
+
 }
 
-function showSettings(s) {
-  WA = s.whatsapp || ''; SHOP = s.name || SHOP;
-  OPEN = s.is_open !== false;
-  const pill = $('openPill');
-  pill.hidden = false; pill.className = 'pill' + (OPEN ? '' : ' off');
-  pill.textContent = OPEN ? '● Open now' + (s.hours ? ' · ' + s.hours : '') : '● Closed right now';
-  const an = $('announce'); an.innerHTML = s.announcement ? '<b>Special Offer</b> ' + esc(s.announcement) : ''; an.hidden = !s.announcement;
-  const mq = s.map_query || s.address || '';
-  $('map').hidden = !mq;
-  if (mq) {
-    $('mapFrame').src = 'https://www.google.com/maps?q=' + encodeURIComponent(mq) + '&output=embed';
-    $('dirBtn').href = 'https://www.google.com/maps/dir/?api=1&destination=' + encodeURIComponent(mq);
+
+/* QUANTITY */
+
+function changeDishQuantity(value) {
+
+  dishQty += value;
+
+  if (dishQty < 1) {
+    dishQty = 1;
   }
-  updateSchema(s);
-  $('logoTop').innerHTML = brand(s);
-  $('logoFoot').innerHTML = brand(s);
-  $('heroName').textContent = short(s.name);
-  $('tagline').textContent = s.tagline || '';
-  $('aboutTitle').textContent = s.about_title || '';
-  $('aboutText').textContent = s.about_text || '';
-  $('phone').textContent = s.phone || '';
-  $('phone').href = 'tel:' + String(s.phone || '').replace(/\s+/g, '');
-  $('address').textContent = s.address || '';
-  $('hours').textContent = s.hours || '';
-  $('copy').textContent = `© ${new Date().getFullYear()} ${s.name}. All Rights Reserved.`;
-  if (s.hero_image) $('home').style.backgroundImage = `url('${s.hero_image.replace(/'/g, '%27')}')`;
-  if (s.favicon) {
-    document.querySelectorAll('link[rel="icon"]:not(#favicon)').forEach(l => l.remove());
-    $('favicon').removeAttribute('type'); $('favicon').href = s.favicon; $('touch').href = s.favicon;
-  }
-  if (s.whatsapp) { $('waFloat').href = 'https://wa.me/' + s.whatsapp; $('waFloat').hidden = false; }
-  let soc = '';
-  if (s.facebook)  soc += `<a href="${esc(s.facebook)}" target="_blank" rel="noopener" aria-label="Facebook">f</a>`;
-  if (s.instagram) soc += `<a href="${esc(s.instagram)}" target="_blank" rel="noopener" aria-label="Instagram">ig</a>`;
-  if (s.whatsapp)  soc += `<a href="https://wa.me/${esc(s.whatsapp)}" target="_blank" rel="noopener" aria-label="WhatsApp">wa</a>`;
-  $('social').innerHTML = soc;
+
+  document.getElementById('dishQuantity').textContent = dishQty;
+
+  document.getElementById('selectedDishPrice').textContent =
+    selectedPrice * dishQty;
+
 }
 
-// ---------- কোন দিন কোন খাবার ----------
-const WEEK = ['sat', 'sun', 'mon', 'tue', 'wed', 'thu', 'fri'];
-const DAYN = { sat: 'Sat', sun: 'Sun', mon: 'Mon', tue: 'Tue', wed: 'Wed', thu: 'Thu', fri: 'Fri' };
-const todayKey = () => new Intl.DateTimeFormat('en-US', { weekday: 'short', timeZone: 'Asia/Dhaka' }).format(new Date()).toLowerCase().slice(0, 3);
-const dayList = d => String(d.days || '').split(',').filter(Boolean);
-const availToday = d => { const l = dayList(d); return !l.length || l.length >= 7 || l.includes(todayKey()); };
-const daysLabel = d => { const l = dayList(d); return l.length && l.length < 7 ? WEEK.filter(x => l.includes(x)).map(x => DAYN[x]).join(', ') : ''; };
 
-function showDishes(list) {
-  dishList = list;
-  const cats = [...new Set(list.map(d => d.category).filter(Boolean))];
-  if (cat && !cats.includes(cat)) cat = '';
-  $('menuTools').hidden = !(cats.length || list.length > 6);
-  $('chips').innerHTML = cats.length ? ['', ...cats].map(c => `<button type="button" class="chip${c === cat ? ' on' : ''}" data-cat="${esc(c)}">${c ? esc(c) : 'All'}</button>`).join('') : '';
-  $('msearch').hidden = list.length <= 6;
-  renderCards();
+/* CLOSE */
+
+function closeDishOrder() {
+
+  document
+    .getElementById('dishOrderOverlay')
+    .classList.remove('show');
+
 }
 
-function renderCards() {
-  const list = dishList.filter(d => (!cat || d.category === cat) && (!qry || String(d.name).toLowerCase().includes(qry)));
-  $('dishes').innerHTML = list.length ? list.map(d => {
-    const off = !availToday(d), lab = daysLabel(d);
-    return `
-    <article class="card${off ? ' off' : ''}">
-      <div class="imgw">
-        ${d.image ? `<img class="ph" src="${esc(d.image)}" alt="${esc(d.name)}" loading="lazy">` : `<div class="ph"></div>`}
-        ${d.is_new ? '<span class="tag">New</span>' : ''}
-      </div>
-      <div class="info"><h3>${esc(d.name)}</h3><div class="price">৳ ${esc(d.price)}</div>
-        ${lab ? `<div class="days">${off ? '' : 'Available: '}${esc(lab)}</div>` : ''}
-        ${off ? '<div class="off-note">Not available today</div>' : ''}
-      </div>
-    </article>`;
-  }).join('') : `<p class="msg-empty">${dishList.length ? 'No dishes found.' : 'Menu coming soon.'}</p>`;
+
+/* CONTINUE */
+
+function continueToOrder() {
+
+  const total = selectedPrice * dishQty;
+
+  /*
+    If your website already has an order page,
+    change the URL below to your actual order page.
+  */
+
+  const orderUrl =
+    'order.html' +
+    '?food=' + encodeURIComponent(selectedDish) +
+    '&price=' + encodeURIComponent(selectedPrice) +
+    '&qty=' + encodeURIComponent(dishQty) +
+    '&total=' + encodeURIComponent(total);
+
+  window.location.href = orderUrl;
+
 }
 
-$('chips').addEventListener('click', e => {
-  const b = e.target.closest('.chip'); if (!b) return;
-  cat = b.dataset.cat;
-  document.querySelectorAll('#chips .chip').forEach(x => x.classList.toggle('on', x === b));
-  renderCards();
-});
-$('msearch').addEventListener('input', e => { qry = e.target.value.trim().toLowerCase(); renderCards(); });
 
-function showPosts(list) {
-  $('blog').hidden = !list.length; $('navBlog').hidden = !list.length;
-  const ex = t => { const s = String(t || '').replace(/\s+/g, ' ').trim(); return s.length > 120 ? s.slice(0, 120) + '...' : s; };
-  $('posts').innerHTML = list.slice(0, 3).map(p => `
-    <a class="post" href="blog/?id=${encodeURIComponent(p.id)}">
-      ${p.image ? `<img src="${esc(p.image)}" alt="" loading="lazy">` : '<div class="ph"></div>'}
-      <div class="info"><time>${new Date(p.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</time>
-        <h3>${esc(p.title)}</h3><p>${esc(ex(p.body))}</p></div>
-    </a>`).join('');
-}
+/* CLICK OUTSIDE */
 
-function showGallery(list) {
-  $('gal').innerHTML = list.length
-    ? list.map(g => `<img src="${esc(g.image)}" alt="Gallery photo" loading="lazy">`).join('')
-    : Array(6).fill('<div class="ph"></div>').join('');
-}
+document
+  .getElementById('dishOrderOverlay')
+  .addEventListener('click', function(e) {
 
-/* ---------- অর্ডার ফর্ম ---------- */
-function note(text, top) {
-  const n = document.createElement('div');
-  n.style.cssText = 'position:fixed;' + (top ? 'top:0;' : 'bottom:10px;left:10px;border-radius:6px;') + 'left:' + (top ? '0;right:0;' : '10px;') + 'z-index:99;background:#fff6df;color:#5a4000;border:1px solid #e9c777;padding:8px 12px;font:13px system-ui,sans-serif';
-  n.textContent = text; document.body.appendChild(n);
-}
+    if (e.target === this) {
+      closeDishOrder();
+    }
 
-document.querySelectorAll('#nav a').forEach(a => a.addEventListener('click', () => $('nav').classList.remove('open')));
+  });
 
-// গ্যালারির ছবিতে ক্লিক করলে বড় করে দেখায়
-function closeLightbox() { const l = document.querySelector('.lb'); if (l) l.remove(); }
-$('gal').addEventListener('click', e => {
-  if (e.target.tagName !== 'IMG') return;
-  const lb = document.createElement('div');
-  lb.className = 'lb'; lb.setAttribute('role', 'dialog'); lb.setAttribute('aria-label', 'Photo');
-  lb.innerHTML = `<img src="${esc(e.target.src)}" alt="">`;
-  lb.onclick = closeLightbox;
-  document.body.appendChild(lb);
-});
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
-
-async function load() {
-  showGallery([]); showDishes([]);
-  if (DEMO) note('DEMO MODE: config.js এ Supabase key বসানো হয়নি, তাই admin এর পরিবর্তন শুধু ওই browser এ দেখা যাবে।');
-  if (!db) { note('Server connection failed. Please check your internet and refresh the page.'); return; }
-  try {
-    const [s, d, g, ps] = await Promise.all([
-      db.from('settings').select('*').eq('id', 1).single(),
-      db.from('dishes').select('*').order('id'),
-      db.from('gallery').select('*').order('id', { ascending: false }),
-      db.from('posts').select('*').order('id', { ascending: false }).limit(3)
-    ]);
-    if (location.search.includes('debug'))
-      note(`Mode: ${DEMO ? 'DEMO' : 'LIVE'} | settings: ${s.error ? s.error.message : 'ok'} | dishes: ${d.error ? d.error.message : d.data.length} | gallery: ${g.error ? g.error.message : g.data.length}`, true);
-    if (s.data) showSettings(s.data);
-    if (d.data) showDishes(d.data);
-    if (g.data) showGallery(g.data);
-    showPosts(ps.data || []);
-  } catch (e) { console.error(e); }
-}
-load();
 </script>
-</body>
-</html>
