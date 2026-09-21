@@ -1,1 +1,417 @@
-#
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Menu | Afghan Restaurant</title>
+<meta name="description" content="Explore our delicious Afghan Restaurant menu.">
+
+<link rel="icon" id="favicon" href="../favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" id="touch" href="../apple-touch-icon.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,500&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+
+<div class="announce" id="announce" hidden></div>
+
+<header>
+  <div class="wrap">
+
+    <a href="../" class="logo" id="logoTop">
+      AFGHAN<small>RESTAURANT</small>
+    </a>
+
+    <nav id="nav">
+      <a href="../#home">Home</a>
+      <a href="./">Menu</a>
+      <a href="../#about">About Us</a>
+      <a href="../#gallery">Gallery</a>
+      <a href="../blog/">Blog</a>
+      <a href="../#contact">Contact</a>
+    </nav>
+
+    <a class="btn" href="../#order">Order Now</a>
+
+    <button
+      class="menu-btn"
+      aria-label="Menu"
+      onclick="document.getElementById('nav').classList.toggle('open')">
+      ☰
+    </button>
+
+  </div>
+</header>
+
+
+<main class="wrap menupage" id="main">
+
+  <p>Loading menu...</p>
+
+</main>
+
+
+<footer>
+  <div class="copy" id="copy" style="border:0;margin:0"></div>
+  <div class="devbar" id="devbar" hidden></div>
+</footer>
+
+
+<script src="../developer.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../config.js"></script>
+<script src="../demo-db.js"></script>
+
+<script>
+
+const $ = id => document.getElementById(id);
+
+const esc = s =>
+  String(s ?? '').replace(/[&<>"']/g, c => ({
+    '&':'&amp;',
+    '<':'&lt;',
+    '>':'&gt;',
+    '"':'&quot;',
+    "'":'&#39;'
+  }[c]));
+
+const db =
+  DEMO
+    ? createDemoClient()
+    : supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_ANON_KEY
+      );
+
+let shop = 'Afghan Restaurant';
+
+
+/* =========================
+   SETTINGS
+========================= */
+
+function applySettings(s) {
+
+  shop = s.name || shop;
+
+  /* Announcement */
+
+  const an = $('announce');
+
+  if (s.announcement) {
+
+    an.innerHTML =
+      '<b>Special Offer</b> ' +
+      esc(s.announcement);
+
+    an.hidden = false;
+
+  } else {
+
+    an.hidden = true;
+
+  }
+
+
+  /* Logo */
+
+  $('logoTop').innerHTML = s.logo
+    ? `<img
+         class="logo-img"
+         src="${esc(s.logo)}"
+         alt="${esc(s.name)}">`
+    : `${esc(s.name || 'AFGHAN')
+       .replace(/\s+restaurant$/i, '')}
+       <small>RESTAURANT</small>`;
+
+
+  /* Footer */
+
+  $('copy').textContent =
+    `© ${new Date().getFullYear()} ${s.name}. All Rights Reserved.`;
+
+
+  /* Favicon */
+
+  if (s.favicon) {
+
+    document
+      .querySelectorAll('link[rel="icon"]:not(#favicon)')
+      .forEach(l => l.remove());
+
+    $('favicon').removeAttribute('type');
+
+    $('favicon').href = s.favicon;
+
+    $('touch').href = s.favicon;
+
+  }
+
+}
+
+
+/* =========================
+   MENU ITEM CARD
+========================= */
+
+function menuCard(item) {
+
+  const image = item.image
+    ? `
+      <img
+        src="${esc(item.image)}"
+        alt="${esc(item.name)}"
+        loading="lazy">
+    `
+    : `
+      <div class="menu-placeholder">
+        <span>🍽</span>
+      </div>
+    `;
+
+
+  const price =
+    item.price !== null &&
+    item.price !== undefined &&
+    item.price !== ''
+      ? `<strong>${esc(item.price)}</strong>`
+      : '';
+
+
+  return `
+    <article class="menu-card">
+
+      <div class="menu-image">
+        ${image}
+      </div>
+
+      <div class="menu-info">
+
+        <div class="menu-title">
+          <h3>${esc(item.name)}</h3>
+          ${price}
+        </div>
+
+        ${
+          item.description
+            ? `<p>${esc(item.description)}</p>`
+            : ''
+        }
+
+      </div>
+
+    </article>
+  `;
+
+}
+
+
+/* =========================
+   LOAD MENU
+========================= */
+
+async function init() {
+
+  try {
+
+    /* Load settings */
+
+    const settings =
+      await db
+        .from('settings')
+        .select('*')
+        .eq('id', 1)
+        .single();
+
+
+    if (settings.data) {
+
+      applySettings(settings.data);
+
+    }
+
+
+    /* Load menu */
+
+    const result =
+      await db
+        .from('menu')
+        .select('*')
+        .order('id', {
+          ascending: true
+        });
+
+
+    if (result.error) {
+
+      console.error(result.error);
+
+      $('main').innerHTML = `
+        <section class="empty-menu">
+
+          <h1>Our Menu</h1>
+
+          <div class="line"></div>
+
+          <p>
+            Menu is currently unavailable.
+          </p>
+
+        </section>
+      `;
+
+      return;
+
+    }
+
+
+    const items = result.data || [];
+
+
+    /* Page title */
+
+    document.title =
+      `Menu | ${shop}`;
+
+
+    /* No menu */
+
+    if (!items.length) {
+
+      $('main').innerHTML = `
+        <section class="empty-menu">
+
+          <h1>Our Menu</h1>
+
+          <div class="line"></div>
+
+          <p>
+            Our menu will be available soon.
+          </p>
+
+        </section>
+      `;
+
+      return;
+
+    }
+
+
+    /* Group items by category */
+
+    const categories = {};
+
+    items.forEach(item => {
+
+      const category =
+        item.category ||
+        'Our Specials';
+
+      if (!categories[category]) {
+
+        categories[category] = [];
+
+      }
+
+      categories[category].push(item);
+
+    });
+
+
+    let html = `
+
+      <section class="menu-header">
+
+        <p class="eyebrow">
+          DISCOVER OUR FLAVOURS
+        </p>
+
+        <h1>Our Menu</h1>
+
+        <div class="line"></div>
+
+        <p class="menu-intro">
+          Authentic flavours, carefully prepared
+          with fresh ingredients and traditional
+          Afghan recipes.
+        </p>
+
+      </section>
+
+    `;
+
+
+    /* Categories */
+
+    Object.keys(categories).forEach(category => {
+
+      html += `
+
+        <section class="menu-section">
+
+          <div class="menu-section-title">
+
+            <h2>
+              ${esc(category)}
+            </h2>
+
+            <div class="line"></div>
+
+          </div>
+
+          <div class="menu-grid">
+
+            ${categories[category]
+              .map(menuCard)
+              .join('')}
+
+          </div>
+
+        </section>
+
+      `;
+
+    });
+
+
+    $('main').innerHTML = html;
+
+
+  } catch (e) {
+
+    console.error(e);
+
+    $('main').innerHTML = `
+
+      <section class="empty-menu">
+
+        <h1>Our Menu</h1>
+
+        <div class="line"></div>
+
+        <p>
+          Sorry, the menu could not be loaded.
+        </p>
+
+      </section>
+
+    `;
+
+  }
+
+}
+
+
+init();
+
+</script>
+
+</body>
+</html>
