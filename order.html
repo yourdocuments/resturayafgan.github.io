@@ -2,310 +2,1262 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Order Online | Afghan Restaurant</title>
-<meta name="description" content="Order food online from Afghan Restaurant. Choose delivery or pickup and pay by cash or bKash.">
-<link rel="icon" id="favicon" href="../favicon.svg" type="image/svg+xml">
-<link rel="icon" href="../favicon-32.png" sizes="32x32" type="image/png">
-<link rel="apple-touch-icon" id="touch" href="../apple-touch-icon.png">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Place Order | Afghan Restaurant</title>
+
+<meta name="description" content="Order delicious Afghan food online from Afghan Restaurant, Moulvibazar.">
+
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,500&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../style.css">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  font-family:Poppins,Arial,sans-serif;
+  background:#f7f4ee;
+  color:#2a211c;
+  min-height:100vh;
+}
+
+a{
+  text-decoration:none;
+  color:inherit;
+}
+
+button,
+input,
+textarea,
+select{
+  font-family:inherit;
+}
+
+.topbar{
+  background:#17120f;
+  color:#fff;
+  padding:14px 20px;
+}
+
+.topbar-inner{
+  max-width:1150px;
+  margin:auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+}
+
+.logo{
+  color:#d89a35;
+  font-family:Georgia,serif;
+  font-size:25px;
+  font-weight:700;
+  letter-spacing:1px;
+}
+
+.logo small{
+  display:block;
+  color:#fff;
+  font-family:Poppins,sans-serif;
+  font-size:9px;
+  letter-spacing:4px;
+  margin-top:2px;
+}
+
+.back-btn{
+  border:1px solid rgba(255,255,255,.25);
+  color:#fff;
+  padding:9px 15px;
+  border-radius:8px;
+  font-size:13px;
+  transition:.2s;
+}
+
+.back-btn:hover{
+  background:#d89a35;
+  color:#17120f;
+}
+
+.page{
+  max-width:1150px;
+  margin:0 auto;
+  padding:45px 18px 70px;
+}
+
+.heading{
+  text-align:center;
+  margin-bottom:35px;
+}
+
+.heading .small{
+  color:#b67a21;
+  text-transform:uppercase;
+  font-size:12px;
+  letter-spacing:3px;
+  font-weight:600;
+}
+
+.heading h1{
+  font-family:Georgia,'Times New Roman',serif;
+  font-size:42px;
+  margin:8px 0;
+  color:#2a211c;
+}
+
+.heading p{
+  color:#766c65;
+  font-size:14px;
+}
+
+.order-layout{
+  display:grid;
+  grid-template-columns:1fr 1.15fr;
+  gap:25px;
+  align-items:start;
+}
+
+.card{
+  background:#fff;
+  border:1px solid #e9e1d5;
+  border-radius:18px;
+  box-shadow:0 10px 35px rgba(50,35,20,.07);
+  overflow:hidden;
+}
+
+.card-title{
+  padding:20px 22px;
+  border-bottom:1px solid #eee7dd;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.card-title h2{
+  font-family:Georgia,serif;
+  font-size:22px;
+}
+
+.card-title span{
+  font-size:12px;
+  color:#8b8178;
+}
+
+.food-box{
+  padding:24px;
+}
+
+.food-icon{
+  width:70px;
+  height:70px;
+  border-radius:16px;
+  background:#fff5df;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:34px;
+  margin-bottom:17px;
+}
+
+.food-name{
+  font-family:Georgia,serif;
+  font-size:27px;
+  margin-bottom:8px;
+}
+
+.food-price{
+  color:#b87515;
+  font-size:20px;
+  font-weight:700;
+}
+
+.unit-price{
+  color:#8b8178;
+  font-size:12px;
+  margin-top:3px;
+}
+
+.qty-row{
+  margin-top:25px;
+  padding-top:20px;
+  border-top:1px solid #eee7dd;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+}
+
+.qty-title{
+  font-size:14px;
+  font-weight:600;
+}
+
+.qty-control{
+  display:flex;
+  align-items:center;
+  border:1px solid #ddd2c4;
+  border-radius:10px;
+  overflow:hidden;
+}
+
+.qty-control button{
+  width:40px;
+  height:40px;
+  border:0;
+  background:#faf7f1;
+  cursor:pointer;
+  font-size:20px;
+  color:#4c3a2b;
+}
+
+.qty-control button:hover{
+  background:#e8bd70;
+}
+
+.qty-control span{
+  width:45px;
+  text-align:center;
+  font-weight:700;
+}
+
+.summary{
+  margin-top:25px;
+  background:#faf7f1;
+  border-radius:13px;
+  padding:18px;
+}
+
+.summary-row{
+  display:flex;
+  justify-content:space-between;
+  gap:15px;
+  padding:7px 0;
+  font-size:14px;
+}
+
+.summary-row.total{
+  border-top:1px solid #dfd3c3;
+  margin-top:8px;
+  padding-top:14px;
+  font-size:19px;
+  font-weight:700;
+}
+
+.total-value{
+  color:#b87515;
+}
+
+.form-box{
+  padding:24px;
+}
+
+.form-group{
+  margin-bottom:17px;
+}
+
+.form-group label{
+  display:block;
+  margin-bottom:7px;
+  font-size:13px;
+  font-weight:600;
+  color:#493b31;
+}
+
+.form-group label span{
+  color:#c0392b;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select{
+  width:100%;
+  border:1px solid #ddd3c7;
+  border-radius:10px;
+  padding:13px 14px;
+  background:#fff;
+  color:#2a211c;
+  outline:none;
+  font-size:14px;
+  transition:.2s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus{
+  border-color:#c58a31;
+  box-shadow:0 0 0 3px rgba(197,138,49,.1);
+}
+
+.form-group textarea{
+  min-height:90px;
+  resize:vertical;
+}
+
+.form-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:15px;
+}
+
+.payment-options{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+}
+
+.payment-option{
+  position:relative;
+}
+
+.payment-option input{
+  position:absolute;
+  opacity:0;
+  pointer-events:none;
+}
+
+.payment-option label{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:55px;
+  padding:10px;
+  border:1px solid #ddd3c7;
+  border-radius:10px;
+  cursor:pointer;
+  text-align:center;
+  font-size:12px;
+  font-weight:600;
+  background:#fff;
+}
+
+.payment-option input:checked + label{
+  border-color:#bd7d20;
+  background:#fff6e5;
+  color:#9b6314;
+}
+
+.submit-btn{
+  width:100%;
+  border:0;
+  border-radius:11px;
+  background:#bd7d20;
+  color:#fff;
+  padding:15px;
+  font-size:15px;
+  font-weight:700;
+  cursor:pointer;
+  margin-top:7px;
+  transition:.2s;
+}
+
+.submit-btn:hover{
+  background:#9d6414;
+  transform:translateY(-1px);
+}
+
+.submit-btn:disabled{
+  opacity:.6;
+  cursor:not-allowed;
+  transform:none;
+}
+
+.secure-note{
+  text-align:center;
+  color:#8b8178;
+  font-size:11px;
+  margin-top:12px;
+}
+
+.notice{
+  display:none;
+  margin-bottom:20px;
+  padding:13px 15px;
+  border-radius:10px;
+  font-size:13px;
+}
+
+.notice.show{
+  display:block;
+}
+
+.notice.success{
+  background:#eaf8ed;
+  border:1px solid #bde3c5;
+  color:#236b31;
+}
+
+.notice.error{
+  background:#fff0ef;
+  border:1px solid #efc3bf;
+  color:#9a2d25;
+}
+
+.empty-order{
+  max-width:650px;
+  margin:60px auto;
+  text-align:center;
+  background:#fff;
+  border-radius:18px;
+  padding:40px 25px;
+  box-shadow:0 10px 35px rgba(50,35,20,.07);
+}
+
+.empty-order h2{
+  font-family:Georgia,serif;
+  margin-bottom:10px;
+}
+
+.empty-order p{
+  color:#766c65;
+  font-size:14px;
+  margin-bottom:20px;
+}
+
+.home-btn{
+  display:inline-block;
+  background:#bd7d20;
+  color:#fff;
+  padding:12px 20px;
+  border-radius:9px;
+  font-size:13px;
+  font-weight:600;
+}
+
+footer{
+  background:#17120f;
+  color:#aaa;
+  text-align:center;
+  padding:25px 15px;
+  font-size:12px;
+}
+
+@media(max-width:800px){
+
+  .order-layout{
+    grid-template-columns:1fr;
+  }
+
+  .heading h1{
+    font-size:34px;
+  }
+
+}
+
+@media(max-width:560px){
+
+  .page{
+    padding:30px 12px 50px;
+  }
+
+  .topbar-inner{
+    align-items:flex-start;
+  }
+
+  .logo{
+    font-size:21px;
+  }
+
+  .back-btn{
+    font-size:11px;
+    padding:8px 10px;
+  }
+
+  .heading h1{
+    font-size:30px;
+  }
+
+  .heading p{
+    font-size:13px;
+  }
+
+  .food-box,
+  .form-box{
+    padding:18px;
+  }
+
+  .form-grid{
+    grid-template-columns:1fr;
+    gap:0;
+  }
+
+  .payment-options{
+    grid-template-columns:1fr;
+  }
+
+  .qty-row{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+}
+
+</style>
 </head>
+
 <body>
 
-<div class="announce" id="announce" hidden></div>
+<header class="topbar">
+  <div class="topbar-inner">
 
-<header>
-  <div class="wrap">
-    <a href="../" class="logo" id="logoTop">AFGHAN<small>RESTAURANT</small></a>
-    <nav id="nav">
-      <a href="../">Home</a><a href="../#menu">Menu</a><a href="../track/">Track Order</a><a href="../blog/">Blog</a><a href="../#contact">Contact</a>
-    </nav>
-    <a class="btn" href="../track/">Track Order</a>
-    <button class="menu-btn" aria-label="Menu" onclick="document.getElementById('nav').classList.toggle('open')">☰</button>
+    <a href="index.html" class="logo">
+      AFGHAN
+      <small>RESTAURANT</small>
+    </a>
+
+    <a href="index.html#menu" class="back-btn">
+      ← Back to Menu
+    </a>
+
   </div>
 </header>
 
-<main class="wrap opage">
-  <div id="orderView">
-    <h1 class="ohead">Order Online</h1>
-    <div class="pill" id="openPill" hidden></div>
-    <div class="closed-note" id="closedNote" hidden>We are closed right now. Online ordering is paused until we open.</div>
 
-    <div class="ogrid">
-      <section>
-        <div class="menu-tools" id="menuTools" hidden>
-          <div class="chips" id="chips"></div>
-          <input id="msearch" type="search" placeholder="Search dishes..." aria-label="Search dishes">
-        </div>
-        <div id="items"><p class="msg-empty">Loading menu...</p></div>
-      </section>
+<main class="page">
 
-      <aside class="ocart" id="cartBox">
-        <h2>Your Order</h2>
-        <div id="cartLines"><p class="msg-empty">Your cart is empty. Add dishes from the menu.</p></div>
-        <div class="sumrow"><span>Subtotal</span><b id="sSub">৳ 0</b></div>
-        <div class="sumrow" id="feeRow" hidden><span>Delivery fee</span><b id="sFee">৳ 0</b></div>
-        <div class="sumrow total"><span>Total</span><b id="sTotal">৳ 0</b></div>
+  <div class="heading">
 
-        <form id="oform" novalidate>
-          <div class="segs" id="segs">
-            <label class="seg"><input type="radio" name="otype" value="delivery" checked><span>🛵 Delivery</span></label>
-            <label class="seg"><input type="radio" name="otype" value="pickup"><span>🏪 Pickup</span></label>
-          </div>
-          <div class="ofields">
-            <input id="fName" type="text" placeholder="Your name" maxlength="80" autocomplete="name">
-            <input id="fPhone" type="tel" placeholder="Phone number" maxlength="20" autocomplete="tel">
-            <textarea id="fAddr" rows="2" placeholder="Delivery address" maxlength="280" autocomplete="street-address"></textarea>
-            <textarea id="fNote" rows="2" placeholder="Note (optional)" maxlength="300"></textarea>
-          </div>
-          <div class="paybox" id="payBox">
-            <div class="paytitle">Payment</div>
-            <label class="payopt"><input type="radio" name="pay" value="cod" checked><span id="codLabel">Cash on Delivery</span></label>
-            <label class="payopt" id="bkOpt" hidden><input type="radio" name="pay" value="bkash"><span class="bk">bKash</span><small>Send Money</small></label>
-            <div class="bkinfo" id="bkInfo" hidden>
-              <ol>
-                <li>Open your bKash app and choose <b>Send Money</b>.</li>
-                <li>Send <b id="bkAmt">৳ 0</b> to <b id="bkNum"></b> <button type="button" class="copybtn" id="bkCopy">Copy number</button></li>
-                <li>Copy the <b>Transaction ID (TrxID)</b> from the bKash message and enter it below.</li>
-              </ol>
-              <input id="bkFrom" type="tel" placeholder="Your bKash number (01XXXXXXXXX)" maxlength="16" autocomplete="off">
-              <input id="bkTrx" type="text" placeholder="Transaction ID (TrxID)" maxlength="20" autocomplete="off" autocapitalize="characters">
-            </div>
-          </div>
-          <button class="btn" id="fBtn" type="submit">Place Order</button>
-          <div id="fMsg" class="omsg" role="status"></div>
-        </form>
-      </aside>
-    </div>
+    <div class="small">Afghan Restaurant</div>
+
+    <h1>Place Your Order</h1>
+
+    <p>
+      Fresh food, easy ordering and friendly service.
+    </p>
+
   </div>
 
-  <div id="doneView" hidden></div>
+
+  <div id="notice" class="notice"></div>
+
+
+  <div id="orderContent">
+
+    <div class="order-layout">
+
+      <!-- LEFT SIDE -->
+
+      <section class="card">
+
+        <div class="card-title">
+
+          <h2>Your Order</h2>
+
+          <span id="orderStatus">Ready</span>
+
+        </div>
+
+
+        <div class="food-box">
+
+          <div class="food-icon">
+            🍽️
+          </div>
+
+          <div class="food-name" id="foodName">
+            Afghan Food
+          </div>
+
+          <div class="food-price">
+            ৳ <span id="unitPrice">0</span>
+          </div>
+
+          <div class="unit-price">
+            Price per item
+          </div>
+
+
+          <div class="qty-row">
+
+            <div class="qty-title">
+              Quantity
+            </div>
+
+            <div class="qty-control">
+
+              <button
+                type="button"
+                onclick="changeQuantity(-1)"
+                aria-label="Decrease quantity">
+                −
+              </button>
+
+              <span id="quantity">
+                1
+              </span>
+
+              <button
+                type="button"
+                onclick="changeQuantity(1)"
+                aria-label="Increase quantity">
+                +
+              </button>
+
+            </div>
+
+          </div>
+
+
+          <div class="summary">
+
+            <div class="summary-row">
+              <span>Item Price</span>
+              <strong>৳ <span id="summaryPrice">0</span></strong>
+            </div>
+
+            <div class="summary-row">
+              <span>Quantity</span>
+              <strong id="summaryQty">1</strong>
+            </div>
+
+            <div class="summary-row">
+              <span>Delivery</span>
+              <strong>৳ <span id="deliveryFee">0</span></strong>
+            </div>
+
+            <div class="summary-row total">
+              <span>Total</span>
+              <strong class="total-value">
+                ৳ <span id="grandTotal">0</span>
+              </strong>
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- RIGHT SIDE -->
+
+      <section class="card">
+
+        <div class="card-title">
+
+          <h2>Customer Information</h2>
+
+          <span>Required</span>
+
+        </div>
+
+
+        <form id="orderForm" class="form-box">
+
+          <div class="form-grid">
+
+            <div class="form-group">
+
+              <label for="customerName">
+                Full Name <span>*</span>
+              </label>
+
+              <input
+                id="customerName"
+                name="customerName"
+                type="text"
+                placeholder="Enter your name"
+                required>
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label for="phone">
+                Phone Number <span>*</span>
+              </label>
+
+              <input
+                id="phone"
+                name="phone"
+                type="tel"
+                placeholder="01XXXXXXXXX"
+                required>
+
+            </div>
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="address">
+              Delivery Address <span>*</span>
+            </label>
+
+            <textarea
+              id="address"
+              name="address"
+              placeholder="House, Road, Area, Moulvibazar..."
+              required></textarea>
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="area">
+              Area / Location
+            </label>
+
+            <input
+              id="area"
+              name="area"
+              type="text"
+              placeholder="Example: Moulvibazar Sadar">
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="payment">
+              Payment Method <span>*</span>
+            </label>
+
+            <div class="payment-options">
+
+              <div class="payment-option">
+
+                <input
+                  type="radio"
+                  id="cash"
+                  name="payment"
+                  value="Cash on Delivery"
+                  checked>
+
+                <label for="cash">
+                  💵 Cash on Delivery
+                </label>
+
+              </div>
+
+
+              <div class="payment-option">
+
+                <input
+                  type="radio"
+                  id="bkash"
+                  name="payment"
+                  value="bKash">
+
+                <label for="bkash">
+                  📱 bKash
+                </label>
+
+              </div>
+
+
+              <div class="payment-option">
+
+                <input
+                  type="radio"
+                  id="nagad"
+                  name="payment"
+                  value="Nagad">
+
+                <label for="nagad">
+                  📱 Nagad
+                </label>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="note">
+              Order Note
+            </label>
+
+            <textarea
+              id="note"
+              name="note"
+              placeholder="Any special request?"></textarea>
+
+          </div>
+
+
+          <button
+            type="submit"
+            class="submit-btn"
+            id="submitBtn">
+
+            Place Order — ৳ <span id="buttonTotal">0</span>
+
+          </button>
+
+
+          <div class="secure-note">
+            🔒 Your order information is used only for order processing.
+          </div>
+
+        </form>
+
+      </section>
+
+    </div>
+
+  </div>
+
+
+  <div id="emptyOrder" class="empty-order" style="display:none;">
+
+    <h2>No Food Selected</h2>
+
+    <p>
+      Please go back to the menu and select a dish before placing an order.
+    </p>
+
+    <a href="index.html#menu" class="home-btn">
+      View Menu
+    </a>
+
+  </div>
+
 </main>
 
-<div class="mbar" id="mbar"><span id="mInfo"></span><button type="button" id="mGo">View order</button></div>
 
 <footer>
-  <div class="copy" id="copy" style="border:0;margin:0"></div>
-  <div class="devbar" id="devbar" hidden></div>
+
+  © <span id="year"></span> Afghan Restaurant.
+  All Rights Reserved.
+
 </footer>
-<script src="../developer.js"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>window.supabase||document.write('<script src="https://unpkg.com/@supabase/supabase-js@2"><\/script>')</script>
-<script src="../config.js"></script>
-<script src="../demo-db.js"></script>
+
 <script>
-const $ = id => document.getElementById(id);
-const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const short = n => String(n || '').replace(/\s*restaurant\s*$/i, '').toUpperCase();
-const tk = n => '৳ ' + Number(n || 0);
-const db = DEMO ? createDemoClient() : (window.supabase ? supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null);
 
-let S = {}, dishes = [], cart = {}, cat = '', qry = '', OPEN = true, BK = '', FEE = 0, V5 = false, WA = '', SHOP = 'Restaurant';
+const params = new URLSearchParams(window.location.search);
 
-/* ---------- কোন দিন কোন খাবার ---------- */
-const WEEK = ['sat', 'sun', 'mon', 'tue', 'wed', 'thu', 'fri'];
-const DAYN = { sat: 'Sat', sun: 'Sun', mon: 'Mon', tue: 'Tue', wed: 'Wed', thu: 'Thu', fri: 'Fri' };
-const todayKey = () => new Intl.DateTimeFormat('en-US', { weekday: 'short', timeZone: 'Asia/Dhaka' }).format(new Date()).toLowerCase().slice(0, 3);
-const dayList = d => String(d.days || '').split(',').filter(Boolean);
-const availToday = d => { const l = dayList(d); return !l.length || l.length >= 7 || l.includes(todayKey()); };
-const daysLabel = d => { const l = dayList(d); return l.length && l.length < 7 ? WEEK.filter(x => l.includes(x)).map(x => DAYN[x]).join(', ') : ''; };
 
-const otype = () => (document.querySelector('input[name=otype]:checked') || {}).value || 'delivery';
-const payMethod = () => (document.querySelector('input[name=pay]:checked') || {}).value || 'cod';
-const bdNum = v => { let d = String(v).replace(/\D/g, ''); if (d.length > 11) d = d.replace(/^880/, '0'); return d; };
-const subtotal = () => dishes.reduce((t, d) => t + (cart[d.id] || 0) * (+d.price || 0), 0);
-const count = () => dishes.reduce((t, d) => t + (cart[d.id] || 0), 0);
-const feeNow = () => (otype() === 'delivery' && subtotal() > 0 ? FEE : 0);
+/* =========================
+   GET ORDER INFORMATION
+========================= */
 
-/* ---------- সেটিংস ---------- */
-function applySettings(s) {
-  S = s; SHOP = s.name || SHOP; WA = s.whatsapp || '';
-  OPEN = s.is_open !== false; BK = String(s.bkash_number || '').trim();
-  V5 = 'delivery_fee' in s; FEE = Math.max(0, +s.delivery_fee || 0);
-  document.title = 'Order Online | ' + SHOP;
-  $('logoTop').innerHTML = s.logo ? `<img class="logo-img" src="${esc(s.logo)}" alt="${esc(s.name)}">` : `${esc(short(s.name))}<small>RESTAURANT</small>`;
-  $('copy').textContent = `© ${new Date().getFullYear()} ${s.name}. All Rights Reserved.`;
-  const an = $('announce'); an.innerHTML = s.announcement ? '<b>Special Offer</b> ' + esc(s.announcement) : ''; an.hidden = !s.announcement;
-  if (s.favicon) {
-    document.querySelectorAll('link[rel="icon"]:not(#favicon)').forEach(l => l.remove());
-    $('favicon').removeAttribute('type'); $('favicon').href = s.favicon; $('touch').href = s.favicon;
+let foodName = params.get('food') || '';
+
+let unitPrice = parseFloat(params.get('price')) || 0;
+
+let quantity = parseInt(params.get('qty')) || 1;
+
+if(quantity < 1){
+  quantity = 1;
+}
+
+
+/* =========================
+   ELEMENTS
+========================= */
+
+const foodNameEl = document.getElementById('foodName');
+const unitPriceEl = document.getElementById('unitPrice');
+const quantityEl = document.getElementById('quantity');
+
+const summaryPriceEl = document.getElementById('summaryPrice');
+const summaryQtyEl = document.getElementById('summaryQty');
+
+const deliveryFeeEl = document.getElementById('deliveryFee');
+
+const grandTotalEl = document.getElementById('grandTotal');
+const buttonTotalEl = document.getElementById('buttonTotal');
+
+const orderContent = document.getElementById('orderContent');
+const emptyOrder = document.getElementById('emptyOrder');
+
+
+/* =========================
+   DELIVERY
+========================= */
+
+let deliveryFee = 0;
+
+
+/* =========================
+   DISPLAY ORDER
+========================= */
+
+function updateOrder(){
+
+  const subtotal = unitPrice * quantity;
+
+  const total = subtotal + deliveryFee;
+
+
+  foodNameEl.textContent =
+    foodName || 'Afghan Food';
+
+  unitPriceEl.textContent =
+    unitPrice.toLocaleString('en-BD');
+
+  quantityEl.textContent =
+    quantity;
+
+  summaryPriceEl.textContent =
+    subtotal.toLocaleString('en-BD');
+
+  summaryQtyEl.textContent =
+    quantity;
+
+  deliveryFeeEl.textContent =
+    deliveryFee.toLocaleString('en-BD');
+
+  grandTotalEl.textContent =
+    total.toLocaleString('en-BD');
+
+  buttonTotalEl.textContent =
+    total.toLocaleString('en-BD');
+
+}
+
+
+/* =========================
+   QUANTITY
+========================= */
+
+function changeQuantity(value){
+
+  quantity += value;
+
+  if(quantity < 1){
+    quantity = 1;
   }
-  const pill = $('openPill'); pill.hidden = false; pill.className = 'pill' + (OPEN ? '' : ' off');
-  pill.textContent = OPEN ? '● Open now' + (s.hours ? ' · ' + s.hours : '') : '● Closed right now';
-  $('closedNote').hidden = OPEN; $('fBtn').disabled = !OPEN;
-  $('bkOpt').hidden = !BK; $('bkNum').textContent = BK;
-  if (!BK) { document.querySelector('input[name=pay][value=cod]').checked = true; $('bkInfo').hidden = true; }
+
+  updateOrder();
+
 }
 
-/* ---------- মেনু ---------- */
-function renderChips() {
-  const cats = [...new Set(dishes.map(d => d.category).filter(Boolean))];
-  if (cat && !cats.includes(cat)) cat = '';
-  $('menuTools').hidden = !(cats.length || dishes.length > 6);
-  $('chips').innerHTML = cats.length ? ['', ...cats].map(c => `<button type="button" class="chip${c === cat ? ' on' : ''}" data-cat="${esc(c)}">${c ? esc(c) : 'All'}</button>`).join('') : '';
-  $('msearch').hidden = dishes.length <= 6;
+
+/* =========================
+   NO FOOD CHECK
+========================= */
+
+if(!foodName || unitPrice <= 0){
+
+  orderContent.style.display = 'none';
+
+  emptyOrder.style.display = 'block';
+
+}
+else{
+
+  updateOrder();
+
 }
 
-function renderItems() {
-  const list = dishes.filter(d => (!cat || d.category === cat) && (!qry || String(d.name).toLowerCase().includes(qry)));
-  const grouped = dishes.some(d => d.category) && !cat;
-  const sorted = grouped ? [...list].sort((a, b) => (a.category || 'zzz').localeCompare(b.category || 'zzz')) : list;
-  let last = null;
-  $('items').innerHTML = sorted.length ? sorted.map(d => {
-    const av = availToday(d), off = !av || !OPEN, q = cart[d.id] || 0;
-    let head = '';
-    if (grouped && (d.category || '') !== last) { last = d.category || ''; head = last ? `<div class="ocat">${esc(last)}</div>` : ''; }
-    return head + `
-    <div class="orow${off ? ' off' : ''}">
-      ${d.image ? `<img src="${esc(d.image)}" alt="" loading="lazy">` : '<div class="thumb"></div>'}
-      <div class="mid">
-        <div class="nm">${esc(d.name)} ${d.is_new ? '<span class="badge">New</span>' : ''}</div>
-        <div class="pr">${tk(d.price)}</div>
-        ${!av ? `<div class="sub" style="color:#b3332b">Not available today (${esc(daysLabel(d))} only)</div>` : ''}
-      </div>
-      <div class="qty">
-        <button type="button" data-id="${d.id}" data-op="-" aria-label="Remove one ${esc(d.name)}" ${off || !q ? 'disabled' : ''}>−</button>
-        <span>${q}</span>
-        <button type="button" data-id="${d.id}" data-op="+" aria-label="Add one ${esc(d.name)}" ${off ? 'disabled' : ''}>+</button>
-      </div>
-    </div>`;
-  }).join('') : `<p class="msg-empty">${dishes.length ? 'No dishes found.' : 'Menu coming soon.'}</p>`;
+
+/* =========================
+   NOTICE
+========================= */
+
+function showNotice(message,type){
+
+  const notice =
+    document.getElementById('notice');
+
+  notice.className =
+    'notice show ' + type;
+
+  notice.textContent =
+    message;
+
+  window.scrollTo({
+    top:0,
+    behavior:'smooth'
+  });
+
 }
 
-function renderCart() {
-  dishes.forEach(d => { if (!availToday(d) || !OPEN) delete cart[d.id]; });
-  const lines = dishes.filter(d => cart[d.id] > 0);
-  $('cartLines').innerHTML = lines.length
-    ? lines.map(d => `<div class="cartline"><span>${cart[d.id]} × ${esc(d.name)}</span><b>${tk(cart[d.id] * d.price)}</b></div>`).join('')
-    : '<p class="msg-empty">Your cart is empty. Add dishes from the menu.</p>';
-  const sub = subtotal(), fee = feeNow(), total = sub + fee;
-  $('sSub').textContent = tk(sub);
-  $('feeRow').hidden = !(otype() === 'delivery' && FEE > 0 && sub > 0);
-  $('sFee').textContent = tk(fee);
-  $('sTotal').textContent = tk(total);
-  $('bkAmt').textContent = tk(total);
-  const n = count(), bar = $('mbar');
-  bar.classList.toggle('show', n > 0);
-  $('mInfo').textContent = n ? `${n} item${n > 1 ? 's' : ''} · ${tk(total)}` : '';
-}
 
-function refresh() { renderItems(); renderCart(); }
+/* =========================
+   FORM SUBMIT
+========================= */
 
-$('items').addEventListener('click', e => {
-  const b = e.target.closest('button[data-id]'); if (!b) return;
-  const id = b.dataset.id, n = (cart[id] || 0) + (b.dataset.op === '+' ? 1 : -1);
-  cart[id] = Math.max(0, Math.min(20, n));
-  refresh();
-});
-$('chips').addEventListener('click', e => {
-  const b = e.target.closest('.chip'); if (!b) return;
-  cat = b.dataset.cat; renderChips(); renderItems();
-});
-$('msearch').addEventListener('input', e => { qry = e.target.value.trim().toLowerCase(); renderItems(); });
-$('mGo').addEventListener('click', () => $('cartBox').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }));
-document.querySelectorAll('#nav a').forEach(a => a.addEventListener('click', () => $('nav').classList.remove('open')));
+document
+.getElementById('orderForm')
+.addEventListener('submit', function(e){
 
-document.querySelectorAll('input[name=otype]').forEach(r => r.addEventListener('change', () => {
-  const pick = otype() === 'pickup';
-  $('fAddr').hidden = pick;
-  $('codLabel').textContent = pick ? 'Pay at the restaurant' : 'Cash on Delivery';
-  renderCart();
-}));
-document.querySelectorAll('input[name=pay]').forEach(r => r.addEventListener('change', () => { $('bkInfo').hidden = payMethod() !== 'bkash'; }));
-$('bkCopy').addEventListener('click', async e => {
-  const b = e.currentTarget;
-  try { await navigator.clipboard.writeText(BK); }
-  catch (_) { const t = document.createElement('textarea'); t.value = BK; document.body.appendChild(t); t.select(); try { document.execCommand('copy'); } catch (__) {} t.remove(); }
-  b.textContent = 'Copied ✓'; setTimeout(() => b.textContent = 'Copy number', 2000);
-});
-
-/* ---------- অর্ডার পাঠানো ---------- */
-function say(text, ok) { const m = $('fMsg'); m.className = 'omsg ' + (ok ? 'ok' : 'err'); m.textContent = text; }
-const ALPHA = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-function genCode() { const a = new Uint32Array(6); crypto.getRandomValues(a); return [...a].map(n => ALPHA[n % ALPHA.length]).join(''); }
-
-$('oform').addEventListener('submit', async e => {
   e.preventDefault();
-  if (!db) return say('Ordering is not available right now. Please refresh the page or call us.', false);
-  if (!OPEN) return say('We are closed right now. Please order when we open.', false);
-  const items = dishes.filter(d => cart[d.id] > 0 && availToday(d)).map(d => ({ id: d.id, name: d.name, price: +d.price || 0, qty: cart[d.id] }));
-  if (!items.length) return say('Please choose at least one dish.', false);
-  const type = otype(), name = $('fName').value.trim(), phone = $('fPhone').value.trim(), addr = $('fAddr').value.trim(), note = $('fNote').value.trim();
-  if (!name) return say('Please enter your name.', false);
-  if (phone.replace(/\D/g, '').length < 8) return say('Please enter a valid phone number.', false);
-  if (type === 'delivery' && !addr) return say('Please enter your delivery address.', false);
-  const pay = BK ? payMethod() : 'cod';
-  let from = '', trx = '';
-  if (pay === 'bkash') {
-    from = bdNum($('bkFrom').value); trx = $('bkTrx').value.trim().toUpperCase();
-    if (!/^01[3-9]\d{8}$/.test(from)) return say('Please enter the bKash number you sent money from (like 01712345678).', false);
-    if (!/^[A-Z0-9]{8,14}$/.test(trx)) return say('Please enter a valid Transaction ID (TrxID) from your bKash message.', false);
-  }
-  const sub = items.reduce((t, i) => t + i.price * i.qty, 0), fee = type === 'delivery' ? FEE : 0, total = sub + fee;
 
-  const btn = $('fBtn'); btn.disabled = true; btn.textContent = 'Sending...';
-  let error = null, code = '';
-  for (let n = 0; n < 4; n++) {
-    code = V5 ? genCode() : '';
-    const row = { name, phone, address: type === 'pickup' ? 'Pickup at restaurant' : addr, note, items, total };
-    if (V5) Object.assign(row, { order_code: code, order_type: type, delivery_fee: fee });
-    if (pay === 'bkash') Object.assign(row, { payment_method: 'bkash', payment_number: from, trx_id: trx });
-    ({ error } = await db.from('orders').insert(row));
-    if (!error || !(V5 && /orders_code_unique/.test(error.message || ''))) break;
+
+  const customerName =
+    document.getElementById('customerName')
+    .value.trim();
+
+  const phone =
+    document.getElementById('phone')
+    .value.trim();
+
+  const address =
+    document.getElementById('address')
+    .value.trim();
+
+  const area =
+    document.getElementById('area')
+    .value.trim();
+
+  const note =
+    document.getElementById('note')
+    .value.trim();
+
+  const payment =
+    document.querySelector(
+      'input[name="payment"]:checked'
+    )?.value || 'Cash on Delivery';
+
+
+  if(!customerName){
+
+    showNotice(
+      'Please enter your full name.',
+      'error'
+    );
+
+    document.getElementById('customerName').focus();
+
+    return;
   }
-  btn.disabled = !OPEN; btn.textContent = 'Place Order';
-  if (error) {
-    console.error(error);
-    if (error.code === '23505' || /orders_trx_unique/.test(error.message || '')) return say('This Transaction ID has already been used. Please check your TrxID.', false);
-    return say('Sorry, the order could not be sent. Please call us to order.', false);
+
+
+  if(!phone){
+
+    showNotice(
+      'Please enter your phone number.',
+      'error'
+    );
+
+    document.getElementById('phone').focus();
+
+    return;
   }
-  showDone({ code, name, phone, items, sub, fee, total, type, pay, from, trx });
+
+
+  if(!address){
+
+    showNotice(
+      'Please enter your delivery address.',
+      'error'
+    );
+
+    document.getElementById('address').focus();
+
+    return;
+  }
+
+
+  const subtotal =
+    unitPrice * quantity;
+
+  const total =
+    subtotal + deliveryFee;
+
+
+  const orderId =
+    'AFG' +
+    Date.now().toString().slice(-8);
+
+
+  const orderData = {
+
+    id: orderId,
+
+    food: foodName,
+
+    price: unitPrice,
+
+    quantity: quantity,
+
+    subtotal: subtotal,
+
+    deliveryFee: deliveryFee,
+
+    total: total,
+
+    customerName: customerName,
+
+    phone: phone,
+
+    address: address,
+
+    area: area,
+
+    payment: payment,
+
+    note: note,
+
+    status: 'Pending',
+
+    createdAt: new Date().toISOString()
+
+  };
+
+
+  /* =========================
+     SAVE LOCAL ORDER
+  ========================= */
+
+  let orders = [];
+
+  try{
+
+    orders =
+      JSON.parse(
+        localStorage.getItem(
+          'shoppingMelaOrders'
+        ) || '[]'
+      );
+
+    if(!Array.isArray(orders)){
+      orders = [];
+    }
+
+  }
+  catch(error){
+
+    orders = [];
+
+  }
+
+
+  orders.push(orderData);
+
+
+  localStorage.setItem(
+    'shoppingMelaOrders',
+    JSON.stringify(orders)
+  );
+
+
+  /* Restaurant order storage */
+
+  let restaurantOrders = [];
+
+  try{
+
+    restaurantOrders =
+      JSON.parse(
+        localStorage.getItem(
+          'afghanRestaurantOrders'
+        ) || '[]'
+      );
+
+    if(!Array.isArray(restaurantOrders)){
+      restaurantOrders = [];
+    }
+
+  }
+  catch(error){
+
+    restaurantOrders = [];
+
+  }
+
+
+  restaurantOrders.push(orderData);
+
+
+  localStorage.setItem(
+    'afghanRestaurantOrders',
+    JSON.stringify(restaurantOrders)
+  );
+
+
+  /* =========================
+     SUCCESS
+  ========================= */
+
+  showNotice(
+    'Order placed successfully! Order ID: ' +
+    orderId,
+    'success'
+  );
+
+
+  document.getElementById('orderStatus')
+    .textContent = 'Order Placed';
+
+
+  document.getElementById('submitBtn')
+    .disabled = true;
+
+
+  document.getElementById('submitBtn')
+    .textContent =
+      '✓ Order Placed — ' +
+      '৳ ' +
+      total.toLocaleString('en-BD');
+
+
+  /*
+    After successful order,
+    open track page if available.
+  */
+
+  setTimeout(function(){
+
+    window.location.href =
+      'track/?id=' +
+      encodeURIComponent(orderId);
+
+  },1500);
+
 });
 
-function showDone(o) {
-  try { if (o.code) localStorage.setItem('lastOrder', JSON.stringify({ code: o.code, phone: o.phone })); } catch (_) {}
-  const lines = [`New order - ${SHOP}`, o.code ? `Order code: ${o.code}` : '', o.type === 'pickup' ? 'PICKUP' : 'DELIVERY',
-    ...o.items.map(i => `${i.name} x ${i.qty} = ${i.price * i.qty}`),
-    o.fee ? `Delivery fee: ${o.fee}` : '', `Total: ${o.total} BDT`,
-    o.pay === 'bkash' ? `Paid by bKash from ${o.from}, TrxID: ${o.trx}` : (o.type === 'pickup' ? 'Payment: at the restaurant' : 'Payment: Cash on delivery'),
-    `Name: ${o.name}`, `Phone: ${o.phone}`, o.type === 'delivery' ? `Address: ${$('fAddr').value.trim()}` : ''].filter(Boolean);
-  const wa = WA ? `<a class="btn wa-btn" target="_blank" rel="noopener" href="https://wa.me/${esc(WA)}?text=${encodeURIComponent(lines.join('\n'))}">Confirm on WhatsApp</a>` : '';
-  const track = o.code ? `<a class="btn" href="../track/?code=${encodeURIComponent(o.code)}&phone=${encodeURIComponent(o.phone)}">Track Your Order</a>` : '';
-  $('doneView').innerHTML = `<div class="donebox">
-    <div class="tick">✓</div>
-    <h1 style="font-size:1.6rem">Thank you, ${esc(o.name)}!</h1>
-    <p>${o.pay === 'bkash' ? 'Your order has been received. We will verify your bKash payment and call you soon.' : 'Your order has been received. We will call you soon.'}</p>
-    ${o.code ? `<div>Your order code</div><div class="code" id="doneCode">${esc(o.code)}</div><small>Save this code and your phone number to track your order.</small>` : ''}
-    <div class="sumlines">
-      ${o.items.map(i => `<div class="cartline"><span>${i.qty} × ${esc(i.name)}</span><b>${tk(i.qty * i.price)}</b></div>`).join('')}
-      ${o.fee ? `<div class="cartline"><span>Delivery fee</span><b>${tk(o.fee)}</b></div>` : ''}
-      <div class="sumrow total"><span>Total</span><b>${tk(o.total)}</b></div>
-      <div class="cartline"><span>${o.type === 'pickup' ? '🏪 Pickup' : '🛵 Delivery'}</span><span>${o.pay === 'bkash' ? 'bKash' : (o.type === 'pickup' ? 'Pay at restaurant' : 'Cash on delivery')}</span></div>
-    </div>
-    ${track}${wa}
-    <div><a class="btn outline-dark" href="./">Order More</a></div>
-  </div>`;
-  $('orderView').hidden = true; $('doneView').hidden = false; $('mbar').classList.remove('show');
-  window.scrollTo(0, 0);
+
+/* =========================
+   PHONE VALIDATION
+========================= */
+
+document
+.getElementById('phone')
+.addEventListener('input',function(){
+
+  this.value =
+    this.value.replace(
+      /[^0-9+\-\s]/g,
+      ''
+    );
+
+});
+
+
+/* =========================
+   YEAR
+========================= */
+
+document.getElementById('year')
+.textContent =
+  new Date().getFullYear();
+
+
+/* =========================
+   ESCAPE URL VALUES
+========================= */
+
+if(foodName){
+
+  document.title =
+    foodName +
+    ' | Order | Afghan Restaurant';
+
 }
 
-/* ---------- লোড ---------- */
-async function load() {
-  if (!db) { $('items').innerHTML = '<p class="msg-empty">Could not connect to the server. Please check your internet and refresh.</p>'; return; }
-  try {
-    const [s, d] = await Promise.all([
-      db.from('settings').select('*').eq('id', 1).single(),
-      db.from('dishes').select('*').order('id')
-    ]);
-    if (s.data) applySettings(s.data);
-    dishes = d.data || [];
-    renderChips(); refresh();
-  } catch (e) { console.error(e); $('items').innerHTML = '<p class="msg-empty">Menu could not be loaded. Please refresh.</p>'; }
-}
-load();
 </script>
+
 </body>
 </html>
