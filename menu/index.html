@@ -1,417 +1,1250 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>Menu | Afghan Restaurant</title>
-<meta name="description" content="Explore our delicious Afghan Restaurant menu.">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link rel="icon" id="favicon" href="../favicon.svg" type="image/svg+xml">
-<link rel="icon" href="../favicon-32.png" sizes="32x32" type="image/png">
-<link rel="apple-touch-icon" id="touch" href="../apple-touch-icon.png">
+  <title>Our Menu | Afghan Restaurant</title>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,500&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <meta
+    name="description"
+    content="Explore our delicious Afghan Restaurant menu and order your favourite dishes."
+  >
 
-<link rel="stylesheet" href="../style.css">
+  <style>
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #faf8f3;
+      color: #201b18;
+    }
+
+    button {
+      font-family: inherit;
+    }
+
+
+    /* =========================
+       HEADER
+    ========================= */
+
+    .menu-header {
+      background: #171312;
+      color: white;
+      padding: 17px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 9999;
+      box-shadow: 0 4px 18px rgba(0,0,0,.15);
+    }
+
+    .header-inner {
+      max-width: 1150px;
+      margin: auto;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 20px;
+    }
+
+    .restaurant-logo {
+      font-family: Georgia, serif;
+      font-size: 25px;
+      font-weight: 700;
+    }
+
+    .restaurant-logo span {
+      color: #cf8d28;
+    }
+
+    .header-nav {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .header-nav a {
+      text-decoration: none;
+      color: white;
+      font-size: 13px;
+      padding: 9px 14px;
+      border-radius: 7px;
+      transition: .25s;
+    }
+
+    .header-nav a:hover,
+    .header-nav a.active {
+      background: #cf8d28;
+    }
+
+
+    /* =========================
+       HERO
+    ========================= */
+
+    .menu-hero {
+      min-height: 300px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      text-align: center;
+
+      padding: 55px 20px;
+
+      background:
+        linear-gradient(
+          rgba(20,16,13,.76),
+          rgba(20,16,13,.76)
+        ),
+        url("https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=1600&q=85")
+        center/cover no-repeat;
+    }
+
+    .hero-content {
+      max-width: 750px;
+      color: white;
+    }
+
+    .hero-content .small-title {
+      color: #e5a63f;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .hero-content h1 {
+      font-family: Georgia, serif;
+      font-size: 52px;
+      margin-bottom: 15px;
+    }
+
+    .hero-content p {
+      color: #e8e4df;
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+
+    /* =========================
+       MENU SECTION
+    ========================= */
+
+    .menu-section {
+      padding: 70px 20px 100px;
+    }
+
+    .menu-container {
+      max-width: 1150px;
+      margin: auto;
+    }
+
+    .section-heading {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .section-heading h2 {
+      font-family: Georgia, serif;
+      font-size: 38px;
+      margin-bottom: 12px;
+    }
+
+    .section-heading span {
+      display: block;
+      width: 60px;
+      height: 2px;
+      background: #cf8d28;
+      margin: 0 auto 12px;
+    }
+
+    .section-heading p {
+      color: #777;
+      font-size: 14px;
+    }
+
+
+    /* =========================
+       FILTER
+    ========================= */
+
+    .menu-filter {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 38px;
+    }
+
+    .filter-btn {
+      border: 1px solid #d9d2c8;
+      background: white;
+      color: #332d28;
+
+      padding: 10px 21px;
+
+      border-radius: 25px;
+
+      cursor: pointer;
+
+      font-size: 13px;
+      font-weight: 700;
+
+      transition: .25s;
+    }
+
+    .filter-btn:hover,
+    .filter-btn.active {
+      background: #cf8d28;
+      border-color: #cf8d28;
+      color: white;
+    }
+
+
+    /* =========================
+       MENU GRID
+    ========================= */
+
+    .menu-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(4, 1fr);
+
+      gap: 20px;
+    }
+
+
+    /* =========================
+       MENU CARD
+    ========================= */
+
+    .menu-card {
+      background: white;
+
+      border: 1px solid #e4ded5;
+
+      border-radius: 13px;
+
+      overflow: hidden;
+
+      box-shadow:
+        0 5px 18px rgba(0,0,0,.05);
+
+      transition:
+        transform .3s ease,
+        box-shadow .3s ease;
+    }
+
+    .menu-card:hover {
+      transform: translateY(-7px);
+
+      box-shadow:
+        0 15px 35px rgba(0,0,0,.13);
+    }
+
+
+    /* =========================
+       IMAGE
+    ========================= */
+
+    .menu-image {
+      height: 205px;
+
+      position: relative;
+
+      overflow: hidden;
+    }
+
+    .menu-image img {
+      width: 100%;
+      height: 100%;
+
+      object-fit: cover;
+
+      display: block;
+
+      transition: .45s;
+    }
+
+    .menu-card:hover .menu-image img {
+      transform: scale(1.08);
+    }
+
+
+    /* =========================
+       BADGE
+    ========================= */
+
+    .menu-badge {
+      position: absolute;
+
+      top: 12px;
+      left: 12px;
+
+      background: #cf8d28;
+
+      color: white;
+
+      padding: 6px 11px;
+
+      border-radius: 20px;
+
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .menu-badge.popular {
+      background: #171312;
+    }
+
+
+    /* =========================
+       CARD CONTENT
+    ========================= */
+
+    .menu-content {
+      padding: 17px;
+    }
+
+    .menu-content h3 {
+      font-family: Georgia, serif;
+
+      font-size: 19px;
+
+      margin-bottom: 8px;
+
+      color: #201b18;
+    }
+
+    .menu-description {
+      color: #777;
+
+      font-size: 12px;
+
+      line-height: 1.6;
+
+      min-height: 39px;
+
+      margin-bottom: 13px;
+    }
+
+
+    /* =========================
+       PRICE
+    ========================= */
+
+    .menu-bottom {
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      gap: 10px;
+    }
+
+    .menu-price {
+      color: #c98928;
+
+      font-size: 20px;
+
+      font-weight: 800;
+    }
+
+
+    /* =========================
+       ORDER BUTTON
+    ========================= */
+
+    .order-btn {
+      border: none;
+
+      background: #cf8d28;
+
+      color: white;
+
+      padding: 10px 13px;
+
+      border-radius: 7px;
+
+      cursor: pointer;
+
+      font-size: 12px;
+
+      font-weight: 800;
+
+      transition: .25s;
+    }
+
+    .order-btn:hover {
+      background: #ad701c;
+
+      transform: translateY(-1px);
+    }
+
+
+    /* =========================
+       EMPTY MESSAGE
+    ========================= */
+
+    .empty-message {
+      display: none;
+
+      text-align: center;
+
+      padding: 45px;
+
+      color: #777;
+
+      font-size: 14px;
+    }
+
+
+    /* =========================
+       FOOTER
+    ========================= */
+
+    .menu-footer {
+      background: #171312;
+
+      color: #aaa;
+
+      text-align: center;
+
+      padding: 30px 15px;
+
+      font-size: 12px;
+    }
+
+
+    /* =========================
+       RESPONSIVE
+    ========================= */
+
+    @media (max-width: 1000px) {
+
+      .menu-grid {
+        grid-template-columns:
+          repeat(3, 1fr);
+      }
+
+    }
+
+
+    @media (max-width: 750px) {
+
+      .menu-header {
+        padding: 14px;
+      }
+
+      .header-inner {
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .header-nav {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .hero-content h1 {
+        font-size: 40px;
+      }
+
+      .menu-grid {
+        grid-template-columns:
+          repeat(2, 1fr);
+
+        gap: 13px;
+      }
+
+      .menu-image {
+        height: 165px;
+      }
+
+    }
+
+
+    @media (max-width: 480px) {
+
+      .menu-section {
+        padding: 50px 13px 70px;
+      }
+
+      .section-heading h2 {
+        font-size: 30px;
+      }
+
+      .hero-content h1 {
+        font-size: 34px;
+      }
+
+      .hero-content p {
+        font-size: 13px;
+      }
+
+      .menu-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .menu-image {
+        height: 205px;
+      }
+
+      .menu-content h3 {
+        font-size: 20px;
+      }
+
+      .menu-bottom {
+        align-items: center;
+      }
+
+    }
+
+  </style>
+
 </head>
+
 
 <body>
 
-<div class="announce" id="announce" hidden></div>
 
-<header>
-  <div class="wrap">
+<!-- =========================
+     HEADER
+========================= -->
 
-    <a href="../" class="logo" id="logoTop">
-      AFGHAN<small>RESTAURANT</small>
-    </a>
+<header class="menu-header">
 
-    <nav id="nav">
-      <a href="../#home">Home</a>
-      <a href="./">Menu</a>
-      <a href="../#about">About Us</a>
-      <a href="../#gallery">Gallery</a>
-      <a href="../blog/">Blog</a>
-      <a href="../#contact">Contact</a>
+  <div class="header-inner">
+
+    <div class="restaurant-logo">
+      Afghan <span>Restaurant</span>
+    </div>
+
+
+    <nav class="header-nav">
+
+      <a href="index.html">
+        Home
+      </a>
+
+      <a
+        href="menu.html"
+        class="active"
+      >
+        Menu
+      </a>
+
+      <a href="order.html">
+        My Order
+      </a>
+
     </nav>
 
-    <a class="btn" href="../#order">Order Now</a>
-
-    <button
-      class="menu-btn"
-      aria-label="Menu"
-      onclick="document.getElementById('nav').classList.toggle('open')">
-      ☰
-    </button>
-
   </div>
+
 </header>
 
 
-<main class="wrap menupage" id="main">
 
-  <p>Loading menu...</p>
+<!-- =========================
+     HERO
+========================= -->
 
-</main>
+<section class="menu-hero">
+
+  <div class="hero-content">
+
+    <div class="small-title">
+      Afghan Restaurant
+    </div>
+
+    <h1>
+      Our Menu
+    </h1>
+
+    <p>
+      Discover delicious Afghan-inspired dishes,
+      prepared with fresh ingredients and authentic
+      flavours.
+    </p>
+
+  </div>
+
+</section>
 
 
-<footer>
-  <div class="copy" id="copy" style="border:0;margin:0"></div>
-  <div class="devbar" id="devbar" hidden></div>
+
+<!-- =========================
+     MENU
+========================= -->
+
+<section class="menu-section">
+
+  <div class="menu-container">
+
+
+    <div class="section-heading">
+
+      <h2>
+        Explore Our Dishes
+      </h2>
+
+      <span></span>
+
+      <p>
+        Choose your favourite dish and order now
+      </p>
+
+    </div>
+
+
+
+    <!-- FILTER -->
+
+    <div class="menu-filter">
+
+      <button
+        class="filter-btn active"
+        onclick="filterMenu('all', this)"
+      >
+        All
+      </button>
+
+
+      <button
+        class="filter-btn"
+        onclick="filterMenu('popular', this)"
+      >
+        Popular
+      </button>
+
+
+      <button
+        class="filter-btn"
+        onclick="filterMenu('new', this)"
+      >
+        New
+      </button>
+
+
+      <button
+        class="filter-btn"
+        onclick="filterMenu('chicken', this)"
+      >
+        Chicken
+      </button>
+
+
+      <button
+        class="filter-btn"
+        onclick="filterMenu('beef', this)"
+      >
+        Beef
+      </button>
+
+
+      <button
+        class="filter-btn"
+        onclick="filterMenu('rice', this)"
+      >
+        Rice
+      </button>
+
+    </div>
+
+
+
+    <!-- MENU GRID -->
+
+    <div class="menu-grid">
+
+
+      <!-- =========================
+           1
+      ========================= -->
+
+      <div
+        class="menu-card"
+        data-category="new popular beef rice"
+      >
+
+        <div class="menu-image">
+
+          <img
+            src="https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=900&q=85"
+            alt="Afghan Beef Pulgo"
+          >
+
+          <span class="menu-badge">
+            New
+          </span>
+
+        </div>
+
+
+        <div class="menu-content">
+
+          <h3>
+            Afghan Beef Pulgo
+          </h3>
+
+          <p class="menu-description">
+            Traditional Afghan-style beef rice
+            prepared with aromatic spices.
+          </p>
+
+
+          <div class="menu-bottom">
+
+            <div class="menu-price">
+              ৳250
+            </div>
+
+            <button
+              class="order-btn"
+              onclick="orderFood('Afghan Beef Pulgo', 250)"
+            >
+              Order Now →
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- =========================
+           2
+      ========================= -->
+
+      <div
+        class="menu-card"
+        data-category="popular chicken"
+      >
+
+        <div class="menu-image">
+
+          <img
+            src="https://images.unsplash.com/photo-1585937421612-70a008356fbe?auto=format&fit=crop&w=900&q=85"
+            alt="Chicken Korma"
+          >
+
+          <span class="menu-badge popular">
+            Popular
+          </span>
+
+        </div>
+
+
+        <div class="menu-content">
+
+          <h3>
+            Chicken Korma
+          </h3>
+
+          <p class="menu-description">
+            Creamy and rich chicken curry
+            with traditional spices.
+          </p>
+
+
+          <div class="menu-bottom">
+
+            <div class="menu-price">
+              ৳220
+            </div>
+
+            <button
+              class="order-btn"
+              onclick="orderFood('Chicken Korma', 220)"
+            >
+              Order Now →
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- =========================
+           3
+      ========================= -->
+
+      <div
+        class="menu-card"
+        data-category="popular chicken rice"
+      >
+
+        <div class="menu-image">
+
+          <img
+            src="https://images.unsplash.com/photo-1601050690117-94f5f6fa8bd7?auto=format&fit=crop&w=900&q=85"
+            alt="Afghan Chicken Pulgo"
+          >
+
+          <span class="menu-badge popular">
+            Popular
+          </span>
+
+        </div>
+
+
+        <div class="menu-content">
+
+          <h3>
+            Afghan Chicken Pulgo
+          </h3>
+
+          <p class="menu-description">
+            Fragrant rice with tender chicken
+            and Afghan spices.
+          </p>
+
+
+          <div class="menu-bottom">
+
+            <div class="menu-price">
+              ৳200
+            </div>
+
+            <button
+              class="order-btn"
+              onclick="orderFood('Afghan Chicken Pulgo', 200)"
+            >
+              Order Now →
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- =========================
+           4
+      ========================= -->
+
+      <div
+        class="menu-card"
+        data-category="popular beef"
+      >
+
+        <div class="menu-image">
+
+          <img
+            src="https://images.unsplash.com/photo-1532550907401-a500c9a57435?auto=format&fit=crop&w=900&q=85"
+            alt="Beef Karahi"
+          >
+
+          <span class="menu-badge popular">
+            Popular
+          </span>
+
+        </div>
+
+
+        <div class="menu-content">
+
+          <h3>
+            Beef Karahi
+          </h3>
+
+          <p class="menu-description">
+            Spicy beef cooked with tomato,
+            herbs and traditional masala.
+          </p>
+
+
+          <div class="menu-bottom">
+
+            <div class="menu-price">
+              ৳280
+            </div>
+
+            <button
+              class="order-btn"
+              onclick="orderFood('Beef Karahi', 280)"
+            >
+              Order Now →
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- =========================
+           5
+      ========================= -->
+
+      <div
+        class="menu-card"
+        data-category="popular chicken"
+      >
+
+        <div class="menu-image">
+
+          <img
+            src="https://images.unsplash.com/photo-1598103442097-8b74394b95c6?auto=format&fit=crop&w=900&q=85"
+            alt="Chicken Roast"
+          >
+
+          <span class="menu-badge popular">
+            Popular
+          </span>
+
+        </div>
+
+
+        <div class="menu-content">
+
+          <h3>
+            Chicken Roast
+          </h3>
+
+          <p class="menu-description">
+            Juicy roasted chicken with
+            aromatic herbs and spices.
+          </p>
+
+
+          <div class="menu-bottom">
+
+            <div class="menu-price">
+              ৳180
+            </div>
+
+            <button
+              class="order-btn"
+              onclick="orderFood('Chicken Roast', 180)"
+            >
+              Order Now →
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- =========================
+           6
+      ========================= -->
+
+      <div
+        class="menu-card"
+        data-category="new beef"
+      >
+
+        <div class="menu-image">
+
+          <img
+            src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=900&q=85"
+            alt="Afghan Beef Curry"
+          >
+
+          <span class="menu-badge">
+            New
+          </span>
+
+        </div>
+
+
+        <div class="menu-content">
+
+          <h3>
+            Afghan Beef Curry
+          </h3>
+
+          <p class="menu-description">
+            Tender beef simmered in a rich
+            Afghan-style curry.
+          </p>
+
+
+          <div class="menu-bottom">
+
+            <div class="menu-price">
+              ৳290
+            </div>
+
+            <button
+              class="order-btn"
+              onclick="orderFood('Afghan Beef Curry', 290)"
+            >
+              Order Now →
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- =========================
+           7
+      ========================= -->
+
+      <div
+        class="menu-card"
+        data-category="new chicken"
+      >
+
+        <div class="menu-image">
+
+          <img
+            src="https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?auto=format&fit=crop&w=900&q=85"
+            alt="Chicken Tikka"
+          >
+
+          <span class="menu-badge">
+            New
+          </span>
+
+        </div>
+
+
+        <div class="menu-content">
+
+          <h3>
+            Chicken Tikka
+          </h3>
+
+          <p class="menu-description">
+            Grilled chicken pieces marinated
+            with aromatic spices.
+          </p>
+
+
+          <div class="menu-bottom">
+
+            <div class="menu-price">
+              ৳230
+            </div>
+
+            <button
+              class="order-btn"
+              onclick="orderFood('Chicken Tikka', 230)"
+            >
+              Order Now →
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- =========================
+           8
+      ========================= -->
+
+      <div
+        class="menu-card"
+        data-category="popular rice"
+      >
+
+        <div class="menu-image">
+
+          <img
+            src="https://images.unsplash.com/photo-1589302168068-964664d93dc0?auto=format&fit=crop&w=900&q=85"
+            alt="Afghan Rice"
+          >
+
+          <span class="menu-badge popular">
+            Popular
+          </span>
+
+        </div>
+
+
+        <div class="menu-content">
+
+          <h3>
+            Afghan Rice
+          </h3>
+
+          <p class="menu-description">
+            Fragrant Afghan rice served with
+            aromatic herbs and spices.
+          </p>
+
+
+          <div class="menu-bottom">
+
+            <div class="menu-price">
+              ৳150
+            </div>
+
+            <button
+              class="order-btn"
+              onclick="orderFood('Afghan Rice', 150)"
+            >
+              Order Now →
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+    </div>
+
+
+    <div
+      class="empty-message"
+      id="emptyMessage"
+    >
+      No dishes found in this category.
+    </div>
+
+  </div>
+
+</section>
+
+
+
+<!-- =========================
+     FOOTER
+========================= -->
+
+<footer class="menu-footer">
+
+  © 2026 Afghan Restaurant.
+  All Rights Reserved.
+
 </footer>
 
 
-<script src="../developer.js"></script>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="../config.js"></script>
-<script src="../demo-db.js"></script>
 
 <script>
 
-const $ = id => document.getElementById(id);
+  /* =========================
+     MENU FILTER
+  ========================= */
 
-const esc = s =>
-  String(s ?? '').replace(/[&<>"']/g, c => ({
-    '&':'&amp;',
-    '<':'&lt;',
-    '>':'&gt;',
-    '"':'&quot;',
-    "'":'&#39;'
-  }[c]));
-
-const db =
-  DEMO
-    ? createDemoClient()
-    : supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_ANON_KEY
-      );
-
-let shop = 'Afghan Restaurant';
-
-
-/* =========================
-   SETTINGS
-========================= */
-
-function applySettings(s) {
-
-  shop = s.name || shop;
-
-  /* Announcement */
-
-  const an = $('announce');
-
-  if (s.announcement) {
-
-    an.innerHTML =
-      '<b>Special Offer</b> ' +
-      esc(s.announcement);
-
-    an.hidden = false;
-
-  } else {
-
-    an.hidden = true;
-
-  }
-
-
-  /* Logo */
-
-  $('logoTop').innerHTML = s.logo
-    ? `<img
-         class="logo-img"
-         src="${esc(s.logo)}"
-         alt="${esc(s.name)}">`
-    : `${esc(s.name || 'AFGHAN')
-       .replace(/\s+restaurant$/i, '')}
-       <small>RESTAURANT</small>`;
-
-
-  /* Footer */
-
-  $('copy').textContent =
-    `© ${new Date().getFullYear()} ${s.name}. All Rights Reserved.`;
-
-
-  /* Favicon */
-
-  if (s.favicon) {
+  function filterMenu(category, button) {
 
     document
-      .querySelectorAll('link[rel="icon"]:not(#favicon)')
-      .forEach(l => l.remove());
+      .querySelectorAll('.filter-btn')
+      .forEach(function(btn) {
 
-    $('favicon').removeAttribute('type');
+        btn.classList.remove('active');
 
-    $('favicon').href = s.favicon;
+      });
 
-    $('touch').href = s.favicon;
 
-  }
+    button.classList.add('active');
 
-}
 
+    const cards =
+      document.querySelectorAll('.menu-card');
 
-/* =========================
-   MENU ITEM CARD
-========================= */
 
-function menuCard(item) {
+    let visibleCount = 0;
 
-  const image = item.image
-    ? `
-      <img
-        src="${esc(item.image)}"
-        alt="${esc(item.name)}"
-        loading="lazy">
-    `
-    : `
-      <div class="menu-placeholder">
-        <span>🍽</span>
-      </div>
-    `;
 
+    cards.forEach(function(card) {
 
-  const price =
-    item.price !== null &&
-    item.price !== undefined &&
-    item.price !== ''
-      ? `<strong>${esc(item.price)}</strong>`
-      : '';
+      const categories =
+        card
+          .getAttribute('data-category')
+          .split(' ');
 
 
-  return `
-    <article class="menu-card">
+      if (
+        category === 'all' ||
+        categories.includes(category)
+      ) {
 
-      <div class="menu-image">
-        ${image}
-      </div>
+        card.style.display = '';
 
-      <div class="menu-info">
+        visibleCount++;
 
-        <div class="menu-title">
-          <h3>${esc(item.name)}</h3>
-          ${price}
-        </div>
+      } else {
 
-        ${
-          item.description
-            ? `<p>${esc(item.description)}</p>`
-            : ''
-        }
-
-      </div>
-
-    </article>
-  `;
-
-}
-
-
-/* =========================
-   LOAD MENU
-========================= */
-
-async function init() {
-
-  try {
-
-    /* Load settings */
-
-    const settings =
-      await db
-        .from('settings')
-        .select('*')
-        .eq('id', 1)
-        .single();
-
-
-    if (settings.data) {
-
-      applySettings(settings.data);
-
-    }
-
-
-    /* Load menu */
-
-    const result =
-      await db
-        .from('menu')
-        .select('*')
-        .order('id', {
-          ascending: true
-        });
-
-
-    if (result.error) {
-
-      console.error(result.error);
-
-      $('main').innerHTML = `
-        <section class="empty-menu">
-
-          <h1>Our Menu</h1>
-
-          <div class="line"></div>
-
-          <p>
-            Menu is currently unavailable.
-          </p>
-
-        </section>
-      `;
-
-      return;
-
-    }
-
-
-    const items = result.data || [];
-
-
-    /* Page title */
-
-    document.title =
-      `Menu | ${shop}`;
-
-
-    /* No menu */
-
-    if (!items.length) {
-
-      $('main').innerHTML = `
-        <section class="empty-menu">
-
-          <h1>Our Menu</h1>
-
-          <div class="line"></div>
-
-          <p>
-            Our menu will be available soon.
-          </p>
-
-        </section>
-      `;
-
-      return;
-
-    }
-
-
-    /* Group items by category */
-
-    const categories = {};
-
-    items.forEach(item => {
-
-      const category =
-        item.category ||
-        'Our Specials';
-
-      if (!categories[category]) {
-
-        categories[category] = [];
+        card.style.display = 'none';
 
       }
 
-      categories[category].push(item);
-
     });
 
 
-    let html = `
-
-      <section class="menu-header">
-
-        <p class="eyebrow">
-          DISCOVER OUR FLAVOURS
-        </p>
-
-        <h1>Our Menu</h1>
-
-        <div class="line"></div>
-
-        <p class="menu-intro">
-          Authentic flavours, carefully prepared
-          with fresh ingredients and traditional
-          Afghan recipes.
-        </p>
-
-      </section>
-
-    `;
-
-
-    /* Categories */
-
-    Object.keys(categories).forEach(category => {
-
-      html += `
-
-        <section class="menu-section">
-
-          <div class="menu-section-title">
-
-            <h2>
-              ${esc(category)}
-            </h2>
-
-            <div class="line"></div>
-
-          </div>
-
-          <div class="menu-grid">
-
-            ${categories[category]
-              .map(menuCard)
-              .join('')}
-
-          </div>
-
-        </section>
-
-      `;
-
-    });
-
-
-    $('main').innerHTML = html;
-
-
-  } catch (e) {
-
-    console.error(e);
-
-    $('main').innerHTML = `
-
-      <section class="empty-menu">
-
-        <h1>Our Menu</h1>
-
-        <div class="line"></div>
-
-        <p>
-          Sorry, the menu could not be loaded.
-        </p>
-
-      </section>
-
-    `;
+    document.getElementById(
+      'emptyMessage'
+    ).style.display =
+      visibleCount === 0
+        ? 'block'
+        : 'none';
 
   }
 
-}
+
+  /* =========================
+     ORDER FOOD
+  ========================= */
+
+  function orderFood(name, price) {
+
+    const orderUrl =
+      'order.html' +
+
+      '?food=' +
+      encodeURIComponent(name) +
+
+      '&price=' +
+      encodeURIComponent(price) +
+
+      '&qty=1' +
+
+      '&total=' +
+      encodeURIComponent(price);
 
 
-init();
+    window.location.href =
+      orderUrl;
+
+  }
 
 </script>
 
+
 </body>
 </html>
+```
