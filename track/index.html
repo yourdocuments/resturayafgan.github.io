@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Track Your Order | Afghan Restaurant</title>
+<link rel="icon" id="favicon" href="../favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" id="touch" href="../apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,500&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<div class="announce" id="announce" hidden></div>
+
+<header>
+  <div class="wrap">
+    <a href="../" class="logo" id="logoTop">AFGHAN<small>RESTAURANT</small></a>
+    <nav id="nav">
+      <a href="../">Home</a><a href="../#menu">Menu</a><a href="../order/">Order Online</a><a href="../blog/">Blog</a><a href="../#contact">Contact</a>
+    </nav>
+    <a class="btn" href="../order/">Order Now</a>
+    <button class="menu-btn" aria-label="Menu" onclick="document.getElementById('nav').classList.toggle('open')">☰</button>
+  </div>
+</header>
+
+<main class="wrap opage" style="max-width:720px">
+  <h1 class="ohead">Track Your Order</h1>
+  <p style="text-align:center;color:#4a433b">Enter the order code you received after ordering, and the phone number you used.</p>
+  <form class="trackform" id="tform" novalidate>
+    <input id="tCode" type="text" placeholder="Order code (like A7K3QZ)" maxlength="12" autocomplete="off" autocapitalize="characters">
+    <input id="tPhone" type="tel" placeholder="Phone number" maxlength="20" autocomplete="tel">
+    <button class="btn" id="tBtn" type="submit">Track Order</button>
+    <div class="omsg" id="tMsg" role="status"></div>
+  </form>
+  <div id="result"></div>
+</main>
+
+<footer>
+  <div class="copy" id="copy" style="border:0;margin:0"></div>
+  <div class="devbar" id="devbar" hidden></div>
+</footer>
+<script src="../developer.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>window.supabase||document.write('<script src="https://unpkg.com/@supabase/supabase-js@2"><\/script>')</script>
+<script src="../config.js"></script>
+<script src="../demo-db.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const short = n => String(n || '').replace(/\s*restaurant\s*$/i, '').toUpperCase();
+const tk = n => '৳ ' + Number(n || 0);
+const db = DEMO ? createDemoClient() : (window.supabase ? supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null);
+let timer = null, current = null;
+
+const stepsFor = type => [['new', 'Order received'], ['preparing', 'Preparing your food'], ['delivering', type === 'pickup' ? 'Ready for pickup' : 'On the way'], ['done', type === 'pickup' ? 'Picked up' : 'Delivered']];
+
+function say(t, ok) { const m = $('tMsg'); m.className = 'omsg ' + (ok ? 'ok' : 'err'); m.textContent = t; }
+
+function render(o) {
+  const steps = stepsFor(o.order_type);
+  const idx = Math.max(0, steps.findIndex(s => s[0] === o.status));
+  const cancelled = o.status === 'cancelled';
+  const pay = o.payment_method === 'bkash'
+    ? (o.paid ? '✅ bKash payment confirmed' : '⏳ bKash payment is being verified')
+    : (o.order_type === 'pickup' ? '💵 Pay at the restaurant' : '💵 Cash on delivery');
+  const sub = (o.items || []).reduce((t, i) => t + (+i.price || 0) * (+i.qty || 0), 0);
+  $('result').innerHTML = `<div class="trackcard">
+    <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap"><b>Order ${esc(o.order_code)}</b><span>${new Date(o.created_at).toLocaleString('en-GB')}</span></div>
+    <div>${o.order_type === 'pickup' ? '🏪 Pickup' : '🛵 Delivery'}</div>
+    ${cancelled ? '<div class="cancelled">This order was cancelled. Please call us if you have any question.</div>'
+      : `<ol class="tl">${steps.map((s, i) => `<li class="${i < idx ? 'done' : i === idx ? (o.status === 'done' ? 'done' : 'now') : ''}"><span class="dot">${i < idx || o.status === 'done' ? '✓' : ''}</span>${s[1]}</li>`).join('')}</ol>`}
+    <div class="sumlines" style="font-size:.92rem">
+      ${(o.items || []).map(i => `<div class="cartline"><span>${esc(i.qty)} × ${esc(i.name)}</span><b>${tk(i.qty * i.price)}</b></div>`).join('')}
+      ${+o.delivery_fee ? `<div class="cartline"><span>Delivery fee</span><b>${tk(o.delivery_fee)}</b></div>` : ''}
+      <div class="sumrow total"><span>Total</span><b>${tk(o.total)}</b></div>
+      <div>${pay}</div>
+    </div>
+  </div>`;
+}
+
+async function lookup(code, phone, quiet) {
+  if (!db) return say('Could not connect to the server. Please refresh the page.', false);
+  if (!quiet) { say('', true); $('tBtn').disabled = true; }
+  const { data, error } = await db.rpc('track_order', { p_code: code, p_phone: phone });
+  $('tBtn').disabled = false;
+  if (error) { console.error(error); if (!quiet) { $('result').innerHTML = ''; say('Order tracking is not available right now. Please call us.', false); } return; }
+  if (!data) { clearInterval(timer); $('result').innerHTML = ''; return say('No order found. Please check your order code and phone number.', false); }
+  say('', true); current = { code, phone }; render(data);
+  clearInterval(timer);
+  if (data.status !== 'done' && data.status !== 'cancelled') timer = setInterval(() => lookup(code, phone, true), 30000);
+}
+
+$('tform').addEventListener('submit', e => {
+  e.preventDefault();
+  const code = $('tCode').value.trim().toUpperCase(), phone = $('tPhone').value.trim();
+  if (!code) return say('Please enter your order code.', false);
+  if (phone.replace(/\D/g, '').length < 8) return say('Please enter the phone number you used for the order.', false);
+  lookup(code, phone);
+});
+document.querySelectorAll('#nav a').forEach(a => a.addEventListener('click', () => $('nav').classList.remove('open')));
+
+async function init() {
+  const q = new URLSearchParams(location.search);
+  let code = (q.get('code') || '').toUpperCase(), phone = q.get('phone') || '';
+  if (!code || !phone) { try { const l = JSON.parse(localStorage.getItem('lastOrder') || 'null'); if (l) { code = code || l.code; phone = phone || l.phone; } } catch (_) {} }
+  $('tCode').value = code; $('tPhone').value = phone;
+  if (db) {
+    try {
+      const s = await db.from('settings').select('*').eq('id', 1).single();
+      if (s.data) {
+        const d = s.data;
+        $('logoTop').innerHTML = d.logo ? `<img class="logo-img" src="${esc(d.logo)}" alt="${esc(d.name)}">` : `${esc(short(d.name))}<small>RESTAURANT</small>`;
+        $('copy').textContent = `© ${new Date().getFullYear()} ${d.name}. All Rights Reserved.`;
+        const an = $('announce'); an.innerHTML = d.announcement ? '<b>Special Offer</b> ' + esc(d.announcement) : ''; an.hidden = !d.announcement;
+        document.title = 'Track Your Order | ' + d.name;
+        if (d.favicon) {
+          document.querySelectorAll('link[rel="icon"]:not(#favicon)').forEach(l => l.remove());
+          $('favicon').removeAttribute('type'); $('favicon').href = d.favicon; $('touch').href = d.favicon;
+        }
+      }
+    } catch (e) { console.error(e); }
+  }
+  if (code && phone && q.get('code')) lookup(code, phone);   // লিংক থেকে এলে নিজে থেকেই দেখায়
+}
+init();
+</script>
+</body>
+</html>
