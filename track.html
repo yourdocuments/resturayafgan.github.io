@@ -1,0 +1,2228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<meta name="theme-color"
+      content="#111827">
+
+<title>Track Order | Afghan Restaurant</title>
+
+<link rel="icon"
+      href="https://raw.githubusercontent.com/yourdocuments/resturayafgan.github.io/main/favicon.png">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+
+    font-family:
+        Inter,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+    background:#f5f7fb;
+    color:#111827;
+    min-height:100vh;
+}
+
+a{
+    text-decoration:none;
+    color:inherit;
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+header{
+
+    background:#111827;
+    color:#fff;
+    padding:15px 20px;
+
+    position:sticky;
+    top:0;
+
+    z-index:100;
+
+    box-shadow:
+        0 4px 15px rgba(0,0,0,.12);
+}
+
+.nav{
+
+    max-width:1100px;
+    margin:auto;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    gap:15px;
+}
+
+.logo{
+
+    font-size:20px;
+    font-weight:800;
+}
+
+.logo span{
+    color:#f59e0b;
+}
+
+.nav-links{
+
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+.nav-links a{
+
+    padding:8px 13px;
+    border-radius:8px;
+
+    font-size:14px;
+    color:#e5e7eb;
+}
+
+.nav-links a:hover{
+    background:#1f2937;
+}
+
+
+/* =========================================
+   CONTAINER
+========================================= */
+
+.container{
+
+    width:min(
+        100% - 30px,
+        900px
+    );
+
+    margin:30px auto 60px;
+}
+
+
+/* =========================================
+   TITLE
+========================================= */
+
+.page-title{
+
+    text-align:center;
+    margin-bottom:22px;
+}
+
+.page-title h1{
+
+    font-size:32px;
+    margin-bottom:7px;
+}
+
+.page-title p{
+
+    color:#6b7280;
+}
+
+
+/* =========================================
+   SEARCH
+========================================= */
+
+.search-card{
+
+    background:#fff;
+
+    border:1px solid #e5e7eb;
+
+    border-radius:18px;
+
+    padding:20px;
+
+    box-shadow:
+        0 8px 30px rgba(15,23,42,.07);
+
+    margin-bottom:20px;
+}
+
+.search-card label{
+
+    display:block;
+
+    font-weight:800;
+
+    margin-bottom:8px;
+}
+
+.search-row{
+
+    display:flex;
+    gap:10px;
+}
+
+.search-row input{
+
+    flex:1;
+
+    border:1px solid #d1d5db;
+
+    border-radius:10px;
+
+    padding:13px;
+
+    font-size:15px;
+
+    outline:none;
+}
+
+.search-row input:focus{
+
+    border-color:#f59e0b;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(245,158,11,.12);
+}
+
+.search-row button{
+
+    border:0;
+
+    background:#f59e0b;
+
+    color:#111827;
+
+    padding:0 20px;
+
+    border-radius:10px;
+
+    font-weight:900;
+
+    cursor:pointer;
+}
+
+.search-row button:hover{
+
+    background:#d97706;
+    color:#fff;
+}
+
+
+/* =========================================
+   ERROR
+========================================= */
+
+.error-box{
+
+    display:none;
+
+    background:#fef2f2;
+
+    border:1px solid #fecaca;
+
+    color:#991b1b;
+
+    border-radius:15px;
+
+    padding:18px;
+
+    margin-bottom:20px;
+
+    text-align:center;
+}
+
+
+/* =========================================
+   ORDER CARD
+========================================= */
+
+.order-card{
+
+    background:#fff;
+
+    border:1px solid #e5e7eb;
+
+    border-radius:18px;
+
+    padding:22px;
+
+    box-shadow:
+        0 8px 30px rgba(15,23,42,.07);
+
+    margin-bottom:20px;
+}
+
+
+/* =========================================
+   ORDER HEADER
+========================================= */
+
+.order-header{
+
+    display:flex;
+
+    align-items:flex-start;
+
+    justify-content:space-between;
+
+    gap:15px;
+
+    padding-bottom:18px;
+
+    border-bottom:1px solid #e5e7eb;
+}
+
+.order-id-label{
+
+    color:#6b7280;
+
+    font-size:13px;
+
+    margin-bottom:5px;
+}
+
+.order-id{
+
+    font-size:22px;
+
+    font-weight:900;
+
+    letter-spacing:.5px;
+}
+
+.status{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:8px 13px;
+
+    border-radius:999px;
+
+    background:#fef3c7;
+
+    color:#92400e;
+
+    font-size:13px;
+
+    font-weight:900;
+}
+
+
+/* =========================================
+   SECTION TITLE
+========================================= */
+
+.section-title{
+
+    font-size:18px;
+
+    font-weight:900;
+
+    margin-bottom:14px;
+}
+
+
+/* =========================================
+   ORDER ITEMS
+========================================= */
+
+.items-section{
+
+    padding:20px 0;
+
+    border-bottom:1px solid #e5e7eb;
+}
+
+.item{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    gap:15px;
+
+    padding:13px 0;
+
+    border-bottom:1px dashed #e5e7eb;
+}
+
+.item:last-child{
+    border-bottom:0;
+}
+
+.item-name{
+
+    font-weight:800;
+}
+
+.item-meta{
+
+    font-size:13px;
+
+    color:#6b7280;
+
+    margin-top:4px;
+}
+
+.item-price{
+
+    font-weight:900;
+
+    white-space:nowrap;
+}
+
+
+/* =========================================
+   DELIVERY DETAILS
+========================================= */
+
+.details-section{
+
+    padding:20px 0;
+
+    border-bottom:1px solid #e5e7eb;
+}
+
+.details-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(2,1fr);
+
+    gap:12px;
+}
+
+.detail{
+
+    background:#f9fafb;
+
+    border-radius:10px;
+
+    padding:13px;
+}
+
+.detail-label{
+
+    font-size:12px;
+
+    color:#6b7280;
+
+    margin-bottom:4px;
+}
+
+.detail-value{
+
+    font-weight:700;
+
+    word-break:break-word;
+}
+
+
+/* =========================================
+   TOTAL
+========================================= */
+
+.total-section{
+
+    padding:20px 0;
+
+    border-bottom:1px solid #e5e7eb;
+}
+
+.total-row{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    padding:7px 0;
+
+    color:#4b5563;
+}
+
+.total-row.grand{
+
+    border-top:1px dashed #d1d5db;
+
+    margin-top:8px;
+
+    padding-top:15px;
+
+    font-size:22px;
+
+    font-weight:900;
+
+    color:#111827;
+}
+
+
+/* =========================================
+   PROGRESS
+========================================= */
+
+.progress-section{
+
+    padding:25px 0 10px;
+}
+
+.progress{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(4,1fr);
+
+    gap:10px;
+
+    position:relative;
+}
+
+.progress::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:18px;
+
+    left:10%;
+
+    right:10%;
+
+    height:3px;
+
+    background:#e5e7eb;
+
+    z-index:0;
+}
+
+.step{
+
+    position:relative;
+
+    z-index:1;
+
+    text-align:center;
+}
+
+.circle{
+
+    width:36px;
+    height:36px;
+
+    border-radius:50%;
+
+    background:#e5e7eb;
+
+    color:#6b7280;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    margin:0 auto 8px;
+
+    font-weight:900;
+}
+
+.step.active .circle{
+
+    background:#f59e0b;
+
+    color:#111827;
+}
+
+.step.completed .circle{
+
+    background:#047857;
+
+    color:#fff;
+}
+
+.step-title{
+
+    font-size:13px;
+
+    font-weight:800;
+
+    color:#6b7280;
+}
+
+.step.active .step-title,
+.step.completed .step-title{
+
+    color:#111827;
+}
+
+
+/* =========================================
+   BUTTONS
+========================================= */
+
+.actions{
+
+    display:flex;
+
+    gap:10px;
+
+    flex-wrap:wrap;
+
+    margin-top:20px;
+}
+
+.btn{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:11px 16px;
+
+    border-radius:9px;
+
+    font-weight:800;
+
+    border:0;
+
+    cursor:pointer;
+}
+
+.btn-primary{
+
+    background:#111827;
+    color:#fff;
+}
+
+.btn-primary:hover{
+    background:#374151;
+}
+
+.btn-warning{
+
+    background:#f59e0b;
+    color:#111827;
+}
+
+.btn-warning:hover{
+    background:#d97706;
+}
+
+
+/* =========================================
+   FOOTER
+========================================= */
+
+footer{
+
+    background:#111827;
+
+    color:#9ca3af;
+
+    text-align:center;
+
+    padding:25px 15px;
+
+    font-size:14px;
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media(max-width:650px){
+
+    .nav{
+
+        flex-direction:column;
+    }
+
+    .page-title h1{
+
+        font-size:26px;
+    }
+
+    .search-row{
+
+        flex-direction:column;
+    }
+
+    .search-row button{
+
+        min-height:46px;
+    }
+
+    .order-header{
+
+        flex-direction:column;
+    }
+
+    .details-grid{
+
+        grid-template-columns:1fr;
+    }
+
+    .progress{
+
+        gap:3px;
+    }
+
+    .step-title{
+
+        font-size:11px;
+    }
+
+    .circle{
+
+        width:32px;
+        height:32px;
+        font-size:13px;
+    }
+
+}
+
+
+/* =========================================
+   PRINT
+========================================= */
+
+@media print{
+
+    header,
+    .search-card,
+    .actions,
+    footer{
+
+        display:none !important;
+    }
+
+    body{
+
+        background:#fff;
+    }
+
+    .container{
+
+        width:100%;
+        margin:0;
+    }
+
+    .order-card{
+
+        box-shadow:none;
+        border:1px solid #ddd;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <div class="nav">
+
+        <a
+            href="../index.html"
+            class="logo">
+
+            AFGHAN
+            <span>RESTAURANT</span>
+
+        </a>
+
+
+        <div class="nav-links">
+
+            <a href="../index.html">
+                Menu
+            </a>
+
+            <a href="../order.html">
+                Order
+            </a>
+
+            <a href="./">
+                Track Order
+            </a>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+
+<main class="container">
+
+
+    <div class="page-title">
+
+        <h1>
+            Track Your Order
+        </h1>
+
+        <p>
+            Enter your Order ID to check your
+            order status.
+        </p>
+
+    </div>
+
+
+
+    <!-- SEARCH -->
+
+    <section class="search-card">
+
+        <label for="orderIdInput">
+            Order ID
+        </label>
+
+
+        <div class="search-row">
+
+            <input
+                type="text"
+                id="orderIdInput"
+                placeholder="Example: AFG12345678"
+                autocomplete="off">
+
+
+            <button
+                type="button"
+                id="trackButton">
+
+                Track Order
+
+            </button>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ERROR -->
+
+    <div
+        class="error-box"
+        id="errorBox">
+
+        <strong>
+            Order Not Found
+        </strong>
+
+        <div
+            id="errorMessage"
+            style="margin-top:5px">
+
+            Please check your Order ID.
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ORDER -->
+
+    <section
+        class="order-card"
+        id="orderCard"
+        style="display:none">
+
+
+        <!-- HEADER -->
+
+        <div class="order-header">
+
+            <div>
+
+                <div class="order-id-label">
+                    Order ID
+                </div>
+
+                <div
+                    class="order-id"
+                    id="displayOrderId">
+
+                    -
+
+                </div>
+
+            </div>
+
+
+            <div
+                class="status"
+                id="statusBadge">
+
+                Pending
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ITEMS -->
+
+        <div class="items-section">
+
+            <div class="section-title">
+                🍽️ Order Details
+            </div>
+
+            <div id="itemsContainer"></div>
+
+        </div>
+
+
+
+        <!-- DELIVERY -->
+
+        <div class="details-section">
+
+            <div class="section-title">
+                📦 Delivery Details
+            </div>
+
+
+            <div class="details-grid">
+
+
+                <div class="detail">
+
+                    <div class="detail-label">
+                        Customer
+                    </div>
+
+                    <div
+                        class="detail-value"
+                        id="customerValue">
+
+                        -
+
+                    </div>
+
+                </div>
+
+
+                <div class="detail">
+
+                    <div class="detail-label">
+                        Phone
+                    </div>
+
+                    <div
+                        class="detail-value"
+                        id="phoneValue">
+
+                        -
+
+                    </div>
+
+                </div>
+
+
+                <div class="detail">
+
+                    <div class="detail-label">
+                        Address
+                    </div>
+
+                    <div
+                        class="detail-value"
+                        id="addressValue">
+
+                        -
+
+                    </div>
+
+                </div>
+
+
+                <div class="detail">
+
+                    <div class="detail-label">
+                        Payment
+                    </div>
+
+                    <div
+                        class="detail-value"
+                        id="paymentValue">
+
+                        -
+
+                    </div>
+
+                </div>
+
+
+                <div class="detail">
+
+                    <div class="detail-label">
+                        Order Date
+                    </div>
+
+                    <div
+                        class="detail-value"
+                        id="dateValue">
+
+                        -
+
+                    </div>
+
+                </div>
+
+
+                <div class="detail">
+
+                    <div class="detail-label">
+                        Order Note
+                    </div>
+
+                    <div
+                        class="detail-value"
+                        id="noteValue">
+
+                        -
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- TOTAL -->
+
+        <div class="total-section">
+
+            <div class="total-row">
+
+                <span>
+                    Subtotal
+                </span>
+
+                <strong>
+                    ৳ <span id="subtotalValue">
+                        0
+                    </span>
+                </strong>
+
+            </div>
+
+
+            <div class="total-row">
+
+                <span>
+                    Delivery Charge
+                </span>
+
+                <strong>
+                    ৳ <span id="deliveryValue">
+                        0
+                    </span>
+                </strong>
+
+            </div>
+
+
+            <div class="total-row grand">
+
+                <span>
+                    Total Amount
+                </span>
+
+                <strong>
+                    ৳ <span id="totalValue">
+                        0
+                    </span>
+                </strong>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- PROGRESS -->
+
+        <div class="progress-section">
+
+            <div class="section-title">
+                🚚 Order Progress
+            </div>
+
+
+            <div
+                class="progress"
+                id="progressContainer">
+
+
+                <div
+                    class="step"
+                    data-step="Pending">
+
+                    <div class="circle">
+                        1
+                    </div>
+
+                    <div class="step-title">
+                        Pending
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="step"
+                    data-step="Confirmed">
+
+                    <div class="circle">
+                        2
+                    </div>
+
+                    <div class="step-title">
+                        Confirmed
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="step"
+                    data-step="Preparing">
+
+                    <div class="circle">
+                        3
+                    </div>
+
+                    <div class="step-title">
+                        Preparing
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="step"
+                    data-step="Delivered">
+
+                    <div class="circle">
+                        4
+                    </div>
+
+                    <div class="step-title">
+                        Delivered
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ACTIONS -->
+
+        <div class="actions">
+
+            <a
+                href="../order.html"
+                class="btn btn-warning">
+
+                🍽️ Order More Food
+
+            </a>
+
+
+            <a
+                href="../index.html"
+                class="btn btn-primary">
+
+                ← Back to Home
+
+            </a>
+
+
+            <button
+                type="button"
+                class="btn btn-primary"
+                onclick="window.print()">
+
+                🖨️ Print Order
+
+            </button>
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- DEFAULT INFO -->
+
+    <section
+        id="defaultInfo"
+        style="
+        background:#fff;
+        border:1px solid #e5e7eb;
+        border-radius:18px;
+        padding:25px;
+        text-align:center;
+        color:#6b7280;
+        ">
+
+        🔎
+
+        <h3
+            style="
+            color:#111827;
+            margin:10px 0 6px;
+            ">
+
+            Find Your Order
+
+        </h3>
+
+        <p>
+
+            Enter your Order ID above to see
+            your order and delivery status.
+
+        </p>
+
+    </section>
+
+
+</main>
+
+
+
+<footer>
+
+    ©
+    <span id="year"></span>
+    Afghan Restaurant.
+    All Rights Reserved.
+
+</footer>
+
+
+
+<script>
+
+(function(){
+
+"use strict";
+
+
+/* =========================================
+   SETTINGS
+========================================= */
+
+const ORDER_STORAGE_KEY =
+    "shoppingMelaOrders";
+
+
+/* =========================================
+   ELEMENTS
+========================================= */
+
+const orderIdInput =
+    document.getElementById(
+        "orderIdInput"
+    );
+
+const trackButton =
+    document.getElementById(
+        "trackButton"
+    );
+
+const errorBox =
+    document.getElementById(
+        "errorBox"
+    );
+
+const errorMessage =
+    document.getElementById(
+        "errorMessage"
+    );
+
+const orderCard =
+    document.getElementById(
+        "orderCard"
+    );
+
+const defaultInfo =
+    document.getElementById(
+        "defaultInfo"
+    );
+
+
+document.getElementById(
+    "year"
+).textContent =
+    new Date().getFullYear();
+
+
+/* =========================================
+   HELPERS
+========================================= */
+
+function safeNumber(value){
+
+    const number =
+        Number(
+            String(value || "")
+            .replace(/[^\d.]/g,"")
+        );
+
+    return Number.isFinite(number)
+        ? number
+        : 0;
+}
+
+
+function formatMoney(value){
+
+    return Number(value || 0)
+        .toLocaleString("en-BD");
+}
+
+
+function escapeHTML(value){
+
+    return String(value ?? "")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+}
+
+
+/* =========================================
+   GET ORDERS
+========================================= */
+
+function getOrders(){
+
+    try{
+
+        const data =
+            JSON.parse(
+                localStorage.getItem(
+                    ORDER_STORAGE_KEY
+                ) || "[]"
+            );
+
+        return Array.isArray(data)
+            ? data
+            : [];
+
+    }catch(error){
+
+        return [];
+    }
+}
+
+
+/* =========================================
+   NORMALIZE ORDER
+========================================= */
+
+function normalizeOrder(order){
+
+    if(!order){
+        return null;
+    }
+
+
+    const items =
+        Array.isArray(order.items)
+            ? order.items
+            : [];
+
+
+    let normalizedItems =
+        items.map(item => ({
+
+            name:
+                item.name ||
+                item.productName ||
+                item.title ||
+                "Food Item",
+
+            price:
+                safeNumber(
+                    item.price ||
+                    item.salePrice ||
+                    item.amount
+                ),
+
+            quantity:
+                Math.max(
+                    1,
+                    safeNumber(
+                        item.quantity ||
+                        item.qty ||
+                        1
+                    )
+                ),
+
+            image:
+                item.image || ""
+
+        }));
+
+
+    /* Compatibility with old single-product order */
+
+    if(!normalizedItems.length){
+
+        const singleName =
+            order.productName ||
+            order.product ||
+            order.foodName ||
+            order.name;
+
+
+        if(singleName){
+
+            normalizedItems = [{
+
+                name:
+                    singleName,
+
+                price:
+                    safeNumber(
+                        order.price ||
+                        order.amount ||
+                        0
+                    ),
+
+                quantity:
+                    Math.max(
+                        1,
+                        safeNumber(
+                            order.quantity ||
+                            1
+                        )
+                    ),
+
+                image:
+                    order.image || ""
+
+            }];
+
+        }
+
+    }
+
+
+    const subtotal =
+        safeNumber(
+            order.subtotal
+        ) ||
+        normalizedItems.reduce(
+            (sum,item) =>
+                sum +
+                (
+                    item.price *
+                    item.quantity
+                ),
+            0
+        );
+
+
+    const delivery =
+        safeNumber(
+            order.deliveryCharge
+        );
+
+
+    const total =
+        safeNumber(
+            order.total
+        ) ||
+        safeNumber(
+            order.totalAmount
+        ) ||
+        safeNumber(
+            order.amount
+        ) ||
+        (
+            subtotal +
+            delivery
+        );
+
+
+    return {
+
+        id:
+            order.id ||
+            order.orderId ||
+            order.orderID,
+
+        status:
+            order.status ||
+            order.orderStatus ||
+            "Pending",
+
+        customerName:
+            order.customerName ||
+            order.customer ||
+            order.name ||
+            "-",
+
+        phone:
+            order.phone ||
+            order.customerPhone ||
+            "-",
+
+        address:
+            order.address ||
+            order.customerAddress ||
+            order.deliveryAddress ||
+            "-",
+
+        payment:
+            order.payment ||
+            order.paymentMethod ||
+            "-",
+
+        note:
+            order.note ||
+            order.customerNote ||
+            "-",
+
+        date:
+            order.orderDate ||
+            order.createdAt ||
+            order.date ||
+            "-",
+
+        items:
+            normalizedItems,
+
+        subtotal:
+            subtotal,
+
+        deliveryCharge:
+            delivery,
+
+        total:
+            total
+
+    };
+
+}
+
+
+/* =========================================
+   FIND ORDER
+========================================= */
+
+function findOrder(orderId){
+
+    const cleanId =
+        String(orderId || "")
+        .trim()
+        .toUpperCase();
+
+
+    if(!cleanId){
+        return null;
+    }
+
+
+    /* 1. Main orders array */
+
+    const orders =
+        getOrders();
+
+
+    for(const rawOrder of orders){
+
+        const order =
+            normalizeOrder(
+                rawOrder
+            );
+
+
+        if(
+            order &&
+            String(order.id)
+            .toUpperCase() === cleanId
+        ){
+
+            return order;
+        }
+
+    }
+
+
+    /* 2. Individual order key */
+
+    try{
+
+        const saved =
+            JSON.parse(
+                localStorage.getItem(
+                    "shoppingMelaOrder_" +
+                    cleanId
+                ) || "null"
+            );
+
+
+        if(saved){
+
+            const normalized =
+                normalizeOrder(
+                    saved
+                );
+
+
+            if(normalized){
+                return normalized;
+            }
+
+        }
+
+    }catch(error){}
+
+
+    /* 3. Latest order */
+
+    try{
+
+        const latest =
+            JSON.parse(
+                localStorage.getItem(
+                    "shoppingMelaLatestOrder"
+                ) || "null"
+            );
+
+
+        const normalized =
+            normalizeOrder(
+                latest
+            );
+
+
+        if(
+            normalized &&
+            String(normalized.id)
+            .toUpperCase() === cleanId
+        ){
+
+            return normalized;
+        }
+
+    }catch(error){}
+
+
+    return null;
+}
+
+
+/* =========================================
+   STATUS
+========================================= */
+
+const statuses = [
+
+    "Pending",
+
+    "Confirmed",
+
+    "Preparing",
+
+    "Delivered"
+
+];
+
+
+function normalizeStatus(status){
+
+    const value =
+        String(
+            status || "Pending"
+        )
+        .trim()
+        .toLowerCase();
+
+
+    if(value === "pending"){
+        return "Pending";
+    }
+
+    if(
+        value === "confirmed" ||
+        value === "confirm"
+    ){
+
+        return "Confirmed";
+    }
+
+    if(
+        value === "preparing" ||
+        value === "processing" ||
+        value === "ready"
+    ){
+
+        return "Preparing";
+    }
+
+    if(
+        value === "delivered" ||
+        value === "complete" ||
+        value === "completed"
+    ){
+
+        return "Delivered";
+    }
+
+
+    return "Pending";
+}
+
+
+/* =========================================
+   SHOW ERROR
+========================================= */
+
+function showError(message){
+
+    errorMessage.textContent =
+        message ||
+        "Please check your Order ID.";
+
+    errorBox.style.display =
+        "block";
+
+    orderCard.style.display =
+        "none";
+
+    defaultInfo.style.display =
+        "none";
+}
+
+
+/* =========================================
+   HIDE ERROR
+========================================= */
+
+function hideError(){
+
+    errorBox.style.display =
+        "none";
+}
+
+
+/* =========================================
+   RENDER ORDER
+========================================= */
+
+function renderOrder(order){
+
+    if(!order){
+
+        showError(
+            "This Order ID was not found in this browser."
+        );
+
+        return;
+    }
+
+
+    hideError();
+
+
+    orderCard.style.display =
+        "block";
+
+    defaultInfo.style.display =
+        "none";
+
+
+    /* ID */
+
+    document.getElementById(
+        "displayOrderId"
+    ).textContent =
+        order.id || "-";
+
+
+    /* STATUS */
+
+    const status =
+        normalizeStatus(
+            order.status
+        );
+
+
+    const statusBadge =
+        document.getElementById(
+            "statusBadge"
+        );
+
+
+    statusBadge.textContent =
+        status;
+
+
+    statusBadge.style.background =
+        status === "Delivered"
+            ? "#dcfce7"
+            : status === "Preparing"
+            ? "#dbeafe"
+            : status === "Confirmed"
+            ? "#fef3c7"
+            : "#fef3c7";
+
+
+    statusBadge.style.color =
+        status === "Delivered"
+            ? "#166534"
+            : status === "Preparing"
+            ? "#1d4ed8"
+            : "#92400e";
+
+
+    /* ITEMS */
+
+    const itemsContainer =
+        document.getElementById(
+            "itemsContainer"
+        );
+
+
+    itemsContainer.innerHTML = "";
+
+
+    if(
+        !order.items ||
+        !order.items.length
+    ){
+
+        itemsContainer.innerHTML = `
+
+            <div class="item">
+
+                <div>
+
+                    <div class="item-name">
+                        No item information
+                    </div>
+
+                </div>
+
+            </div>
+
+        `;
+
+    }else{
+
+        order.items.forEach(
+            item => {
+
+                const div =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                div.className =
+                    "item";
+
+
+                div.innerHTML = `
+
+                    <div>
+
+                        <div class="item-name">
+
+                            ${escapeHTML(
+                                item.name
+                            )}
+
+                        </div>
+
+                        <div class="item-meta">
+
+                            Quantity:
+                            ${item.quantity}
+
+                            ×
+
+                            ৳ ${formatMoney(
+                                item.price
+                            )}
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="item-price">
+
+                        ৳ ${formatMoney(
+                            item.price *
+                            item.quantity
+                        )}
+
+                    </div>
+
+                `;
+
+
+                itemsContainer.appendChild(
+                    div
+                );
+
+            }
+        );
+
+    }
+
+
+    /* DETAILS */
+
+    document.getElementById(
+        "customerValue"
+    ).textContent =
+        order.customerName || "-";
+
+
+    document.getElementById(
+        "phoneValue"
+    ).textContent =
+        order.phone || "-";
+
+
+    document.getElementById(
+        "addressValue"
+    ).textContent =
+        order.address || "-";
+
+
+    document.getElementById(
+        "paymentValue"
+    ).textContent =
+        order.payment || "-";
+
+
+    document.getElementById(
+        "dateValue"
+    ).textContent =
+        formatDate(
+            order.date
+        );
+
+
+    document.getElementById(
+        "noteValue"
+    ).textContent =
+        order.note || "-";
+
+
+    /* TOTAL */
+
+    document.getElementById(
+        "subtotalValue"
+    ).textContent =
+        formatMoney(
+            order.subtotal
+        );
+
+
+    document.getElementById(
+        "deliveryValue"
+    ).textContent =
+        formatMoney(
+            order.deliveryCharge
+        );
+
+
+    document.getElementById(
+        "totalValue"
+    ).textContent =
+        formatMoney(
+            order.total
+        );
+
+
+    /* PROGRESS */
+
+    updateProgress(
+        status
+    );
+
+}
+
+
+/* =========================================
+   DATE
+========================================= */
+
+function formatDate(value){
+
+    if(!value || value === "-"){
+        return "-";
+    }
+
+
+    const date =
+        new Date(value);
+
+
+    if(
+        !Number.isNaN(
+            date.getTime()
+        )
+    ){
+
+        return date.toLocaleString(
+            "en-BD",
+            {
+                dateStyle:"medium",
+                timeStyle:"short"
+            }
+        );
+
+    }
+
+
+    return String(value);
+}
+
+
+/* =========================================
+   UPDATE PROGRESS
+========================================= */
+
+function updateProgress(status){
+
+    const currentIndex =
+        statuses.indexOf(
+            normalizeStatus(status)
+        );
+
+
+    document
+    .querySelectorAll(
+        ".step"
+    )
+    .forEach(
+        (step,index) => {
+
+            step.classList.remove(
+                "active",
+                "completed"
+            );
+
+
+            if(
+                index <
+                currentIndex
+            ){
+
+                step.classList.add(
+                    "completed"
+                );
+
+            }
+
+
+            if(
+                index ===
+                currentIndex
+            ){
+
+                step.classList.add(
+                    "active"
+                );
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =========================================
+   TRACK
+========================================= */
+
+function trackOrder(){
+
+    const id =
+        orderIdInput.value
+        .trim();
+
+
+    if(!id){
+
+        showError(
+            "Please enter your Order ID."
+        );
+
+        return;
+    }
+
+
+    const order =
+        findOrder(id);
+
+
+    renderOrder(
+        order
+    );
+
+
+    /* Update URL */
+
+    try{
+
+        const url =
+            new URL(
+                window.location.href
+            );
+
+
+        url.searchParams.set(
+            "id",
+            id.toUpperCase()
+        );
+
+
+        window.history.replaceState(
+            {},
+            "",
+            url.toString()
+        );
+
+    }catch(error){}
+
+}
+
+
+/* =========================================
+   BUTTON
+========================================= */
+
+trackButton.addEventListener(
+    "click",
+    trackOrder
+);
+
+
+/* =========================================
+   ENTER KEY
+========================================= */
+
+orderIdInput.addEventListener(
+    "keydown",
+    function(event){
+
+        if(
+            event.key === "Enter"
+        ){
+
+            event.preventDefault();
+
+            trackOrder();
+
+        }
+
+    }
+);
+
+
+/* =========================================
+   LOAD ID FROM URL
+========================================= */
+
+function loadFromURL(){
+
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
+
+
+    const id =
+        params.get("id");
+
+
+    if(id){
+
+        orderIdInput.value =
+            id;
+
+
+        trackOrder();
+
+    }
+
+}
+
+
+/* =========================================
+   START
+========================================= */
+
+loadFromURL();
+
+
+})();
+
+</script>
+
+
+</body>
+</html>
