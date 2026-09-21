@@ -30,7 +30,7 @@ function createDemoClient() {
     if (!d.posts) d.posts = seed().posts;
     (d.dishes || []).forEach(x => { if (!('days' in x)) x.days = ''; if (!('is_new' in x)) x.is_new = false; });
     (d.dishes || []).forEach(x => { if (!('category' in x)) x.category = ''; });
-    (d.settings || []).forEach(x => { if (!('is_open' in x)) x.is_open = true; if (!('announcement' in x)) x.announcement = ''; if (!('map_query' in x)) x.map_query = ''; if (!('bkash_number' in x)) x.bkash_number = ''; });
+    (d.settings || []).forEach(x => { if (!('is_open' in x)) x.is_open = true; if (!('announcement' in x)) x.announcement = ''; if (!('map_query' in x)) x.map_query = ''; if (!('bkash_number' in x)) x.bkash_number = ''; if (!('delivery_fee' in x)) x.delivery_fee = 30; });
     return d;
   };
   const write = d => localStorage.setItem(KEY, JSON.stringify(d));
@@ -62,11 +62,13 @@ function createDemoClient() {
         }
         let touched = [];
         if (q.op === 'insert') {
-          const dup = table === 'orders' && [].concat(q.payload).some(p => p.trx_id && rows.some(r => String(r.trx_id || '').toUpperCase() === String(p.trx_id).toUpperCase()));
-          if (dup) return { data: null, error: { code: '23505', message: 'duplicate key value violates unique constraint "orders_trx_unique"' } };
+          const dupTrx = table === 'orders' && [].concat(q.payload).some(p => p.trx_id && rows.some(r => String(r.trx_id || '').toUpperCase() === String(p.trx_id).toUpperCase()));
+          if (dupTrx) return { data: null, error: { code: '23505', message: 'duplicate key value violates unique constraint "orders_trx_unique"' } };
+          const dupCode = table === 'orders' && [].concat(q.payload).some(p => p.order_code && rows.some(r => r.order_code === p.order_code));
+          if (dupCode) return { data: null, error: { code: '23505', message: 'duplicate key value violates unique constraint "orders_code_unique"' } };
           [].concat(q.payload).forEach(p => {
             const id = rows.reduce((m, r) => Math.max(m, r.id || 0), 0) + 1;
-            const row = Object.assign({ id, created_at: new Date().toISOString() }, table === 'orders' ? { status: 'new', payment_method: 'cod', paid: false } : {}, p);
+            const row = Object.assign({ id, created_at: new Date().toISOString() }, table === 'orders' ? { status: 'new', payment_method: 'cod', paid: false, order_type: 'delivery', delivery_fee: 0 } : {}, p);
             rows.push(row); touched.push(row);
           });
         } else if (q.op === 'update') {
@@ -129,5 +131,13 @@ function createDemoClient() {
     async signOut() { sessionStorage.removeItem(AUTH); return { error: null }; }
   };
 
-  return { from, storage, auth };
+  // অর্ডার ট্র্যাকিং (Supabase এর track_order function এর demo রূপ)
+  async function rpc(name, args) {
+    if (name !== 'track_order') return { data: null, error: { message: 'unknown function' } };
+    const d = read(), last10 = v => String(v || '').replace(/\D/g, '').slice(-10);
+    const o = (d.orders || []).find(r => String(r.order_code || '').toUpperCase() === String(args.p_code || '').trim().toUpperCase() && last10(r.phone) === last10(args.p_phone));
+    return { data: o ? copy({ order_code: o.order_code, status: o.status, paid: !!o.paid, payment_method: o.payment_method, total: o.total, delivery_fee: o.delivery_fee || 0, order_type: o.order_type || 'delivery', items: o.items, created_at: o.created_at, name: o.name }) : null, error: null };
+  }
+
+  return { from, storage, auth, rpc };
 }

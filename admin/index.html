@@ -30,6 +30,8 @@ details summary{cursor:pointer;color:#b8741d;font-weight:600;margin-top:10px}
 .cur{font-size:.8rem;color:#777;margin-top:4px}
 .cur img{height:44px;vertical-align:middle;margin-right:8px;background:#eee;border-radius:4px}
 .hide{display:none}
+.badge.wip{background:#dbeafe;color:#1e4fa0}
+.badge.bad{background:#fde3e1;color:#a3231a}
 #printArea{display:none}
 .rc{width:76mm;color:#000;font:13px/1.45 system-ui,sans-serif}
 .rc h2{text-align:center;margin:0 0 2px;font-size:17px}
@@ -147,7 +149,7 @@ async function run(btn, fn) {
   try { await fn(); } catch (e) {
     console.error(e);
     const m = String(e.message || e);
-    toast('সমস্যা হয়েছে: ' + m + (/column|relation|posts|schema cache/i.test(m) ? ' (Supabase এ supabase-blog.sql, supabase-v2.sql ও supabase-v3.sql Run করুন)' : ''), true);
+    toast('সমস্যা হয়েছে: ' + m + (/column|relation|posts|schema cache/i.test(m) ? ' (Supabase এ supabase-blog.sql, supabase-v2.sql, supabase-v3.sql ও supabase-v5.sql Run করুন)' : ''), true);
   }
   btn.disabled = false;
 }
@@ -220,6 +222,10 @@ function render() {
 }
 
 /* ---------- অর্ডার ---------- */
+const ST = { new: ['নতুন', ''], preparing: ['রান্না হচ্ছে', 'wip'], delivering: ['ডেলিভারিতে', 'wip'], done: ['সম্পন্ন', 'done'], cancelled: ['বাতিল', 'bad'] };
+const stLabel = o => (o.status === 'delivering' && o.order_type === 'pickup') ? 'প্রস্তুত (পিকআপ)' : (ST[o.status] || ST.new)[0];
+const stClass = o => (ST[o.status] || ST.new)[1];
+
 function renderOrders() {
   if (!ordersOk) {
     $('content').innerHTML = '<div class="card">অর্ডারের টেবিল এখনো বানানো হয়নি। Supabase এর SQL Editor এ <b>supabase-orders.sql</b> ফাইলটা Run করুন।</div>';
@@ -237,11 +243,11 @@ function renderOrders() {
     ${orders.map(o => `
       <div class="card">
         <div class="row" style="justify-content:space-between">
-          <span><b>#${o.id}</b> · ${new Date(o.created_at).toLocaleString('en-GB')}</span>
-          <span class="badge ${o.status === 'done' ? 'done' : ''}">${o.status === 'done' ? 'সম্পন্ন' : 'নতুন'}</span>
+          <span><b>#${o.id}</b>${o.order_code ? ' · <b style="letter-spacing:.1em">' + esc(o.order_code) + '</b>' : ''} · ${new Date(o.created_at).toLocaleString('en-GB')}</span>
+          <span class="badge ${stClass(o)}">${stLabel(o)}</span>
         </div>
         <p style="margin:10px 0 4px"><b>${esc(o.name)}</b> · <a href="tel:${esc(o.phone)}">${esc(o.phone)}</a></p>
-        <p style="margin:0 0 8px">📍 ${esc(o.address)}</p>
+        <p style="margin:0 0 8px">${o.order_type === 'pickup' ? '🏪 পিকআপ (রেস্টুরেন্ট থেকে নেবে)' : '🛵 ডেলিভারি: ' + esc(o.address)}</p>
         <p style="margin:0 0 8px">${(o.items || []).map(i => `${esc(i.name)} × ${esc(i.qty)}`).join('<br>')}</p>
         ${o.note ? `<p style="margin:0 0 8px">📝 ${esc(o.note)}</p>` : ''}
         ${o.payment_method === 'bkash'
@@ -249,9 +255,12 @@ function renderOrders() {
               ${o.paid ? '<b style="color:#1f6b2a">✅ পেমেন্ট নিশ্চিত</b>' : '<b style="color:#b3332b">⏳ পেমেন্ট যাচাই বাকি</b>'}<br>
               পাঠিয়েছে: <b>${esc(o.payment_number)}</b> · TrxID: <b>${esc(o.trx_id)}</b> · ৳ ${esc(o.total)}</p>`
           : (o.payment_method ? '<p style="margin:0 0 8px">💵 ক্যাশ অন ডেলিভারি</p>' : '')}
-        <b>মোট: ৳ ${esc(o.total)}</b>
+        <b>মোট: ৳ ${esc(o.total)}</b>${+o.delivery_fee ? ` <small>(ডেলিভারি চার্জ ৳${esc(o.delivery_fee)} সহ)</small>` : ''}
         <div class="row">
-          <button data-odone="${o.id}" data-to="${o.status === 'done' ? 'new' : 'done'}">${o.status === 'done' ? 'আবার নতুন করুন' : 'সম্পন্ন করুন'}</button>
+          <select data-ostatus="${o.id}" aria-label="অর্ডারের অবস্থা" style="padding:10px;border-radius:6px;border:1px solid #ccc;font:inherit;margin-top:12px">
+            ${[['new', 'নতুন'], ['preparing', 'রান্না হচ্ছে'], ['delivering', o.order_type === 'pickup' ? 'প্রস্তুত (পিকআপ)' : 'ডেলিভারিতে'], ['done', 'সম্পন্ন'], ['cancelled', 'বাতিল']]
+              .map(([v, t]) => `<option value="${v}" ${o.status === v ? 'selected' : ''}>${t}</option>`).join('')}
+          </select>
           ${o.payment_method === 'bkash' ? `<button data-opaid="${o.id}" data-paid="${o.paid ? 'no' : 'yes'}" style="background:#e2136e">${o.paid ? 'নিশ্চিত বাতিল' : 'bKash এ দেখেছি, পেমেন্ট নিশ্চিত'}</button>` : ''}
           <button data-oprint="${o.id}" style="background:#444">🖨️ প্রিন্ট</button>
           ${isManager() ? '' : `<button class="red" data-odel="${o.id}">মুছুন</button>`}
@@ -263,9 +272,9 @@ function renderOrders() {
     ok(await db.from('settings').update({ is_open: !isOpen }).eq('id', 1).select());
     toast(isOpen ? 'রেস্টুরেন্ট বন্ধ দেখানো হচ্ছে।' : 'রেস্টুরেন্ট খোলা দেখানো হচ্ছে ✅'); await loadAll(); renderOrders();
   });
-  document.querySelectorAll('[data-odone]').forEach(b => b.onclick = e => run(e.target, async () => {
-    ok(await db.from('orders').update({ status: b.dataset.to }).eq('id', b.dataset.odone).select());
-    await loadAll(); renderOrders();
+  document.querySelectorAll('[data-ostatus]').forEach(sel => sel.onchange = e => run(e.target, async () => {
+    ok(await db.from('orders').update({ status: sel.value }).eq('id', sel.dataset.ostatus).select());
+    toast('স্ট্যাটাস আপডেট হয়েছে ✅'); await loadAll(); renderOrders();
   }));
   document.querySelectorAll('[data-opaid]').forEach(b => b.onclick = e => run(e.target, async () => {
     ok(await db.from('orders').update({ paid: b.dataset.paid === 'yes' }).eq('id', b.dataset.opaid).select());
@@ -290,13 +299,15 @@ function printOrder(o) {
     <h2>${esc(settings.name || '')}</h2>
     <div class="c">${esc(settings.phone || '')}</div>
     <hr>
-    <div><b>Order #${esc(o.id)}</b></div>
+    <div><b>Order #${esc(o.id)}</b>${o.order_code ? ' &nbsp; Code: <b>' + esc(o.order_code) + '</b>' : ''}</div>
+    <div>${o.order_type === 'pickup' ? 'PICKUP' : 'DELIVERY'}</div>
     <div>${new Date(o.created_at).toLocaleString('en-GB')}</div>
     <hr>
-    <div><b>${esc(o.name)}</b></div><div>${esc(o.phone)}</div><div>${esc(o.address)}</div>
+    <div><b>${esc(o.name)}</b></div><div>${esc(o.phone)}</div>${o.order_type === 'pickup' ? '' : `<div>${esc(o.address)}</div>`}
     <hr>
     ${items.map(i => `<div class="ln"><span>${esc(i.qty)} x ${esc(i.name)}</span><span>${esc((+i.price || 0) * (+i.qty || 0))}</span></div>`).join('')}
     <hr>
+    ${+o.delivery_fee ? `<div class="ln"><span>Delivery fee</span><span>${esc(o.delivery_fee)}</span></div>` : ''}
     <div class="ln"><b>TOTAL</b><b>Tk ${esc(o.total)}</b></div>
     <div>${pay}</div>
     ${o.note ? `<div>Note: ${esc(o.note)}</div>` : ''}
@@ -484,6 +495,7 @@ function renderSettings() {
     <label>Special Offer / ঘোষণা (সব পেজের একদম উপরে দেখাবে, খালি রাখলে দেখাবে না)</label><input type="text" id="s_ann" value="${esc(s.announcement)}" placeholder="যেমন: ঈদ অফার, সব খাবারে ১০% ছাড়!">
     <label>Google Map এ খোঁজার নাম/ঠিকানা (খালি রাখলে উপরের ঠিকানাই ব্যবহার হবে)</label><input type="text" id="s_map" value="${esc(s.map_query)}" placeholder="যেমন: Afghan Restaurant Moulvibazar Sadar Sylhet">
     <label style="display:flex;gap:6px;align-items:center"><input type="checkbox" id="s_open" ${s.is_open !== false ? 'checked' : ''}> রেস্টুরেন্ট এখন খোলা আছে (বন্ধ করলে সাইটে "Closed" দেখাবে ও অর্ডার বন্ধ হবে)</label>` : '<p class="cur">ঘোষণা, Map ও খোলা/বন্ধ চালু করতে Supabase এ <b>supabase-v2.sql</b> Run করুন।</p>'}
+    ${'delivery_fee' in s ? `<label>ডেলিভারি চার্জ (৳) (০ দিলে ফ্রি ডেলিভারি; পিকআপে কোনো চার্জ নেই)</label><input type="number" id="s_fee" min="0" value="${esc(s.delivery_fee)}">` : '<p class="cur">ডেলিভারি চার্জ ও অর্ডার ট্র্যাকিং চালু করতে Supabase এ <b>supabase-v5.sql</b> Run করুন।</p>'}
     ${'bkash_number' in s ? `<label>bKash নম্বর (গ্রাহক এই নম্বরে Send Money করবে; খালি রাখলে bKash অপশন দেখাবে না)</label><input type="text" id="s_bk" value="${esc(s.bkash_number)}" placeholder="01XXXXXXXXX">` : '<p class="cur">bKash পেমেন্ট চালু করতে Supabase এ <b>supabase-v3.sql</b> Run করুন।</p>'}
     <button id="sSave">সেভ করুন</button></div>`;
 
@@ -492,6 +504,7 @@ function renderSettings() {
     ['name', 'tagline', 'about_title', 'about_text', 'phone', 'whatsapp', 'address', 'hours', 'facebook', 'instagram']
       .forEach(k => upd[k] = $('s_' + k).value.trim());
     if ($('s_bk')) upd.bkash_number = $('s_bk').value.trim();
+    if ($('s_fee')) upd.delivery_fee = Math.max(0, +$('s_fee').value || 0);
     if ($('s_open')) { upd.is_open = $('s_open').checked; upd.announcement = $('s_ann').value.trim(); upd.map_query = $('s_map').value.trim(); }
     const old = [];
     for (const [field, id, raw] of [['logo', 's_logo', true], ['favicon', 's_favicon', true], ['hero_image', 's_hero', false]]) {

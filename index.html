@@ -34,7 +34,7 @@
     <nav id="nav">
       <a href="#home">Home</a><a href="#menu">Menu</a><a href="#about">About Us</a><a href="#gallery">Gallery</a><a href="#blog" id="navBlog" hidden>Blog</a><a href="#contact">Contact</a>
     </nav>
-    <a class="btn" href="#order">Order Now</a>
+    <a class="btn" href="order/">Order Now</a>
     <button class="menu-btn" aria-label="Menu" onclick="document.getElementById('nav').classList.toggle('open')">☰</button>
   </div>
 </header>
@@ -48,7 +48,7 @@
     <p id="tagline">Delicious food, warm hospitality and a memorable experience — all in one place.</p>
     <div class="btns">
       <a class="btn" href="#menu">View Menu</a>
-      <a class="btn outline" href="#order">Order Now</a>
+      <a class="btn outline" href="order/">Order Now</a>
     </div>
   </div>
 </section>
@@ -82,33 +82,11 @@
 <section class="sec" id="order">
   <div class="wrap">
     <h2>Order Online</h2><div class="line"></div>
-    <form id="orderForm" class="oform" novalidate>
-      <div class="closed-note" id="closedNote" hidden>We are closed right now. Online ordering is paused until we open.</div>
-      <div id="orderItems"></div>
-      <div class="ototal"><span>Total</span><b id="oTotal">৳ 0</b></div>
-      <div class="ofields">
-        <input id="oName" type="text" placeholder="Your name" maxlength="80" autocomplete="name" required>
-        <input id="oPhone" type="tel" placeholder="Phone number" maxlength="20" autocomplete="tel" required>
-        <textarea id="oAddr" rows="2" placeholder="Delivery address" maxlength="300" autocomplete="street-address" required></textarea>
-        <textarea id="oNote" rows="2" placeholder="Note (optional)" maxlength="300"></textarea>
-      </div>
-      <div class="paybox" id="payBox" hidden>
-        <div class="paytitle">Payment</div>
-        <label class="payopt"><input type="radio" name="pay" value="cod" checked><span>Cash on Delivery</span></label>
-        <label class="payopt"><input type="radio" name="pay" value="bkash"><span class="bk">bKash</span><small>Send Money</small></label>
-        <div class="bkinfo" id="bkInfo" hidden>
-          <ol>
-            <li>Open your bKash app and choose <b>Send Money</b>.</li>
-            <li>Send <b id="bkAmt">৳ 0</b> to <b id="bkNum"></b> <button type="button" class="copybtn" id="bkCopy">Copy number</button></li>
-            <li>Copy the <b>Transaction ID (TrxID)</b> from the bKash message and enter it below.</li>
-          </ol>
-          <input id="bkFrom" type="tel" placeholder="Your bKash number (01XXXXXXXXX)" maxlength="16" autocomplete="off">
-          <input id="bkTrx" type="text" placeholder="Transaction ID (TrxID)" maxlength="20" autocomplete="off" autocapitalize="characters">
-        </div>
-      </div>
-      <button class="btn" id="oBtn" type="submit">Place Order</button>
-      <div id="oMsg" class="omsg" role="status"></div>
-    </form>
+    <p class="cta-text">Choose your food, pay by cash or bKash, and track your order any time.</p>
+    <div class="ctabtns">
+      <a class="btn" href="order/">Order Now</a>
+      <a class="btn outline-dark" href="track/">Track Your Order</a>
+    </div>
   </div>
 </section>
 
@@ -153,7 +131,7 @@
       <div class="logo" id="logoFoot">AFGHAN<small>RESTAURANT</small></div>
       <p style="margin-top:12px">Good food, good mood!<br>Thank you for dining with us.</p>
     </div>
-    <div><h4>Quick Links</h4><ul><li><a href="#home">Home</a></li><li><a href="#menu">Menu</a></li><li><a href="#about">About Us</a></li><li><a href="#gallery">Gallery</a></li><li><a href="#contact">Contact</a></li></ul></div>
+    <div><h4>Quick Links</h4><ul><li><a href="#home">Home</a></li><li><a href="#menu">Menu</a></li><li><a href="#about">About Us</a></li><li><a href="#gallery">Gallery</a></li><li><a href="#contact">Contact</a></li><li><a href="order/">Order Online</a></li><li><a href="track/">Track Order</a></li></ul></div>
     <div><h4>Contact Us</h4><ul>
       <li>📞 <a id="phone" href="tel:+8801778015313">+880 1778-015313</a></li>
       <li>📍 <span id="address">Moulvibazar Sadar, Sylhet, Bangladesh</span></li>
@@ -176,7 +154,7 @@ const $ = id => document.getElementById(id);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const short = n => String(n || '').replace(/\s*restaurant\s*$/i, '').toUpperCase();
 const db = DEMO ? createDemoClient() : (window.supabase ? supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null);
-let dishList = [], cart = {}, WA = '', SHOP = 'Restaurant', OPEN = true, BK = '', cat = '', qry = '';
+let dishList = [], WA = '', SHOP = 'Restaurant', OPEN = true, cat = '', qry = '';
 
 function brand(s) {
   return s.logo
@@ -200,9 +178,6 @@ function updateSchema(s) {
 function showSettings(s) {
   WA = s.whatsapp || ''; SHOP = s.name || SHOP;
   OPEN = s.is_open !== false;
-  BK = String(s.bkash_number || '').trim();
-  $('payBox').hidden = !BK; $('bkNum').textContent = BK;
-  if (!BK) { document.querySelector('input[name=pay][value=cod]').checked = true; $('bkInfo').hidden = true; }
   const pill = $('openPill');
   pill.hidden = false; pill.className = 'pill' + (OPEN ? '' : ' off');
   pill.textContent = OPEN ? '● Open now' + (s.hours ? ' · ' + s.hours : '') : '● Closed right now';
@@ -213,7 +188,6 @@ function showSettings(s) {
     $('mapFrame').src = 'https://www.google.com/maps?q=' + encodeURIComponent(mq) + '&output=embed';
     $('dirBtn').href = 'https://www.google.com/maps/dir/?api=1&destination=' + encodeURIComponent(mq);
   }
-  renderOrderItems();
   updateSchema(s);
   $('logoTop').innerHTML = brand(s);
   $('logoFoot').innerHTML = brand(s);
@@ -255,7 +229,6 @@ function showDishes(list) {
   $('chips').innerHTML = cats.length ? ['', ...cats].map(c => `<button type="button" class="chip${c === cat ? ' on' : ''}" data-cat="${esc(c)}">${c ? esc(c) : 'All'}</button>`).join('') : '';
   $('msearch').hidden = list.length <= 6;
   renderCards();
-  renderOrderItems();
 }
 
 function renderCards() {
@@ -302,102 +275,6 @@ function showGallery(list) {
 }
 
 /* ---------- অর্ডার ফর্ম ---------- */
-function renderOrderItems() {
-  dishList.forEach(d => { if (!availToday(d)) delete cart[d.id]; });
-  if (!OPEN) cart = {};
-  $('closedNote').hidden = OPEN;
-  $('oBtn').disabled = !OPEN;
-  const hasCats = dishList.some(d => d.category);
-  let lastCat = null;
-  const sorted = hasCats ? [...dishList].sort((a, b) => (a.category || 'zzz').localeCompare(b.category || 'zzz')) : dishList;
-  $('orderItems').innerHTML = sorted.length ? sorted.map(d => {
-    const off = !availToday(d) || !OPEN;
-    let head = '';
-    if (hasCats && (d.category || '') !== lastCat) { lastCat = d.category || ''; head = lastCat ? `<div class="ocat">${esc(lastCat)}</div>` : ''; }
-    return head + `
-    <div class="oitem${off ? ' off' : ''}">
-      <div><div class="nm">${esc(d.name)}</div><div class="pr">৳ ${esc(d.price)}</div>
-        ${!availToday(d) ? `<div class="note">Not available today (${esc(daysLabel(d))} only)</div>` : ''}</div>
-      <div class="qty">
-        <button type="button" data-id="${d.id}" data-op="-" aria-label="Less" ${off ? 'disabled' : ''}>−</button>
-        <span>${cart[d.id] || 0}</span>
-        <button type="button" data-id="${d.id}" data-op="+" aria-label="More" ${off ? 'disabled' : ''}>+</button>
-      </div>
-    </div>`;
-  }).join('') : '<p class="msg-empty">Menu coming soon.</p>';
-  const total = dishList.reduce((t, d) => t + (cart[d.id] || 0) * (+d.price || 0), 0);
-  $('oTotal').textContent = '৳ ' + total;
-  $('bkAmt').textContent = '৳ ' + total;
-}
-
-$('orderItems').addEventListener('click', e => {
-  const b = e.target.closest('button[data-id]');
-  if (!b) return;
-  const id = b.dataset.id, n = (cart[id] || 0) + (b.dataset.op === '+' ? 1 : -1);
-  cart[id] = Math.max(0, Math.min(20, n));
-  renderOrderItems();
-});
-
-function say(text, ok, extraHtml) {
-  const m = $('oMsg');
-  m.className = 'omsg ' + (ok ? 'ok' : 'err');
-  m.innerHTML = esc(text) + (extraHtml || '');
-}
-
-const payMethod = () => (document.querySelector('input[name=pay]:checked') || {}).value || 'cod';
-document.querySelectorAll('input[name=pay]').forEach(r => r.addEventListener('change', () => { $('bkInfo').hidden = payMethod() !== 'bkash'; }));
-$('bkCopy').addEventListener('click', async e => {
-  const b = e.currentTarget;
-  try { await navigator.clipboard.writeText(BK); }
-  catch (_) { const t = document.createElement('textarea'); t.value = BK; document.body.appendChild(t); t.select(); try { document.execCommand('copy'); } catch (__) {} t.remove(); }
-  b.textContent = 'Copied ✓'; setTimeout(() => b.textContent = 'Copy number', 2000);
-});
-// বাংলাদেশি নম্বর: 8801712345678 / +8801712345678 / 01712-345678 সবই 01712345678 হয়ে যায়
-const bdNum = v => { let d = String(v).replace(/\D/g, ''); if (d.length > 11) d = d.replace(/^880/, '0'); return d; };
-
-$('orderForm').addEventListener('submit', async e => {
-  e.preventDefault();
-  const items = dishList.filter(d => cart[d.id] > 0 && availToday(d)).map(d => ({ name: d.name, price: +d.price || 0, qty: cart[d.id] }));
-  const name = $('oName').value.trim(), phone = $('oPhone').value.trim(), address = $('oAddr').value.trim(), note = $('oNote').value.trim();
-  if (!OPEN) return say('We are closed right now. Please order when we open.', false);
-  if (!items.length) return say('Please choose at least one dish.', false);
-  if (!name) return say('Please enter your name.', false);
-  if (phone.replace(/\D/g, '').length < 8) return say('Please enter a valid phone number.', false);
-  if (!address) return say('Please enter your delivery address.', false);
-  if (!db) return say('Ordering is not set up yet.', false);
-
-  const pay = BK ? payMethod() : 'cod';
-  let from = '', trx = '';
-  if (pay === 'bkash') {
-    from = bdNum($('bkFrom').value); trx = $('bkTrx').value.trim().toUpperCase();
-    if (!/^01[3-9]\d{8}$/.test(from)) return say('Please enter the bKash number you sent money from (like 01712345678).', false);
-    if (!/^[A-Z0-9]{8,14}$/.test(trx)) return say('Please enter a valid Transaction ID (TrxID) from your bKash message.', false);
-  }
-
-  const total = items.reduce((t, i) => t + i.price * i.qty, 0);
-  const btn = $('oBtn'); btn.disabled = true; btn.textContent = 'Sending...';
-  const row = { name, phone, address, note, items, total };
-  if (pay === 'bkash') Object.assign(row, { payment_method: 'bkash', payment_number: from, trx_id: trx });
-  const { error } = await db.from('orders').insert(row);
-  btn.disabled = false; btn.textContent = 'Place Order';
-  if (error) {
-    console.error(error);
-    if (error.code === '23505' || /orders_trx_unique/.test(error.message || '')) return say('This Transaction ID has already been used. Please check your TrxID.', false);
-    return say('Sorry, the order could not be sent. Please call us to order.', false);
-  }
-
-  let wa = '';
-  if (WA) {
-    const lines = [`New order - ${SHOP}`, ...items.map(i => `${i.name} x ${i.qty} = ${i.price * i.qty}`),
-      `Total: ${total} BDT`, pay === 'bkash' ? `Paid by bKash from ${from}, TrxID: ${trx}` : 'Payment: Cash on delivery', `Name: ${name}`, `Phone: ${phone}`, `Address: ${address}`, note ? `Note: ${note}` : ''].filter(Boolean);
-    wa = `<br><a class="btn wa-btn" target="_blank" rel="noopener" href="https://wa.me/${esc(WA)}?text=${encodeURIComponent(lines.join('\n'))}">Confirm on WhatsApp</a>`;
-  }
-  say(pay === 'bkash' ? 'Thank you! Your order has been received. We will verify your bKash payment and call you soon.' : 'Thank you! Your order has been received. We will call you soon.', true, wa);
-  $('oMsg').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'center' });
-  cart = {}; renderOrderItems();
-  $('oNote').value = ''; $('bkFrom').value = ''; $('bkTrx').value = '';
-});
-
 function note(text, top) {
   const n = document.createElement('div');
   n.style.cssText = 'position:fixed;' + (top ? 'top:0;' : 'bottom:10px;left:10px;border-radius:6px;') + 'left:' + (top ? '0;right:0;' : '10px;') + 'z-index:99;background:#fff6df;color:#5a4000;border:1px solid #e9c777;padding:8px 12px;font:13px system-ui,sans-serif';
