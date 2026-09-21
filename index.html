@@ -1,653 +1,443 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="Afghan Restaurant — delicious food, warm hospitality and online ordering.">
-  <meta name="theme-color" content="#141110">
-  <title>Afghan Restaurant</title>
-
-  <link rel="icon" id="favicon" href="favicon.svg" type="image/svg+xml">
-  <link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
-  <link rel="apple-touch-icon" id="touch" href="apple-touch-icon.png">
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,500&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Afghan Restaurant | Afghan Food in Moulvibazar, Sylhet</title>
+<meta name="description" content="Afghan Restaurant in Moulvibazar Sadar, Sylhet. Fresh Afghan pulao, korma, karahi and roast. Order online or visit us.">
+<link rel="canonical" href="https://admission.snkitinstitute.com/resturayafgan.github.io/">
+<meta name="theme-color" content="#141110">
+<meta property="og:type" content="restaurant">
+<meta property="og:site_name" content="Afghan Restaurant">
+<meta property="og:title" content="Afghan Restaurant | Afghan Food in Moulvibazar, Sylhet">
+<meta property="og:description" content="Delicious food, warm hospitality and a memorable experience. Order online.">
+<meta property="og:url" content="https://admission.snkitinstitute.com/resturayafgan.github.io/">
+<meta property="og:image" content="https://admission.snkitinstitute.com/resturayafgan.github.io/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json" id="ld">
+{"@context":"https://schema.org","@type":"Restaurant","name":"Afghan Restaurant","servesCuisine":"Afghan","url":"https://admission.snkitinstitute.com/resturayafgan.github.io/","telephone":"+880 1778-015313","address":{"@type":"PostalAddress","streetAddress":"Moulvibazar Sadar, Sylhet, Bangladesh","addressCountry":"BD"}}
+</script>
+<link rel="icon" id="favicon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" id="touch" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,500&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-  <div class="announce" id="announce" hidden></div>
 
-  <header>
-    <div class="wrap">
-      <a href="#home" class="logo" id="logoTop">AFGHAN<small>RESTAURANT</small></a>
+<div class="announce" id="announce" hidden></div>
 
-      <nav id="nav" aria-label="Main navigation">
-        <a href="#home">Home</a>
-        <a href="#menu">Menu</a>
-        <a href="#about">About Us</a>
-        <a href="#gallery">Gallery</a>
-        <a href="blog/">Blog</a>
-        <a href="#contact">Contact</a>
-      </nav>
-
-      <a class="btn" href="#order">Order Now</a>
-      <button class="menu-btn" type="button" aria-label="Menu"
-        onclick="document.getElementById('nav').classList.toggle('open')">☰</button>
-    </div>
-  </header>
-
-  <main>
-    <section class="hero" id="home">
-      <div class="wrap">
-        <div class="hi">Welcome to</div>
-        <h1 id="heroName">Afghan Restaurant</h1>
-        <div class="sub">AUTHENTIC • FRESH • DELICIOUS</div>
-        <p id="tagline">Delicious food, warm hospitality and a memorable experience — all in one place.</p>
-        <div class="btns">
-          <a class="btn" href="#menu">Explore Menu</a>
-          <a class="btn outline" href="#order">Order Online</a>
-        </div>
-      </div>
-    </section>
-
-    <section class="about" id="about">
-      <div class="wrap">
-        <div>
-          <h2 id="aboutTitle">Good Food, Great Moments</h2>
-          <p id="aboutText">Afghan Restaurant is a small and cozy place where we serve delicious and healthy food with the best quality ingredients. Our goal is to make every meal a memorable experience for our guests.</p>
-          <a class="btn" href="#order">Order Now</a>
-        </div>
-
-        <div class="feats">
-          <div>
-            <div class="ic">🍽️</div>
-            <h3>Fresh Food</h3>
-            <p>Quality ingredients, prepared fresh.</p>
-          </div>
-          <div>
-            <div class="ic">❤️</div>
-            <h3>Warm Service</h3>
-            <p>Friendly hospitality for every guest.</p>
-          </div>
-          <div>
-            <div class="ic">⭐</div>
-            <h3>Great Taste</h3>
-            <p>Food made for memorable moments.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="sec" id="menu">
-      <div class="wrap">
-        <h2>Our Menu</h2>
-        <div class="line"></div>
-
-        <div class="menu-tools" id="menuTools" hidden>
-          <div class="chips" id="chips"></div>
-          <input id="msearch" type="search" placeholder="Search food..." aria-label="Search food">
-        </div>
-
-        <div class="cards" id="dishes">
-          <div class="msg-empty">Loading menu...</div>
-        </div>
-      </div>
-    </section>
-
-    <section class="why">
-      <div class="wrap">
-        <h2>Why Choose Us</h2>
-        <div class="line"></div>
-        <div class="grid">
-          <div class="item"><div class="ic">🥘</div><h3>Authentic Flavours</h3><p>Classic recipes and satisfying portions.</p></div>
-          <div class="item"><div class="ic">🌿</div><h3>Fresh Ingredients</h3><p>Carefully selected ingredients every day.</p></div>
-          <div class="item"><div class="ic">👨‍🍳</div><h3>Made With Care</h3><p>Prepared with attention to taste and quality.</p></div>
-          <div class="item"><div class="ic">🚚</div><h3>Easy Ordering</h3><p>Order online and get in touch quickly.</p></div>
-        </div>
-      </div>
-    </section>
-
-    <section class="sec" id="order">
-      <div class="wrap">
-        <h2>Order Online</h2>
-        <div class="line"></div>
-        <div id="openStatus" class="pill" hidden></div>
-        <div id="closedNote" class="closed-note" hidden>We are currently closed. Online ordering is temporarily unavailable.</div>
-
-        <form class="oform" id="orderForm">
-          <div id="orderItems"><div class="msg-empty">Loading menu...</div></div>
-
-          <div class="ototal">
-            <span>Total</span>
-            <strong>৳ <span id="orderTotal">0</span></strong>
-          </div>
-
-          <div class="ofields">
-            <input id="customerName" required maxlength="80" placeholder="Your name">
-            <input id="customerPhone" required maxlength="20" placeholder="Phone number">
-            <textarea id="customerAddress" required maxlength="300" rows="3" placeholder="Delivery address"></textarea>
-            <textarea id="customerNote" maxlength="300" rows="2" placeholder="Note (optional)"></textarea>
-          </div>
-
-          <div class="paybox" id="paybox" hidden>
-            <div class="paytitle">Payment method</div>
-            <label class="payopt">
-              <input type="radio" name="payment" value="cod" checked>
-              <span>💵 Cash on Delivery</span>
-            </label>
-            <label class="payopt">
-              <input type="radio" name="payment" value="bkash">
-              <span><span class="bk">bKash</span> Send Money</span>
-            </label>
-
-            <div class="bkinfo" id="bkinfo" hidden>
-              <ol>
-                <li>Open bKash and choose <b>Send Money</b>.</li>
-                <li>Send the order total to <b id="bkashNumber">—</b>
-                  <button class="copybtn" type="button" id="copyBkash">Copy</button>
-                </li>
-                <li>Enter the bKash number you sent from and the TrxID below.</li>
-              </ol>
-              <input id="paymentNumber" maxlength="20" placeholder="Your bKash number">
-              <input id="trxId" maxlength="20" placeholder="bKash TrxID">
-            </div>
-          </div>
-
-          <button class="btn" id="submitOrder" type="submit">Place Order</button>
-          <div class="omsg" id="orderMsg" aria-live="polite"></div>
-        </form>
-      </div>
-    </section>
-
-    <section class="sec" id="gallery">
-      <div class="wrap">
-        <h2>Gallery</h2>
-        <div class="line"></div>
-        <div class="gal" id="galleryGrid">
-          <div class="msg-empty">Loading gallery...</div>
-        </div>
-      </div>
-    </section>
-
-    <section class="sec" id="news">
-      <div class="wrap">
-        <h2>Latest News</h2>
-        <div class="line"></div>
-        <div class="posts" id="posts">
-          <div class="msg-empty">Loading news...</div>
-        </div>
-        <div class="more"><a class="btn" href="blog/">View All Posts</a></div>
-      </div>
-    </section>
-
-    <section class="sec" id="contact">
-      <div class="wrap">
-        <h2>Contact Us</h2>
-        <div class="line"></div>
-        <div class="feats">
-          <div>
-            <div class="ic">📞</div>
-            <h3>Phone</h3>
-            <p><a id="phoneLink" href="tel:+8801778015313">+880 1778-015313</a></p>
-          </div>
-          <div>
-            <div class="ic">📍</div>
-            <h3>Address</h3>
-            <p id="address">Moulvibazar Sadar, Sylhet, Bangladesh</p>
-          </div>
-          <div>
-            <div class="ic">🕐</div>
-            <h3>Opening Hours</h3>
-            <p id="hours">10:00 AM - 10:00 PM</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <div class="mapbox wrap" id="mapSection" hidden>
-      <iframe id="mapFrame" title="Restaurant location" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-    </div>
-  </main>
-
-  <footer>
-    <div class="wrap">
-      <div class="grid">
-        <div>
-          <a href="#home" class="logo" id="logoFooter">AFGHAN<small>RESTAURANT</small></a>
-          <p id="footerAbout" style="margin-top:14px">Delicious food, warm hospitality and a memorable experience.</p>
-        </div>
-        <div>
-          <h4>Quick Links</h4>
-          <ul>
-            <li><a href="#home">Home</a></li>
-            <li><a href="#menu">Menu</a></li>
-            <li><a href="#about">About Us</a></li>
-            <li><a href="blog/">Blog</a></li>
-          </ul>
-        </div>
-        <div>
-          <h4>Contact</h4>
-          <ul>
-            <li><a id="footerPhone" href="tel:+8801778015313">+880 1778-015313</a></li>
-            <li id="footerAddress">Moulvibazar Sadar, Sylhet, Bangladesh</li>
-            <li id="footerHours">10:00 AM - 10:00 PM</li>
-          </ul>
-          <div class="soc">
-            <a id="facebook" href="#" target="_blank" rel="noopener" hidden>f</a>
-            <a id="instagram" href="#" target="_blank" rel="noopener" hidden>◎</a>
-            <a id="whatsapp" href="#" target="_blank" rel="noopener" hidden>☏</a>
-          </div>
-        </div>
-        <div>
-          <h4>Order</h4>
-          <a class="btn" href="#order">Order Online</a>
-        </div>
-      </div>
-
-      <div class="copy" id="copy">© 2026 Afghan Restaurant. All Rights Reserved.</div>
-      <div class="devbar" id="devbar" hidden></div>
-    </div>
-  </footer>
-
-  <a class="wa-float" id="waFloat" href="#" target="_blank" rel="noopener" aria-label="WhatsApp" hidden>☏</a>
-
-  <div class="lb" id="lightbox" hidden>
-    <img id="lightboxImg" alt="">
+<header>
+  <div class="wrap">
+    <a href="#home" class="logo" id="logoTop">AFGHAN<small>RESTAURANT</small></a>
+    <nav id="nav">
+      <a href="#home">Home</a><a href="#menu">Menu</a><a href="#about">About Us</a><a href="#gallery">Gallery</a><a href="#blog" id="navBlog" hidden>Blog</a><a href="#contact">Contact</a>
+    </nav>
+    <a class="btn" href="#order">Order Now</a>
+    <button class="menu-btn" aria-label="Menu" onclick="document.getElementById('nav').classList.toggle('open')">☰</button>
   </div>
+</header>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="config.js"></script>
-  <script src="demo-db.js"></script>
-  <script src="developer.js"></script>
+<section class="hero" id="home">
+  <div class="wrap">
+    <div class="hi">Welcome to</div>
+    <h1 id="heroName">AFGHAN</h1>
+    <div class="sub">RESTAURANT</div>
+    <div class="pill" id="openPill" hidden></div>
+    <p id="tagline">Delicious food, warm hospitality and a memorable experience — all in one place.</p>
+    <div class="btns">
+      <a class="btn" href="#menu">View Menu</a>
+      <a class="btn outline" href="#order">Order Now</a>
+    </div>
+  </div>
+</section>
 
-  <script>
-    const $ = id => document.getElementById(id);
-    const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({
-      '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
-    }[c]));
+<section class="about" id="about">
+  <div class="wrap">
+    <div>
+      <h2 id="aboutTitle">Good Food, Great Moments</h2>
+      <p id="aboutText">Afghan Restaurant is a small and cozy place where we serve delicious and healthy food with the best quality ingredients. Our goal is to make every meal a memorable experience for our guests.</p>
+      <a class="btn" href="#contact">Learn More</a>
+    </div>
+    <div class="feats">
+      <div><div class="ic">👨‍🍳</div><h3>Fresh Ingredients</h3><p>We use the freshest ingredients to serve you the best.</p></div>
+      <div><div class="ic">🍽️</div><h3>Hygienic Food</h3><p>Hygiene and quality are our top priorities.</p></div>
+      <div><div class="ic">🤝</div><h3>Friendly Service</h3><p>Our friendly team is always here to serve you better.</p></div>
+    </div>
+  </div>
+</section>
 
-    const fallback = {
-      name: 'Afghan Restaurant',
-      tagline: 'Delicious food, warm hospitality and a memorable experience — all in one place.',
-      about_title: 'Good Food, Great Moments',
-      about_text: 'Afghan Restaurant is a small and cozy place where we serve delicious and healthy food with the best quality ingredients. Our goal is to make every meal a memorable experience for our guests.',
-      phone: '+880 1778-015313',
-      whatsapp: '8801778015313',
-      address: 'Moulvibazar Sadar, Sylhet, Bangladesh',
-      hours: '10:00 AM - 10:00 PM',
-      facebook: '',
-      instagram: '',
-      hero_image: '',
-      logo: '',
-      favicon: '',
-      announcement: '',
-      map_query: '',
-      is_open: true,
-      bkash_number: ''
-    };
+<section class="sec" id="menu">
+  <div class="wrap">
+    <h2>Our Popular Dishes</h2><div class="line"></div>
+    <div class="menu-tools" id="menuTools" hidden>
+      <div class="chips" id="chips"></div>
+      <input id="msearch" type="search" placeholder="Search dishes..." aria-label="Search dishes">
+    </div>
+    <div class="cards" id="dishes"></div>
+  </div>
+</section>
 
-    const DEMO_SAFE = typeof DEMO !== 'undefined' ? DEMO : false;
-    const db = DEMO_SAFE && typeof createDemoClient === 'function'
-      ? createDemoClient()
-      : supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+<section class="sec" id="order">
+  <div class="wrap">
+    <h2>Order Online</h2><div class="line"></div>
+    <form id="orderForm" class="oform" novalidate>
+      <div class="closed-note" id="closedNote" hidden>We are closed right now. Online ordering is paused until we open.</div>
+      <div id="orderItems"></div>
+      <div class="ototal"><span>Total</span><b id="oTotal">৳ 0</b></div>
+      <div class="ofields">
+        <input id="oName" type="text" placeholder="Your name" maxlength="80" autocomplete="name" required>
+        <input id="oPhone" type="tel" placeholder="Phone number" maxlength="20" autocomplete="tel" required>
+        <textarea id="oAddr" rows="2" placeholder="Delivery address" maxlength="300" autocomplete="street-address" required></textarea>
+        <textarea id="oNote" rows="2" placeholder="Note (optional)" maxlength="300"></textarea>
+      </div>
+      <div class="paybox" id="payBox" hidden>
+        <div class="paytitle">Payment</div>
+        <label class="payopt"><input type="radio" name="pay" value="cod" checked><span>Cash on Delivery</span></label>
+        <label class="payopt"><input type="radio" name="pay" value="bkash"><span class="bk">bKash</span><small>Send Money</small></label>
+        <div class="bkinfo" id="bkInfo" hidden>
+          <ol>
+            <li>Open your bKash app and choose <b>Send Money</b>.</li>
+            <li>Send <b id="bkAmt">৳ 0</b> to <b id="bkNum"></b> <button type="button" class="copybtn" id="bkCopy">Copy number</button></li>
+            <li>Copy the <b>Transaction ID (TrxID)</b> from the bKash message and enter it below.</li>
+          </ol>
+          <input id="bkFrom" type="tel" placeholder="Your bKash number (01XXXXXXXXX)" maxlength="16" autocomplete="off">
+          <input id="bkTrx" type="text" placeholder="Transaction ID (TrxID)" maxlength="20" autocomplete="off" autocapitalize="characters">
+        </div>
+      </div>
+      <button class="btn" id="oBtn" type="submit">Place Order</button>
+      <div id="oMsg" class="omsg" role="status"></div>
+    </form>
+  </div>
+</section>
 
-    let settings = {...fallback};
-    let dishes = [];
-    let gallery = [];
-    let posts = [];
-    let quantities = {};
-    let activeCategory = 'all';
+<section class="why">
+  <div class="wrap">
+    <h2>Why Choose Us</h2><div class="line"></div>
+    <div class="grid">
+      <div class="item"><div class="ic">🏅</div><h3>Best Quality</h3><p>We maintain the highest quality in our food.</p></div>
+      <div class="item"><div class="ic">🏷️</div><h3>Affordable Price</h3><p>Delicious food at a price that fits your budget.</p></div>
+      <div class="item"><div class="ic">♥</div><h3>Made with Love</h3><p>Every dish is made with care and love.</p></div>
+      <div class="item"><div class="ic">⏱️</div><h3>Fast Service</h3><p>We value your time and serve you quickly.</p></div>
+    </div>
+  </div>
+</section>
 
-    const money = n => Number(n || 0).toLocaleString('en-BD');
-    const short = n => String(n || 'Afghan Restaurant').replace(/\s*restaurant\s*$/i,'').toUpperCase();
+<section class="sec" id="gallery">
+  <div class="wrap">
+    <h2>Our Gallery</h2><div class="line"></div>
+    <div class="gal" id="gal"></div>
+  </div>
+</section>
 
-    function phoneHref(phone) {
-      return 'tel:' + String(phone || '').replace(/[^\d+]/g, '');
-    }
+<section class="sec" id="blog" hidden>
+  <div class="wrap">
+    <h2>Latest News</h2><div class="line"></div>
+    <div class="posts" id="posts"></div>
+    <div class="more"><a class="btn" href="blog/">View All Posts</a></div>
+  </div>
+</section>
 
-    function waHref(number, text='') {
-      const n = String(number || '').replace(/\D/g, '');
-      return n ? 'https://wa.me/' + n + (text ? '?text=' + encodeURIComponent(text) : '') : '';
-    }
+<section class="sec" id="map" hidden>
+  <div class="wrap mapbox">
+    <h2>Find Us</h2><div class="line"></div>
+    <iframe id="mapFrame" title="Map" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    <a class="btn" id="dirBtn" href="#" target="_blank" rel="noopener">Get Directions</a>
+  </div>
+</section>
 
-    function applySettings(s) {
-      settings = {...fallback, ...(s || {})};
+<footer id="contact">
+  <div class="wrap grid">
+    <div>
+      <div class="logo" id="logoFoot">AFGHAN<small>RESTAURANT</small></div>
+      <p style="margin-top:12px">Good food, good mood!<br>Thank you for dining with us.</p>
+    </div>
+    <div><h4>Quick Links</h4><ul><li><a href="#home">Home</a></li><li><a href="#menu">Menu</a></li><li><a href="#about">About Us</a></li><li><a href="#gallery">Gallery</a></li><li><a href="#contact">Contact</a></li></ul></div>
+    <div><h4>Contact Us</h4><ul>
+      <li>📞 <a id="phone" href="tel:+8801778015313">+880 1778-015313</a></li>
+      <li>📍 <span id="address">Moulvibazar Sadar, Sylhet, Bangladesh</span></li>
+      <li>🕙 <span id="hours">10:00 AM - 10:00 PM</span></li></ul></div>
+    <div><h4>Follow Us</h4><div class="soc" id="social"></div></div>
+  </div>
+  <div class="copy" id="copy"></div>
+  <div class="devbar" id="devbar" hidden></div>
+</footer>
+<script src="developer.js"></script>
 
-      document.title = settings.name || fallback.name;
-      $('heroName').textContent = settings.name || fallback.name;
-      $('tagline').textContent = settings.tagline || fallback.tagline;
-      $('aboutTitle').textContent = settings.about_title || fallback.about_title;
-      $('aboutText').textContent = settings.about_text || fallback.about_text;
-      $('footerAbout').textContent = settings.tagline || fallback.tagline;
+<a id="waFloat" class="wa-float" href="#" target="_blank" rel="noopener" aria-label="Chat on WhatsApp" hidden>💬</a>
 
-      const phone = settings.phone || fallback.phone;
-      $('phoneLink').textContent = phone;
-      $('phoneLink').href = phoneHref(phone);
-      $('footerPhone').textContent = phone;
-      $('footerPhone').href = phoneHref(phone);
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>window.supabase||document.write('<script src="https://unpkg.com/@supabase/supabase-js@2"><\/script>')</script>
+<script src="config.js"></script>
+<script src="demo-db.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const short = n => String(n || '').replace(/\s*restaurant\s*$/i, '').toUpperCase();
+const db = DEMO ? createDemoClient() : (window.supabase ? supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null);
+let dishList = [], cart = {}, WA = '', SHOP = 'Restaurant', OPEN = true, BK = '', cat = '', qry = '';
 
-      $('address').textContent = settings.address || fallback.address;
-      $('hours').textContent = settings.hours || fallback.hours;
-      $('footerAddress').textContent = settings.address || fallback.address;
-      $('footerHours').textContent = settings.hours || fallback.hours;
+function brand(s) {
+  return s.logo
+    ? `<img class="logo-img" src="${esc(s.logo)}" alt="${esc(s.name)}">`
+    : `${esc(short(s.name))}<small>RESTAURANT</small>`;
+}
 
-      const logoHTML = settings.logo
-        ? `<img class="logo-img" src="${esc(settings.logo)}" alt="${esc(settings.name)}">`
-        : `${esc(short(settings.name))}<small>RESTAURANT</small>`;
-      $('logoTop').innerHTML = logoHTML;
-      $('logoFooter').innerHTML = logoHTML;
+// Google এর জন্য রেস্টুরেন্টের তথ্য (admin এ বদলালে এটাও বদলায়)
+function updateSchema(s) {
+  const ld = {
+    '@context': 'https://schema.org', '@type': 'Restaurant', name: s.name, servesCuisine: 'Afghan',
+    description: s.tagline, telephone: s.phone, url: location.origin + location.pathname.replace(/index\.html$/, ''),
+    address: { '@type': 'PostalAddress', streetAddress: s.address, addressCountry: 'BD' }
+  };
+  if (s.hero_image && !s.hero_image.startsWith('data:')) ld.image = s.hero_image;
+  const same = [s.facebook, s.instagram].filter(Boolean);
+  if (same.length) ld.sameAs = same;
+  $('ld').textContent = JSON.stringify(ld);
+}
 
-      if (settings.hero_image) {
-        document.querySelector('.hero').style.backgroundImage = `url("${String(settings.hero_image).replace(/"/g, '\\"')}")`;
-      }
+function showSettings(s) {
+  WA = s.whatsapp || ''; SHOP = s.name || SHOP;
+  OPEN = s.is_open !== false;
+  BK = String(s.bkash_number || '').trim();
+  $('payBox').hidden = !BK; $('bkNum').textContent = BK;
+  if (!BK) { document.querySelector('input[name=pay][value=cod]').checked = true; $('bkInfo').hidden = true; }
+  const pill = $('openPill');
+  pill.hidden = false; pill.className = 'pill' + (OPEN ? '' : ' off');
+  pill.textContent = OPEN ? '● Open now' + (s.hours ? ' · ' + s.hours : '') : '● Closed right now';
+  const an = $('announce'); an.innerHTML = s.announcement ? '<b>Special Offer</b> ' + esc(s.announcement) : ''; an.hidden = !s.announcement;
+  const mq = s.map_query || s.address || '';
+  $('map').hidden = !mq;
+  if (mq) {
+    $('mapFrame').src = 'https://www.google.com/maps?q=' + encodeURIComponent(mq) + '&output=embed';
+    $('dirBtn').href = 'https://www.google.com/maps/dir/?api=1&destination=' + encodeURIComponent(mq);
+  }
+  renderOrderItems();
+  updateSchema(s);
+  $('logoTop').innerHTML = brand(s);
+  $('logoFoot').innerHTML = brand(s);
+  $('heroName').textContent = short(s.name);
+  $('tagline').textContent = s.tagline || '';
+  $('aboutTitle').textContent = s.about_title || '';
+  $('aboutText').textContent = s.about_text || '';
+  $('phone').textContent = s.phone || '';
+  $('phone').href = 'tel:' + String(s.phone || '').replace(/\s+/g, '');
+  $('address').textContent = s.address || '';
+  $('hours').textContent = s.hours || '';
+  $('copy').textContent = `© ${new Date().getFullYear()} ${s.name}. All Rights Reserved.`;
+  if (s.hero_image) $('home').style.backgroundImage = `url('${s.hero_image.replace(/'/g, '%27')}')`;
+  if (s.favicon) {
+    document.querySelectorAll('link[rel="icon"]:not(#favicon)').forEach(l => l.remove());
+    $('favicon').removeAttribute('type'); $('favicon').href = s.favicon; $('touch').href = s.favicon;
+  }
+  if (s.whatsapp) { $('waFloat').href = 'https://wa.me/' + s.whatsapp; $('waFloat').hidden = false; }
+  let soc = '';
+  if (s.facebook)  soc += `<a href="${esc(s.facebook)}" target="_blank" rel="noopener" aria-label="Facebook">f</a>`;
+  if (s.instagram) soc += `<a href="${esc(s.instagram)}" target="_blank" rel="noopener" aria-label="Instagram">ig</a>`;
+  if (s.whatsapp)  soc += `<a href="https://wa.me/${esc(s.whatsapp)}" target="_blank" rel="noopener" aria-label="WhatsApp">wa</a>`;
+  $('social').innerHTML = soc;
+}
 
-      const announcement = settings.announcement || '';
-      $('announce').innerHTML = announcement ? '<b>Special Offer</b> ' + esc(announcement) : '';
-      $('announce').hidden = !announcement;
+// ---------- কোন দিন কোন খাবার ----------
+const WEEK = ['sat', 'sun', 'mon', 'tue', 'wed', 'thu', 'fri'];
+const DAYN = { sat: 'Sat', sun: 'Sun', mon: 'Mon', tue: 'Tue', wed: 'Wed', thu: 'Thu', fri: 'Fri' };
+const todayKey = () => new Intl.DateTimeFormat('en-US', { weekday: 'short', timeZone: 'Asia/Dhaka' }).format(new Date()).toLowerCase().slice(0, 3);
+const dayList = d => String(d.days || '').split(',').filter(Boolean);
+const availToday = d => { const l = dayList(d); return !l.length || l.length >= 7 || l.includes(todayKey()); };
+const daysLabel = d => { const l = dayList(d); return l.length && l.length < 7 ? WEEK.filter(x => l.includes(x)).map(x => DAYN[x]).join(', ') : ''; };
 
-      if (settings.favicon) {
-        $('favicon').href = settings.favicon;
-        $('touch').href = settings.favicon;
-      }
+function showDishes(list) {
+  dishList = list;
+  const cats = [...new Set(list.map(d => d.category).filter(Boolean))];
+  if (cat && !cats.includes(cat)) cat = '';
+  $('menuTools').hidden = !(cats.length || list.length > 6);
+  $('chips').innerHTML = cats.length ? ['', ...cats].map(c => `<button type="button" class="chip${c === cat ? ' on' : ''}" data-cat="${esc(c)}">${c ? esc(c) : 'All'}</button>`).join('') : '';
+  $('msearch').hidden = list.length <= 6;
+  renderCards();
+  renderOrderItems();
+}
 
-      const wa = waHref(settings.whatsapp || fallback.whatsapp);
-      if (wa) {
-        $('waFloat').href = wa;
-        $('waFloat').hidden = false;
-        $('whatsapp').href = wa;
-        $('whatsapp').hidden = false;
-      }
+function renderCards() {
+  const list = dishList.filter(d => (!cat || d.category === cat) && (!qry || String(d.name).toLowerCase().includes(qry)));
+  $('dishes').innerHTML = list.length ? list.map(d => {
+    const off = !availToday(d), lab = daysLabel(d);
+    return `
+    <article class="card${off ? ' off' : ''}">
+      <div class="imgw">
+        ${d.image ? `<img class="ph" src="${esc(d.image)}" alt="${esc(d.name)}" loading="lazy">` : `<div class="ph"></div>`}
+        ${d.is_new ? '<span class="tag">New</span>' : ''}
+      </div>
+      <div class="info"><h3>${esc(d.name)}</h3><div class="price">৳ ${esc(d.price)}</div>
+        ${lab ? `<div class="days">${off ? '' : 'Available: '}${esc(lab)}</div>` : ''}
+        ${off ? '<div class="off-note">Not available today</div>' : ''}
+      </div>
+    </article>`;
+  }).join('') : `<p class="msg-empty">${dishList.length ? 'No dishes found.' : 'Menu coming soon.'}</p>`;
+}
 
-      if (settings.facebook) {
-        $('facebook').href = settings.facebook;
-        $('facebook').hidden = false;
-      }
-      if (settings.instagram) {
-        $('instagram').href = settings.instagram;
-        $('instagram').hidden = false;
-      }
+$('chips').addEventListener('click', e => {
+  const b = e.target.closest('.chip'); if (!b) return;
+  cat = b.dataset.cat;
+  document.querySelectorAll('#chips .chip').forEach(x => x.classList.toggle('on', x === b));
+  renderCards();
+});
+$('msearch').addEventListener('input', e => { qry = e.target.value.trim().toLowerCase(); renderCards(); });
 
-      const open = settings.is_open !== false;
-      $('openStatus').textContent = open ? '🟢 Open — accepting orders' : '🔴 Closed — orders are paused';
-      $('openStatus').className = 'pill' + (open ? '' : ' off');
-      $('openStatus').hidden = false;
-      $('closedNote').hidden = open;
-      $('submitOrder').disabled = !open;
+function showPosts(list) {
+  $('blog').hidden = !list.length; $('navBlog').hidden = !list.length;
+  const ex = t => { const s = String(t || '').replace(/\s+/g, ' ').trim(); return s.length > 120 ? s.slice(0, 120) + '...' : s; };
+  $('posts').innerHTML = list.slice(0, 3).map(p => `
+    <a class="post" href="blog/?id=${encodeURIComponent(p.id)}">
+      ${p.image ? `<img src="${esc(p.image)}" alt="" loading="lazy">` : '<div class="ph"></div>'}
+      <div class="info"><time>${new Date(p.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</time>
+        <h3>${esc(p.title)}</h3><p>${esc(ex(p.body))}</p></div>
+    </a>`).join('');
+}
 
-      if (settings.bkash_number) {
-        $('paybox').hidden = false;
-        $('bkashNumber').textContent = settings.bkash_number;
-      } else {
-        $('paybox').hidden = true;
-      }
+function showGallery(list) {
+  $('gal').innerHTML = list.length
+    ? list.map(g => `<img src="${esc(g.image)}" alt="Gallery photo" loading="lazy">`).join('')
+    : Array(6).fill('<div class="ph"></div>').join('');
+}
 
-      if (settings.map_query || settings.address) {
-        const q = settings.map_query || settings.address;
-        $('mapFrame').src = 'https://www.google.com/maps?q=' + encodeURIComponent(q) + '&output=embed';
-        $('mapSection').hidden = false;
-      }
+/* ---------- অর্ডার ফর্ম ---------- */
+function renderOrderItems() {
+  dishList.forEach(d => { if (!availToday(d)) delete cart[d.id]; });
+  if (!OPEN) cart = {};
+  $('closedNote').hidden = OPEN;
+  $('oBtn').disabled = !OPEN;
+  const hasCats = dishList.some(d => d.category);
+  let lastCat = null;
+  const sorted = hasCats ? [...dishList].sort((a, b) => (a.category || 'zzz').localeCompare(b.category || 'zzz')) : dishList;
+  $('orderItems').innerHTML = sorted.length ? sorted.map(d => {
+    const off = !availToday(d) || !OPEN;
+    let head = '';
+    if (hasCats && (d.category || '') !== lastCat) { lastCat = d.category || ''; head = lastCat ? `<div class="ocat">${esc(lastCat)}</div>` : ''; }
+    return head + `
+    <div class="oitem${off ? ' off' : ''}">
+      <div><div class="nm">${esc(d.name)}</div><div class="pr">৳ ${esc(d.price)}</div>
+        ${!availToday(d) ? `<div class="note">Not available today (${esc(daysLabel(d))} only)</div>` : ''}</div>
+      <div class="qty">
+        <button type="button" data-id="${d.id}" data-op="-" aria-label="Less" ${off ? 'disabled' : ''}>−</button>
+        <span>${cart[d.id] || 0}</span>
+        <button type="button" data-id="${d.id}" data-op="+" aria-label="More" ${off ? 'disabled' : ''}>+</button>
+      </div>
+    </div>`;
+  }).join('') : '<p class="msg-empty">Menu coming soon.</p>';
+  const total = dishList.reduce((t, d) => t + (cart[d.id] || 0) * (+d.price || 0), 0);
+  $('oTotal').textContent = '৳ ' + total;
+  $('bkAmt').textContent = '৳ ' + total;
+}
 
-      $('copy').textContent = `© ${new Date().getFullYear()} ${settings.name || fallback.name}. All Rights Reserved.`;
-    }
+$('orderItems').addEventListener('click', e => {
+  const b = e.target.closest('button[data-id]');
+  if (!b) return;
+  const id = b.dataset.id, n = (cart[id] || 0) + (b.dataset.op === '+' ? 1 : -1);
+  cart[id] = Math.max(0, Math.min(20, n));
+  renderOrderItems();
+});
 
-    function dishAvailable(d) {
-      const days = String(d.days || '').trim();
-      if (!days) return true;
-      const key = ['sun','mon','tue','wed','thu','fri','sat'][new Date().getDay()];
-      return days.split(',').includes(key);
-    }
+function say(text, ok, extraHtml) {
+  const m = $('oMsg');
+  m.className = 'omsg ' + (ok ? 'ok' : 'err');
+  m.innerHTML = esc(text) + (extraHtml || '');
+}
 
-    function renderMenu() {
-      const search = $('msearch').value.trim().toLowerCase();
-      const filtered = dishes.filter(d => {
-        const catOK = activeCategory === 'all' || String(d.category || '') === activeCategory;
-        const searchOK = !search || String(d.name || '').toLowerCase().includes(search);
-        return catOK && searchOK;
-      });
+const payMethod = () => (document.querySelector('input[name=pay]:checked') || {}).value || 'cod';
+document.querySelectorAll('input[name=pay]').forEach(r => r.addEventListener('change', () => { $('bkInfo').hidden = payMethod() !== 'bkash'; }));
+$('bkCopy').addEventListener('click', async e => {
+  const b = e.currentTarget;
+  try { await navigator.clipboard.writeText(BK); }
+  catch (_) { const t = document.createElement('textarea'); t.value = BK; document.body.appendChild(t); t.select(); try { document.execCommand('copy'); } catch (__) {} t.remove(); }
+  b.textContent = 'Copied ✓'; setTimeout(() => b.textContent = 'Copy number', 2000);
+});
+// বাংলাদেশি নম্বর: 8801712345678 / +8801712345678 / 01712-345678 সবই 01712345678 হয়ে যায়
+const bdNum = v => { let d = String(v).replace(/\D/g, ''); if (d.length > 11) d = d.replace(/^880/, '0'); return d; };
 
-      $('dishes').innerHTML = filtered.length
-        ? filtered.map(d => `
-          <div class="card ${dishAvailable(d) ? '' : 'off'}">
-            <div class="imgw">
-              ${d.image ? `<img class="ph" src="${esc(d.image)}" alt="${esc(d.name)}" loading="lazy">` : '<div class="ph"></div>'}
-              ${d.is_new ? '<span class="tag">NEW</span>' : ''}
-            </div>
-            <div class="info">
-              <h3>${esc(d.name)}</h3>
-              <div class="price">৳ ${money(d.price)}</div>
-              ${d.category ? `<div class="days">${esc(d.category)}</div>` : ''}
-              ${d.days && !dishAvailable(d) ? '<div class="off-note">Not available today</div>' : ''}
-            </div>
-          </div>
-        `).join('')
-        : '<div class="msg-empty">No food found.</div>';
+$('orderForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const items = dishList.filter(d => cart[d.id] > 0 && availToday(d)).map(d => ({ name: d.name, price: +d.price || 0, qty: cart[d.id] }));
+  const name = $('oName').value.trim(), phone = $('oPhone').value.trim(), address = $('oAddr').value.trim(), note = $('oNote').value.trim();
+  if (!OPEN) return say('We are closed right now. Please order when we open.', false);
+  if (!items.length) return say('Please choose at least one dish.', false);
+  if (!name) return say('Please enter your name.', false);
+  if (phone.replace(/\D/g, '').length < 8) return say('Please enter a valid phone number.', false);
+  if (!address) return say('Please enter your delivery address.', false);
+  if (!db) return say('Ordering is not set up yet.', false);
 
-      renderOrderItems();
-    }
+  const pay = BK ? payMethod() : 'cod';
+  let from = '', trx = '';
+  if (pay === 'bkash') {
+    from = bdNum($('bkFrom').value); trx = $('bkTrx').value.trim().toUpperCase();
+    if (!/^01[3-9]\d{8}$/.test(from)) return say('Please enter the bKash number you sent money from (like 01712345678).', false);
+    if (!/^[A-Z0-9]{8,14}$/.test(trx)) return say('Please enter a valid Transaction ID (TrxID) from your bKash message.', false);
+  }
 
-    function renderFilters() {
-      const cats = [...new Set(dishes.map(d => d.category).filter(Boolean))];
-      $('menuTools').hidden = !cats.length && !dishes.length;
-      $('chips').innerHTML = cats.length
-        ? `<button class="chip ${activeCategory === 'all' ? 'on' : ''}" data-cat="all">All</button>` +
-          cats.map(c => `<button class="chip ${activeCategory === c ? 'on' : ''}" data-cat="${esc(c)}">${esc(c)}</button>`).join('')
-        : '';
+  const total = items.reduce((t, i) => t + i.price * i.qty, 0);
+  const btn = $('oBtn'); btn.disabled = true; btn.textContent = 'Sending...';
+  const row = { name, phone, address, note, items, total };
+  if (pay === 'bkash') Object.assign(row, { payment_method: 'bkash', payment_number: from, trx_id: trx });
+  const { error } = await db.from('orders').insert(row);
+  btn.disabled = false; btn.textContent = 'Place Order';
+  if (error) {
+    console.error(error);
+    if (error.code === '23505' || /orders_trx_unique/.test(error.message || '')) return say('This Transaction ID has already been used. Please check your TrxID.', false);
+    return say('Sorry, the order could not be sent. Please call us to order.', false);
+  }
 
-      document.querySelectorAll('[data-cat]').forEach(b => {
-        b.onclick = () => {
-          activeCategory = b.dataset.cat;
-          renderFilters();
-          renderMenu();
-        };
-      });
-    }
+  let wa = '';
+  if (WA) {
+    const lines = [`New order - ${SHOP}`, ...items.map(i => `${i.name} x ${i.qty} = ${i.price * i.qty}`),
+      `Total: ${total} BDT`, pay === 'bkash' ? `Paid by bKash from ${from}, TrxID: ${trx}` : 'Payment: Cash on delivery', `Name: ${name}`, `Phone: ${phone}`, `Address: ${address}`, note ? `Note: ${note}` : ''].filter(Boolean);
+    wa = `<br><a class="btn wa-btn" target="_blank" rel="noopener" href="https://wa.me/${esc(WA)}?text=${encodeURIComponent(lines.join('\n'))}">Confirm on WhatsApp</a>`;
+  }
+  say(pay === 'bkash' ? 'Thank you! Your order has been received. We will verify your bKash payment and call you soon.' : 'Thank you! Your order has been received. We will call you soon.', true, wa);
+  $('oMsg').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'center' });
+  cart = {}; renderOrderItems();
+  $('oNote').value = ''; $('bkFrom').value = ''; $('bkTrx').value = '';
+});
 
-    function renderOrderItems() {
-      if (!dishes.length) {
-        $('orderItems').innerHTML = '<div class="msg-empty">No menu items available yet.</div>';
-        $('orderTotal').textContent = '0';
-        return;
-      }
+function note(text, top) {
+  const n = document.createElement('div');
+  n.style.cssText = 'position:fixed;' + (top ? 'top:0;' : 'bottom:10px;left:10px;border-radius:6px;') + 'left:' + (top ? '0;right:0;' : '10px;') + 'z-index:99;background:#fff6df;color:#5a4000;border:1px solid #e9c777;padding:8px 12px;font:13px system-ui,sans-serif';
+  n.textContent = text; document.body.appendChild(n);
+}
 
-      $('orderItems').innerHTML = dishes.map(d => {
-        const qty = quantities[d.id] || 0;
-        const available = dishAvailable(d);
-        return `
-          <div class="oitem ${available ? '' : 'off'}">
-            <div>
-              <div class="nm">${esc(d.name)} ${d.is_new ? '<span class="badge">New</span>' : ''}</div>
-              <div class="pr">৳ ${money(d.price)}</div>
-              ${!available ? '<div class="note">Not available today</div>' : ''}
-            </div>
-            <div class="qty">
-              <button type="button" data-minus="${d.id}" ${qty === 0 || !available ? 'disabled' : ''}>−</button>
-              <span>${qty}</span>
-              <button type="button" data-plus="${d.id}" ${!available ? 'disabled' : ''}>+</button>
-            </div>
-          </div>`;
-      }).join('');
+document.querySelectorAll('#nav a').forEach(a => a.addEventListener('click', () => $('nav').classList.remove('open')));
 
-      document.querySelectorAll('[data-plus]').forEach(b => b.onclick = () => {
-        const id = b.dataset.plus;
-        quantities[id] = (quantities[id] || 0) + 1;
-        renderOrderItems();
-      });
-      document.querySelectorAll('[data-minus]').forEach(b => b.onclick = () => {
-        const id = b.dataset.minus;
-        quantities[id] = Math.max(0, (quantities[id] || 0) - 1);
-        renderOrderItems();
-      });
+// গ্যালারির ছবিতে ক্লিক করলে বড় করে দেখায়
+function closeLightbox() { const l = document.querySelector('.lb'); if (l) l.remove(); }
+$('gal').addEventListener('click', e => {
+  if (e.target.tagName !== 'IMG') return;
+  const lb = document.createElement('div');
+  lb.className = 'lb'; lb.setAttribute('role', 'dialog'); lb.setAttribute('aria-label', 'Photo');
+  lb.innerHTML = `<img src="${esc(e.target.src)}" alt="">`;
+  lb.onclick = closeLightbox;
+  document.body.appendChild(lb);
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
 
-      const total = dishes.reduce((sum, d) => sum + Number(d.price || 0) * (quantities[d.id] || 0), 0);
-      $('orderTotal').textContent = money(total);
-    }
-
-    function renderGallery() {
-      $('galleryGrid').innerHTML = gallery.length
-        ? gallery.map(g => `<img src="${esc(g.image)}" alt="Restaurant gallery" loading="lazy" data-lightbox="${esc(g.image)}">`).join('')
-        : '<div class="msg-empty">Gallery will be updated soon.</div>';
-
-      document.querySelectorAll('[data-lightbox]').forEach(img => {
-        img.onclick = () => {
-          $('lightboxImg').src = img.dataset.lightbox;
-          $('lightbox').hidden = false;
-        };
-      });
-    }
-
-    function renderPosts() {
-      $('posts').innerHTML = posts.length
-        ? posts.slice(0,3).map(p => `
-          <a class="post" href="blog/?id=${encodeURIComponent(p.id)}">
-            ${p.image ? `<img src="${esc(p.image)}" alt="${esc(p.title)}" loading="lazy">` : '<div class="ph"></div>'}
-            <div class="info">
-              <time>${new Date(p.created_at).toLocaleDateString('en-GB', {day:'numeric', month:'short', year:'numeric'})}</time>
-              <h3>${esc(p.title)}</h3>
-              <p>${esc(String(p.body || '').replace(/\s+/g,' ').slice(0,140))}${String(p.body || '').length > 140 ? '...' : ''}</p>
-            </div>
-          </a>
-        `).join('')
-        : '<div class="msg-empty">No posts yet.</div>';
-    }
-
-    async function loadData() {
-      try {
-        const [s, d, g, p] = await Promise.all([
-          db.from('settings').select('*').eq('id', 1).single(),
-          db.from('dishes').select('*').order('id'),
-          db.from('gallery').select('*').order('id', {ascending:false}),
-          db.from('posts').select('*').order('id', {ascending:false})
-        ]);
-
-        if (s.data) applySettings(s.data);
-        else applySettings(fallback);
-
-        dishes = d.data || [];
-        gallery = g.data || [];
-        posts = p.data || [];
-
-        renderFilters();
-        renderMenu();
-        renderGallery();
-        renderPosts();
-      } catch (e) {
-        console.error(e);
-        applySettings(fallback);
-        $('dishes').innerHTML = '<div class="msg-empty">Menu could not be loaded right now.</div>';
-        $('galleryGrid').innerHTML = '<div class="msg-empty">Gallery could not be loaded right now.</div>';
-        $('posts').innerHTML = '<div class="msg-empty">News could not be loaded right now.</div>';
-        renderOrderItems();
-      }
-    }
-
-    $('msearch').addEventListener('input', renderMenu);
-
-    document.querySelectorAll('#nav a').forEach(a => {
-      a.addEventListener('click', () => $('nav').classList.remove('open'));
-    });
-
-    $('lightbox').onclick = () => $('lightbox').hidden = true;
-
-    document.querySelectorAll('input[name="payment"]').forEach(r => {
-      r.addEventListener('change', () => {
-        const bk = document.querySelector('input[name="payment"]:checked')?.value === 'bkash';
-        $('bkinfo').hidden = !bk;
-        $('paymentNumber').required = bk;
-        $('trxId').required = bk;
-      });
-    });
-
-    $('copyBkash').onclick = async () => {
-      try {
-        await navigator.clipboard.writeText(settings.bkash_number || '');
-        $('copyBkash').textContent = 'Copied';
-        setTimeout(() => $('copyBkash').textContent = 'Copy', 1200);
-      } catch {}
-    };
-
-    $('orderForm').addEventListener('submit', async e => {
-      e.preventDefault();
-      const msg = $('orderMsg');
-      msg.className = 'omsg';
-      msg.textContent = '';
-
-      if (settings.is_open === false) {
-        msg.className = 'omsg err';
-        msg.textContent = 'The restaurant is currently closed.';
-        return;
-      }
-
-      const items = dishes
-        .filter(d => (quantities[d.id] || 0) > 0 && dishAvailable(d))
-        .map(d => ({id:d.id, name:d.name, qty:quantities[d.id], price:Number(d.price || 0)}));
-
-      if (!items.length) {
-        msg.className = 'omsg err';
-        msg.textContent = 'Please select at least one food item.';
-        return;
-      }
-
-      const total = items.reduce((sum, i) => sum + i.price * i.qty, 0);
-      const paymentMethod = document.querySelector('input[name="payment"]:checked')?.value || 'cod';
-
-      if (paymentMethod === 'bkash' && (!settings.bkash_number || !$('paymentNumber').value.trim() || $('trxId').value.trim().length < 8)) {
-        msg.className = 'omsg err';
-        msg.textContent = 'Please complete the bKash number and TrxID.';
-        return;
-      }
-
-      const btn = $('submitOrder');
-      btn.disabled = true;
-      btn.textContent = 'Placing order...';
-
-      try {
-        const payload = {
-          name: $('customerName').value.trim(),
-          phone: $('customerPhone').value.trim(),
-          address: $('customerAddress').value.trim(),
-          note: $('customerNote').value.trim(),
-          items,
-          total,
-          status: 'new'
-        };
-
-        if (paymentMethod === 'bkash') {
-          payload.payment_method = 'bkash';
-          payload.payment_number = $('paymentNumber').value.trim();
-          payload.trx_id = $('trxId').value.trim();
-          payload.paid = false;
-        } else {
-          payload.payment_method = 'cod';
-          payload.payment_number = '';
-          payload.trx_id = '';
-          payload.paid = false;
-        }
-
-        const {error} = await db.from('orders').insert(payload);
-        if (error) throw error;
-
-        msg.className = 'omsg ok';
-        msg.textContent = 'Order received successfully! We will contact you shortly.';
-        e.target.reset();
-        quantities = {};
-        document.querySelector('input[name="payment"][value="cod"]').checked = true;
-        $('bkinfo').hidden = true;
-        $('paymentNumber').required = false;
-        $('trxId').required = false;
-        renderOrderItems();
-      } catch (err) {
-        console.error(err);
-        msg.className = 'omsg err';
-        msg.textContent = 'Sorry, the order could not be submitted. Please call or WhatsApp us.';
-      } finally {
-        btn.disabled = settings.is_open === false;
-        btn.textContent = 'Place Order';
-      }
-    });
-
-    loadData();
-  </script>
+async function load() {
+  showGallery([]); showDishes([]);
+  if (DEMO) note('DEMO MODE: config.js এ Supabase key বসানো হয়নি, তাই admin এর পরিবর্তন শুধু ওই browser এ দেখা যাবে।');
+  if (!db) { note('Server connection failed. Please check your internet and refresh the page.'); return; }
+  try {
+    const [s, d, g, ps] = await Promise.all([
+      db.from('settings').select('*').eq('id', 1).single(),
+      db.from('dishes').select('*').order('id'),
+      db.from('gallery').select('*').order('id', { ascending: false }),
+      db.from('posts').select('*').order('id', { ascending: false }).limit(3)
+    ]);
+    if (location.search.includes('debug'))
+      note(`Mode: ${DEMO ? 'DEMO' : 'LIVE'} | settings: ${s.error ? s.error.message : 'ok'} | dishes: ${d.error ? d.error.message : d.data.length} | gallery: ${g.error ? g.error.message : g.data.length}`, true);
+    if (s.data) showSettings(s.data);
+    if (d.data) showDishes(d.data);
+    if (g.data) showGallery(g.data);
+    showPosts(ps.data || []);
+  } catch (e) { console.error(e); }
+}
+load();
+</script>
 </body>
 </html>

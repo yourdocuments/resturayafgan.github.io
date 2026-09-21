@@ -30,6 +30,18 @@ details summary{cursor:pointer;color:#b8741d;font-weight:600;margin-top:10px}
 .cur{font-size:.8rem;color:#777;margin-top:4px}
 .cur img{height:44px;vertical-align:middle;margin-right:8px;background:#eee;border-radius:4px}
 .hide{display:none}
+#printArea{display:none}
+.rc{width:76mm;color:#000;font:13px/1.45 system-ui,sans-serif}
+.rc h2{text-align:center;margin:0 0 2px;font-size:17px}
+.rc .c{text-align:center}
+.rc hr{border:0;border-top:1px dashed #000;margin:6px 0}
+.rc .ln{display:flex;justify-content:space-between;gap:8px}
+@media print{
+  @page{margin:4mm}
+  body{background:#fff}
+  body > *:not(#printArea){display:none !important}
+  #printArea{display:block}
+}
 .badge{display:inline-block;padding:2px 10px;border-radius:20px;font-size:.75rem;font-weight:700;background:#fdebc8;color:#8a5a00}
 .badge.done{background:#dcf1da;color:#1f6b2a}
 .dot{background:#b3332b;color:#fff;border-radius:20px;padding:0 7px;font-size:.75rem;margin-left:4px}
@@ -43,7 +55,7 @@ details summary{cursor:pointer;color:#b8741d;font-weight:600;margin-top:10px}
     <h2>Admin Login</h2>
     <div id="loginMsg" class="msg err hide"></div>
     <div id="demoHint" class="msg hide" style="background:#fff6df;border-color:#e9c777">
-      <b>DEMO MODE</b><br>Email: <code>admin@demo.com</code><br>Password: <code>demo123</code>
+      <b>DEMO MODE</b><br>Admin: <code>admin@demo.com</code> / <code>demo123</code><br>Manager: <code>manager@demo.com</code> / <code>manager123</code>
     </div>
     <label>ইমেইল</label><input type="email" id="email" autocomplete="username">
     <label>পাসওয়ার্ড</label><input type="password" id="password" autocomplete="current-password">
@@ -70,13 +82,16 @@ details summary{cursor:pointer;color:#b8741d;font-weight:600;margin-top:10px}
   </div>
 </div>
 
+<div id="printArea"></div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>window.supabase||document.write('<script src="https://unpkg.com/@supabase/supabase-js@2"><\/script>')</script>
 <script src="../config.js"></script>
 <script src="../demo-db.js"></script>
 <script>
 const $ = id => document.getElementById(id);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const db = DEMO ? createDemoClient() : supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const db = DEMO ? createDemoClient() : (window.supabase ? supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null);
 let tab = 'orders', orders = [], dishes = [], posts = [], gallery = [], settings = {}, ordersOk = true, postsOk = true;
 
 /* ---------- ছোট helper ---------- */
@@ -139,13 +154,26 @@ async function run(btn, fn) {
 
 /* ---------- লগইন ---------- */
 async function start() {
+  if (!db) { showLogin(); const m = $('loginMsg'); m.textContent = 'সার্ভারের সাথে সংযোগ হয়নি। ইন্টারনেট দেখে পেজ রিফ্রেশ করুন।'; m.classList.remove('hide'); return; }
   if (DEMO) { $('demoHint').classList.remove('hide'); $('demoBar').classList.remove('hide'); }
   const { data } = await db.auth.getSession();
   data.session ? showApp() : showLogin();
 }
 function showLogin() { $('appView').classList.add('hide'); $('loginView').classList.remove('hide'); }
+let role = 'admin';
+const isManager = () => role === 'manager';
+function applyRole() {
+  document.querySelectorAll('.tabs button').forEach(b => b.classList.toggle('hide', isManager() && b.dataset.tab !== 'orders'));
+  if (isManager()) {
+    tab = 'orders';
+    document.querySelectorAll('.tabs button').forEach(b => b.classList.toggle('on', b.dataset.tab === 'orders'));
+  }
+}
 async function showApp() {
+  const { data } = await db.auth.getSession();
+  role = (data.session && data.session.user && data.session.user.app_metadata && data.session.user.app_metadata.role) || 'admin';
   $('loginView').classList.add('hide'); $('appView').classList.remove('hide');
+  applyRole();
   await loadAll(); render();
 }
 $('loginBtn').onclick = async () => {
@@ -154,7 +182,7 @@ $('loginBtn').onclick = async () => {
   else showApp();
 };
 $('password').addEventListener('keydown', e => { if (e.key === 'Enter') $('loginBtn').click(); });
-$('logoutBtn').onclick = async () => { await db.auth.signOut(); showLogin(); };
+$('logoutBtn').onclick = async () => { await db.auth.signOut(); role = 'admin'; applyRole(); showLogin(); };
 
 /* ---------- ডাটা লোড ---------- */
 async function loadAll() {
@@ -173,7 +201,7 @@ async function loadAll() {
   if (bad.length) toast('ডাটা লোড হয়নি: ' + bad[0] + ' (supabase-setup.sql Run করা হয়েছে কিনা দেখুন)', true);
   const n = orders.filter(x => x.status === 'new').length;
   $('ocount').innerHTML = n ? `<span class="dot">${n}</span>` : '';
-  $('title').textContent = '🍽️ ' + (settings.name || 'Admin') + ' — Admin';
+  $('title').textContent = '🍽️ ' + (settings.name || 'Admin') + (isManager() ? ' — Manager' : ' — Admin');
 }
 
 document.querySelectorAll('.tabs button').forEach(b => b.onclick = async () => {
@@ -198,7 +226,7 @@ function renderOrders() {
     return;
   }
   const newCount = orders.filter(o => o.status === 'new').length;
-  const hasOpen = 'is_open' in settings, isOpen = settings.is_open !== false;
+  const hasOpen = 'is_open' in settings && !isManager(), isOpen = settings.is_open !== false;
   $('content').innerHTML = `
     ${hasOpen ? `<div class="card row" style="justify-content:space-between">
       <b>${isOpen ? '🟢 এখন খোলা আছে' : '🔴 এখন বন্ধ (সাইটে অর্ডার বন্ধ)'}</b>
@@ -225,7 +253,8 @@ function renderOrders() {
         <div class="row">
           <button data-odone="${o.id}" data-to="${o.status === 'done' ? 'new' : 'done'}">${o.status === 'done' ? 'আবার নতুন করুন' : 'সম্পন্ন করুন'}</button>
           ${o.payment_method === 'bkash' ? `<button data-opaid="${o.id}" data-paid="${o.paid ? 'no' : 'yes'}" style="background:#e2136e">${o.paid ? 'নিশ্চিত বাতিল' : 'bKash এ দেখেছি, পেমেন্ট নিশ্চিত'}</button>` : ''}
-          <button class="red" data-odel="${o.id}">মুছুন</button>
+          <button data-oprint="${o.id}" style="background:#444">🖨️ প্রিন্ট</button>
+          ${isManager() ? '' : `<button class="red" data-odel="${o.id}">মুছুন</button>`}
         </div>
       </div>`).join('') || '<div class="card">এখনো কোনো অর্ডার আসেনি।</div>'}`;
 
@@ -242,12 +271,41 @@ function renderOrders() {
     ok(await db.from('orders').update({ paid: b.dataset.paid === 'yes' }).eq('id', b.dataset.opaid).select());
     await loadAll(); renderOrders();
   }));
+  document.querySelectorAll('[data-oprint]').forEach(b => b.onclick = () => printOrder(orders.find(x => x.id == b.dataset.oprint)));
   document.querySelectorAll('[data-odel]').forEach(b => b.onclick = e => run(e.target, async () => {
     if (!confirm('অর্ডারটি মুছে ফেলবেন?')) return;
     ok(await db.from('orders').delete().eq('id', b.dataset.odel).select());
     await loadAll(); renderOrders();
   }));
 }
+
+// অর্ডারের রসিদ প্রিন্ট (80mm thermal প্রিন্টার বা সাধারণ প্রিন্টার, দুটোতেই চলে)
+function printOrder(o) {
+  if (!o) return;
+  const items = o.items || [];
+  const pay = o.payment_method === 'bkash'
+    ? `bKash: ${o.paid ? 'PAID' : 'NOT VERIFIED'}<br>From: ${esc(o.payment_number)}<br>TrxID: ${esc(o.trx_id)}`
+    : 'Cash on Delivery';
+  $('printArea').innerHTML = `<div class="rc">
+    <h2>${esc(settings.name || '')}</h2>
+    <div class="c">${esc(settings.phone || '')}</div>
+    <hr>
+    <div><b>Order #${esc(o.id)}</b></div>
+    <div>${new Date(o.created_at).toLocaleString('en-GB')}</div>
+    <hr>
+    <div><b>${esc(o.name)}</b></div><div>${esc(o.phone)}</div><div>${esc(o.address)}</div>
+    <hr>
+    ${items.map(i => `<div class="ln"><span>${esc(i.qty)} x ${esc(i.name)}</span><span>${esc((+i.price || 0) * (+i.qty || 0))}</span></div>`).join('')}
+    <hr>
+    <div class="ln"><b>TOTAL</b><b>Tk ${esc(o.total)}</b></div>
+    <div>${pay}</div>
+    ${o.note ? `<div>Note: ${esc(o.note)}</div>` : ''}
+    <hr>
+    <div class="c">Thank you!</div>
+  </div>`;
+  window.print();
+}
+window.addEventListener('afterprint', () => { $('printArea').innerHTML = ''; });
 
 // প্রতি ১ মিনিটে নতুন অর্ডার আছে কিনা দেখে
 setInterval(async () => {

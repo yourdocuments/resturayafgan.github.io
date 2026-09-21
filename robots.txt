@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://YOUR-DOMAIN.com/sitemap.xml
+Sitemap: https://admission.snkitinstitute.com/resturayafgan.github.io/sitemap.xml

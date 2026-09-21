@@ -14,8 +14,8 @@ values (1, 'Afghan Restaurant',
   'Delicious food, warm hospitality and a memorable experience — all in one place.',
   'Good Food, Great Moments',
   'Afghan Restaurant is a small and cozy place where we serve delicious and healthy food with the best quality ingredients. Our goal is to make every meal a memorable experience for our guests.',
-  '+880 1712 345 678', 'Moulvibazar Sadar, Sylhet, Bangladesh', '10:00 AM - 10:00 PM',
-  '', '', '8801712345678')
+  '+880 1778-015313', 'Moulvibazar Sadar, Sylhet, Bangladesh', '10:00 AM - 10:00 PM',
+  '', '', '8801778015313')
 on conflict (id) do nothing;
 
 create table if not exists dishes (
